@@ -1,0 +1,28 @@
+.PageNotFoundSVG {
+  position: fixed;
+  top: 150px;
+  left: 25%;
+  height: 50%;
+  width: 50%;
+
+  /* animation */
+  animation-name: notFoundEffect;
+  animation-duration: 1.4s;
+  animation-iteration-count: infinite;
+}
+@keyframes notFoundEffect {
+  0% {
+    top: 150px;
+  }
+  50% {
+    top: 155px;
+  }
+  100% {
+    top: 150px;
+  }
+}
+
+.pageNotFoundText {
+  color: #545c6d;
+  font-weight: bold;
+}

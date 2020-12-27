@@ -1,0 +1,32 @@
+.leftPart {
+  background: #1d1d21;
+  /* height: 100%; */
+  color: white;
+}
+
+.rightPart {
+  background-color: rgb(230, 230, 230);
+}
+
+.avatar {
+  display: block;
+  margin: 30px auto 10px auto;
+  height: 160px !important;
+  width: 160px !important;
+}
+
+.form {
+  width: 80% !important;
+  border: rgb(248, 248, 248) solid;
+  border-radius: 10px;
+  background-color: rgb(248, 248, 248);
+  padding: 10px;
+}
+
+.myLearnings {
+  width: 80% !important;
+  border: rgb(248, 248, 248) solid;
+  border-radius: 10px;
+  background-color: rgb(248, 248, 248);
+  padding: 10px;
+}

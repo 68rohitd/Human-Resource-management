@@ -1,0 +1,8 @@
+/client/node_modules
+/server/node_modules
+/server/.env
+
+client/.pnp
+client/coverage
+client/build
+client/.eslintcache

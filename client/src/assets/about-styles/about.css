@@ -1,0 +1,25 @@
+.aboutSVG {
+  position: fixed;
+  top: 100px;
+  left: 40%;
+  height: 70%;
+  width: 70%;
+  z-index: -100;
+
+  /* animation */
+  animation-name: hoverEffect;
+  animation-duration: 1.4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes hoverEffect {
+  0% {
+    top: 100px;
+  }
+  50% {
+    top: 105px;
+  }
+  100% {
+    top: 100px;
+  }
+}

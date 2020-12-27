@@ -1,0 +1,147 @@
+/* html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+} */
+
+.loginSVG {
+  position: fixed;
+  top: 80px;
+  left: -200px;
+  height: 80%;
+  width: 80%;
+  z-index: -100;
+  /* animation */
+  animation-name: hoverEffect;
+  animation-duration: 1.4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes hoverEffect {
+  0% {
+    top: 80px;
+  }
+  50% {
+    top: 85px;
+  }
+  100% {
+    top: 80px;
+  }
+}
+
+.loginForm {
+  /* width: 90%; */
+  box-shadow: 0px 0px 40px rgb(187, 187, 187);
+  padding: 20px 10px 20px 10px;
+  margin-bottom: 100px;
+  border-radius: 18px;
+  transition: box-shadow 0.3s;
+}
+.loginForm:hover {
+  box-shadow: 0px 0px 20px rgb(187, 187, 187);
+}
+
+.loginForm input {
+  border-radius: 15px;
+}
+
+.loginForm .btn {
+  background-color: #26ae60 !important;
+  border-color: #26ae60;
+  width: 30% !important;
+  margin-left: auto;
+  margin-right: auto;
+  transition: width 0.4s;
+  font-weight: bold;
+}
+.loginForm .btn:hover {
+  width: 34% !important;
+  background-color: #1d9651 !important;
+  border-color: white;
+}
+
+.loginAvatar {
+  /* box-shadow: 0px 0px 10px rgb(187, 187, 187); */
+  margin-top: -20%;
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;
+}
+
+.loginText {
+  font-size: 20px;
+  color: #545c6d;
+  font-weight: bold;
+}
+
+/* reg */
+.signUpSVG {
+  position: fixed;
+  top: 110px;
+  left: -200px;
+  height: 80%;
+  width: 80%;
+  z-index: -100;
+
+  /* animation */
+  animation-name: hoverEffect;
+  animation-duration: 1.4s;
+  animation-iteration-count: infinite;
+}
+
+.signUpForm {
+  box-shadow: 0px 0px 40px rgb(187, 187, 187);
+  padding: 20px 10px 20px 10px;
+  border-radius: 18px;
+  transition: box-shadow 0.3s;
+}
+.signUpForm:hover {
+  box-shadow: 0px 0px 20px rgb(187, 187, 187);
+}
+
+.signUpForm input {
+  border-radius: 15px;
+}
+
+/* submit btn */
+.signUpForm .btn {
+  background-color: #26ae60 !important;
+  border-color: #26ae60;
+  width: 30% !important;
+  margin-left: auto;
+  margin-right: auto;
+  transition: width 0.4s;
+  margin-top: 0 !important;
+  font-weight: bold;
+}
+.signUpForm .btn:hover {
+  width: 34% !important;
+  background-color: #1d9651 !important;
+  border-color: white;
+}
+
+.signUpAvatar {
+  margin-top: -20%;
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;
+}
+
+.signUpText {
+  font-size: 20px;
+  color: #545c6d;
+  font-weight: bold;
+  margin-bottom: 30px !important;
+}
+
+/* for tick marks while entering info */
+.correctContainer {
+  color: green;
+  margin-right: 20px !important;
+  align-self: flex-start !important;
+}
