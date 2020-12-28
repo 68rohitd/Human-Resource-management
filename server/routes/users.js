@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 let auth = require("../middleware/auth");
 let User = require("../models/user.model");
+let Admin = require("../models/admin.model");
 
 // @desc: register a user
 router.post("/register", async (req, res) => {
@@ -52,48 +53,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// @desc: add employee by admin
-router.post("/addEmployee", async (req, res) => {
-  try {
-    let { email, name, address, phoneNo, role, salary, team } = req.body;
-
-    // validation
-    if (!email || !name || !address || !phoneNo || !role || !salary || !team) {
-      return res.status(400).json({ msg: "Please enter all the fields" });
-    }
-
-    // generating password
-    const password = "password";
-
-    const existingUser = await User.findOne({ email: email });
-    if (existingUser) {
-      return res.status(400).json({
-        msg: "The email address is already in use by another account.",
-      });
-    }
-
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(password, salt);
-
-    const newUser = new User({
-      email,
-      password: passwordHash,
-      name,
-      team,
-      phoneNo,
-      salary,
-      address,
-      role,
-      notification: [],
-    });
-
-    const savedUser = await newUser.save();
-    res.json(savedUser);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
 // @desc: login a user
 router.post("/login", async (req, res) => {
   try {
@@ -122,21 +81,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// @desc: delete a user account
-// router.delete("/delete/:id", auth, async (req, res) => {
-//   try {
-//     const deletedUser = await User.findByIdAndDelete(req.user);
-//     res.json(deletedUser);
-
-//     // delete this users todos too
-//     await Todos.deleteMany({ userId: req.user }).catch(function (err) {
-//       console.log(err);
-//     });
-//   } catch (err) {
-//     res.status(500).json({ err: err.message });
-//   }
-// });
-
 // @desc: verify a user against token
 router.post("/tokenIsValid", async (req, res) => {
   try {
@@ -158,12 +102,8 @@ router.post("/tokenIsValid", async (req, res) => {
 // @desc: get user details of logged in user
 router.get("/", auth, async (req, res) => {
   const user = await User.findById(req.user);
-  console.log("user: ", user);
   res.json({
     user,
-    // displayName: user.displayName,
-    // id: user._id,
-    // email: user.email,
   });
 });
 
@@ -193,6 +133,55 @@ router.route("/updateProfile").post((req, res) => {
     }
   );
 });
+
+// @desc: Apply for leave
+router.put("/applyLeave", async (req, res) => {
+  // 1. push to admin
+  const admin = await Admin.findOne({ email: "admin@gmail.com" });
+  let leaveRequests = admin.leaveRequests;
+  leaveRequests.push(req.body.request);
+
+  Admin.findOneAndUpdate(
+    { email: "admin@gmail.com" },
+    { leaveRequests: leaveRequests },
+    function (err, result) {
+      if (err) res.status(400).json("Error: ", err);
+      else console.log("pushed request to admin...");
+    }
+  );
+
+  // 2. push to user
+  const user = await User.findOne({ email: req.body.request.empEmail });
+  let notification = user.notification;
+  notification.push(req.body.request);
+
+  User.findOneAndUpdate(
+    { email: req.body.request.empEmail },
+    { notification: notification },
+    function (err, result) {
+      if (err) res.status(400).json("Error: ", err);
+      else {
+        console.log("pushed notification to user profile");
+        res.json(result);
+      }
+    }
+  );
+});
+
+// @desc: delete a user account
+// router.delete("/delete/:id", auth, async (req, res) => {
+//   try {
+//     const deletedUser = await User.findByIdAndDelete(req.user);
+//     res.json(deletedUser);
+
+//     // delete this users todos too
+//     await Todos.deleteMany({ userId: req.user }).catch(function (err) {
+//       console.log(err);
+//     });
+//   } catch (err) {
+//     res.status(500).json({ err: err.message });
+//   }
+// });
 
 // @desc: update users history
 // router.put("/updateHistory/", auth, async (req, res) => {

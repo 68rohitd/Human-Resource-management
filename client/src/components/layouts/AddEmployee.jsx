@@ -17,6 +17,7 @@ class AddEmployee extends Component {
       address: "",
       phoneNo: "",
       team: "",
+      doj: "",
       disabled: false,
     };
   }
@@ -29,10 +30,19 @@ class AddEmployee extends Component {
       disabled: true,
     });
 
-    const { email, name, address, phoneNo, role, salary, team } = this.state;
+    const {
+      email,
+      name,
+      address,
+      phoneNo,
+      role,
+      salary,
+      team,
+      doj,
+    } = this.state;
 
     try {
-      const newUser = await axios.post("/api/users/addEmployee", {
+      const newUser = await axios.post("/api/admin/addEmployee", {
         email,
         name,
         address,
@@ -40,6 +50,7 @@ class AddEmployee extends Component {
         role,
         salary,
         team,
+        doj,
       });
       console.log("created acc successfully: ", newUser.data);
     } catch (err) {
@@ -56,7 +67,7 @@ class AddEmployee extends Component {
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   render() {
-    const { error } = this.state;
+    // const { error } = this.state;
 
     return (
       <Consumer>
@@ -138,6 +149,15 @@ class AddEmployee extends Component {
                         name="team"
                         className="form-control mb-3 "
                         placeholder="team"
+                        onChange={this.onChange}
+                        required
+                      />
+                      {/* doj */}
+                      <input
+                        type="date"
+                        name="doj"
+                        className="form-control mb-3 "
+                        placeholder="doj"
                         onChange={this.onChange}
                         required
                       />

@@ -15,6 +15,9 @@ import Dashboard from "./components/layouts/Dashboard";
 import Profile from "./components/layouts/Profile";
 import EmpDashboard from "./components/layouts/EmpDashboard";
 import Attendence from "./components/layouts/Employee/Attendence";
+import ViewRequests from "./components/layouts/Admin/ViewRequests";
+import Home from "./components/layouts/Home";
+import MyRequests from "./components/layouts/Employee/MyRequests";
 export default class App extends Component {
   render() {
     return (
@@ -23,6 +26,7 @@ export default class App extends Component {
           <div>
             <Header branding="HR" />
             <Switch>
+              <Route exact path="/" component={Home} />
               <Route exact path="/adminDashboard" component={Dashboard} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/add" component={AddEmployee} />
@@ -31,6 +35,8 @@ export default class App extends Component {
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/attendence" component={Attendence} />
               <Route exact path="/empDashboard" component={EmpDashboard} />
+              <Route exact path="/viewRequests" component={ViewRequests} />
+              <Route exact path="/myRequests" component={MyRequests} />
               <Route exact path="/about" component={About} />
               <Route component={PageNotFound} />
             </Switch>

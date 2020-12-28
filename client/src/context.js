@@ -43,19 +43,34 @@ export class Provider extends Component {
     }
 
     try {
-      const tokenRes = await axios.post("/api/users/tokenIsValid", null, {
+      // first check in admin model
+      const tokenRes = await axios.post("/api/admin/tokenIsValid", null, {
         headers: { "x-auth-token": token },
       });
-
       if (tokenRes.data) {
         //logged in
-        const userRes = await axios.get("/api/users", {
+        const adminRes = await axios.get("/api/admin", {
           headers: { "x-auth-token": token },
         });
         this.setState({
           token,
-          user: userRes.data.user,
+          user: adminRes.data.user,
         });
+      } else {
+        // now check in users model
+        const tokenRes = await axios.post("/api/users/tokenIsValid", null, {
+          headers: { "x-auth-token": token },
+        });
+        if (tokenRes.data) {
+          //logged in
+          const userRes = await axios.get("/api/users", {
+            headers: { "x-auth-token": token },
+          });
+          this.setState({
+            token,
+            user: userRes.data.user,
+          });
+        }
       }
     } catch (err) {
       console.log("ERROR: ", err);

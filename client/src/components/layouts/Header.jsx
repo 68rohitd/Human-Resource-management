@@ -119,16 +119,26 @@ class Header extends Component {
                             Logout
                           </span>
                         </li>
-                        {/* delete account */}
-                        <li className="nav-item ">
-                          <Link
-                            to="/profile"
-                            className="nav-link text-light "
-                            style={{ cursor: "pointer", fontSize: 16 }}
-                          >
-                            {user.name}
-                          </Link>
-                        </li>
+                        {user && user.role !== "admin" ? (
+                          <li className="nav-item ">
+                            <Link
+                              to="/profile"
+                              className="nav-link text-light "
+                              style={{ cursor: "pointer", fontSize: 16 }}
+                            >
+                              {user.name}
+                            </Link>
+                          </li>
+                        ) : (
+                          <li className="nav-item ">
+                            <div
+                              className="nav-link text-light "
+                              style={{ fontSize: 16 }}
+                            >
+                              {user.name}
+                            </div>
+                          </li>
+                        )}
                       </>
                     ) : (
                       // signup or sign in

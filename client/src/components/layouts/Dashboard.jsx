@@ -7,7 +7,7 @@ export default class Dashboard extends Component {
     return (
       <Consumer>
         {(value) => {
-          let { user, dispatch } = value;
+          let { user } = value;
           if (user === undefined) user = "";
           // getting token from localstorage to avoid flicker
           let token = localStorage.getItem("auth-token");
@@ -16,12 +16,18 @@ export default class Dashboard extends Component {
             if (user && user.role === "admin")
               return (
                 <div className="container">
+                  {/* add emp */}
                   <Link to="/add">
                     <button className="btn btn-primary">add emp</button>
                   </Link>
+
+                  {/* view requests */}
+                  <Link to="/viewRequests">
+                    <button className="btn btn-primary">View requests</button>
+                  </Link>
                 </div>
               );
-            else return <Redirect to="/empDashboard" />;
+            else return <Redirect to="/" />;
           } else {
             return <Redirect to="/login" />;
           }

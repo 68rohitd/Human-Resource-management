@@ -1,14 +1,29 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { Consumer } from "../../context";
 
 export default class EmpDashboard extends Component {
   render() {
     return (
-      <div className="container">
-        <Link to="/attendence">
-          <button className="btn btn-secondary">manage attendence</button>
-        </Link>
-      </div>
+      <Consumer>
+        {(value) => {
+          let { user } = value;
+
+          if (!user) return <Redirect to="/" />;
+
+          return (
+            <div className="container">
+              <Link to="/attendence">
+                <button className="btn btn-secondary">manage attendence</button>
+              </Link>
+
+              <Link to="/myRequests">
+                <button className="btn btn-secondary">My requests</button>
+              </Link>
+            </div>
+          );
+        }}
+      </Consumer>
     );
   }
 }
