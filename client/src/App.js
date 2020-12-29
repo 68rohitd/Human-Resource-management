@@ -18,6 +18,7 @@ import Attendence from "./components/layouts/Employee/Attendence";
 import ViewRequests from "./components/layouts/Admin/ViewRequests";
 import Home from "./components/layouts/Home";
 import MyRequests from "./components/layouts/Employee/MyRequests";
+import OtherRequests from "./components/layouts/Employee/OtherRequests";
 export default class App extends Component {
   render() {
     return (
@@ -37,6 +38,7 @@ export default class App extends Component {
               <Route exact path="/empDashboard" component={EmpDashboard} />
               <Route exact path="/viewRequests" component={ViewRequests} />
               <Route exact path="/myRequests" component={MyRequests} />
+              <Route exact path="/otherRequest" component={OtherRequests} />
               <Route exact path="/about" component={About} />
               <Route component={PageNotFound} />
             </Switch>

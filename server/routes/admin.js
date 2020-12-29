@@ -193,21 +193,62 @@ router.put("/takeAction", async (req, res) => {
   );
 
   const admin = await Admin.findOne({ email: "admin@gmail.com" });
-  let updatedLeaveReq = [];
 
-  admin.leaveRequests.forEach((request) => {
-    if (request.reqId !== req.body.userReq.reqId) updatedLeaveReq.push(request);
-  });
+  if (req.body.userReq.title === "leave request") {
+    // leave requests
+    let updatedLeaveReq = [];
 
-  Admin.findOneAndUpdate(
-    { email: "admin@gmail.com" },
-    { leaveRequests: updatedLeaveReq },
-    { new: true },
-    function (err, result) {
-      if (err) res.status(400).json("Error: ", err);
-      else res.json(result);
-    }
-  );
+    admin.leaveRequests.forEach((request) => {
+      if (request.reqId !== req.body.userReq.reqId)
+        updatedLeaveReq.push(request);
+    });
+
+    Admin.findOneAndUpdate(
+      { email: "admin@gmail.com" },
+      { leaveRequests: updatedLeaveReq },
+      { new: true },
+      function (err, result) {
+        if (err) res.status(400).json("Error: ", err);
+        else res.json(result);
+      }
+    );
+  } else if (req.body.userReq.title === "bonus request") {
+    // bonus requests
+    let updatedBonusReq = [];
+
+    admin.bonusRequests.forEach((request) => {
+      if (request.reqId !== req.body.userReq.reqId)
+        updatedBonusReq.push(request);
+    });
+
+    Admin.findOneAndUpdate(
+      { email: "admin@gmail.com" },
+      { bonusRequests: updatedBonusReq },
+      { new: true },
+      function (err, result) {
+        if (err) res.status(400).json("Error: ", err);
+        else res.json(result);
+      }
+    );
+  } else {
+    // loan requests
+    let updatedLoanReq = [];
+
+    admin.loanRequests.forEach((request) => {
+      if (request.reqId !== req.body.userReq.reqId)
+        updatedLoanReq.push(request);
+    });
+
+    Admin.findOneAndUpdate(
+      { email: "admin@gmail.com" },
+      { loanRequests: updatedLoanReq },
+      { new: true },
+      function (err, result) {
+        if (err) res.status(400).json("Error: ", err);
+        else res.json(result);
+      }
+    );
+  }
 });
 
 module.exports = router;

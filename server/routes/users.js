@@ -168,6 +168,74 @@ router.put("/applyLeave", async (req, res) => {
   );
 });
 
+// @desc: request for bonus
+router.put("/bonusRequest", async (req, res) => {
+  // 1. push to admin
+  const admin = await Admin.findOne({ email: "admin@gmail.com" });
+  let bonusRequests = admin.bonusRequests;
+  bonusRequests.push(req.body.request);
+
+  Admin.findOneAndUpdate(
+    { email: "admin@gmail.com" },
+    { bonusRequests: bonusRequests },
+    function (err, result) {
+      if (err) res.status(400).json("Error: ", err);
+      else console.log("pushed request to admin...");
+    }
+  );
+
+  // 2. push to user
+  const user = await User.findOne({ email: req.body.request.empEmail });
+  let notification = user.notification;
+  notification.push(req.body.request);
+
+  User.findOneAndUpdate(
+    { email: req.body.request.empEmail },
+    { notification: notification },
+    function (err, result) {
+      if (err) res.status(400).json("Error: ", err);
+      else {
+        console.log("pushed notification to user profile");
+        res.json(result);
+      }
+    }
+  );
+});
+
+// @desc: request for loan
+router.put("/loanRequest", async (req, res) => {
+  // 1. push to admin
+  const admin = await Admin.findOne({ email: "admin@gmail.com" });
+  let loanRequests = admin.loanRequests;
+  loanRequests.push(req.body.request);
+
+  Admin.findOneAndUpdate(
+    { email: "admin@gmail.com" },
+    { loanRequests: loanRequests },
+    function (err, result) {
+      if (err) res.status(400).json("Error: ", err);
+      else console.log("pushed request to admin...");
+    }
+  );
+
+  // 2. push to user
+  const user = await User.findOne({ email: req.body.request.empEmail });
+  let notification = user.notification;
+  notification.push(req.body.request);
+
+  User.findOneAndUpdate(
+    { email: req.body.request.empEmail },
+    { notification: notification },
+    function (err, result) {
+      if (err) res.status(400).json("Error: ", err);
+      else {
+        console.log("pushed notification to user profile");
+        res.json(result);
+      }
+    }
+  );
+});
+
 // @desc: delete a user account
 // router.delete("/delete/:id", auth, async (req, res) => {
 //   try {

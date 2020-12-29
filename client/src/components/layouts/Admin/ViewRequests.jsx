@@ -56,11 +56,56 @@ export default class ViewRequests extends Component {
                     </div>
                   );
                 })}
+
               <hr />
+
               <h1>Bonus requests</h1>
+              {user &&
+                user.bonusRequests.map((req, index) => {
+                  return (
+                    <div key={index} className="container mb-3">
+                      <p>EMP name: {req.empName}</p>
+                      <p>reason: {req.bonusNote}</p>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => this.onApprove(req)}
+                      >
+                        approve
+                      </button>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => this.onReject(req)}
+                      >
+                        reject
+                      </button>
+                    </div>
+                  );
+                })}
+
               <hr />
+
               <h1>Loan requests</h1>
-              <hr />
+              {user &&
+                user.loanRequests.map((req, index) => {
+                  return (
+                    <div key={index} className="container mb-3">
+                      <p>EMP name: {req.empName}</p>
+                      <p>reason: {req.loanNote}</p>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => this.onApprove(req)}
+                      >
+                        approve
+                      </button>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => this.onReject(req)}
+                      >
+                        reject
+                      </button>
+                    </div>
+                  );
+                })}
             </div>
           );
         }}

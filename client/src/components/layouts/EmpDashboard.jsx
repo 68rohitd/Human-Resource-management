@@ -17,6 +17,10 @@ export default class EmpDashboard extends Component {
                 <button className="btn btn-secondary">manage attendence</button>
               </Link>
 
+              <Link to="/otherRequest">
+                <button className="btn btn-secondary">other req</button>
+              </Link>
+
               <Link to="/myRequests">
                 <button className="btn btn-secondary">My requests</button>
               </Link>
