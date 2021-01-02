@@ -12,7 +12,6 @@ class AddEmployee extends Component {
     this.state = {
       email: "",
       name: "",
-      salary: "",
       role: "",
       address: "",
       phoneNo: "",
@@ -30,16 +29,7 @@ class AddEmployee extends Component {
       disabled: true,
     });
 
-    const {
-      email,
-      name,
-      address,
-      phoneNo,
-      role,
-      salary,
-      team,
-      doj,
-    } = this.state;
+    const { email, name, address, phoneNo, role, team, doj } = this.state;
 
     try {
       const newUser = await axios.post("/api/admin/addEmployee", {
@@ -48,7 +38,6 @@ class AddEmployee extends Component {
         address,
         phoneNo,
         role,
-        salary,
         team,
         doj,
       });
@@ -113,15 +102,6 @@ class AddEmployee extends Component {
                         name="address"
                         className="form-control mb-3 "
                         placeholder="address"
-                        onChange={this.onChange}
-                        required
-                      />
-                      {/* salary */}
-                      <input
-                        type="number"
-                        name="salary"
-                        className="form-control mb-3 "
-                        placeholder="salary"
                         onChange={this.onChange}
                         required
                       />

@@ -24,6 +24,10 @@ export default class EmpDashboard extends Component {
               <Link to="/myRequests">
                 <button className="btn btn-secondary">My requests</button>
               </Link>
+
+              <Link to="/mySalDetails">
+                <button className="btn btn-secondary">sal details</button>
+              </Link>
             </div>
           );
         }}

@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 let auth = require("../middleware/auth");
 let Admin = require("../models/admin.model");
 let User = require("../models/user.model");
+let Salary = require("../models/salary.model");
+let SalaryReceipt = require("../models/salaryReceipt.model");
 
 // @desc: register a user
 router.post("/register", async (req, res) => {
@@ -59,19 +61,10 @@ router.post("/register", async (req, res) => {
 // @desc: add employee by admin
 router.post("/addEmployee", async (req, res) => {
   try {
-    let { email, name, address, phoneNo, role, salary, team, doj } = req.body;
+    let { email, name, address, phoneNo, role, team, doj } = req.body;
 
     // validation
-    if (
-      !email ||
-      !name ||
-      !address ||
-      !phoneNo ||
-      !role ||
-      !salary ||
-      !team ||
-      !doj
-    ) {
+    if (!email || !name || !address || !phoneNo || !role || !team || !doj) {
       return res.status(400).json({ msg: "Please enter all the fields" });
     }
 
@@ -94,7 +87,6 @@ router.post("/addEmployee", async (req, res) => {
       name,
       team,
       phoneNo,
-      salary,
       address,
       role,
       doj,
@@ -102,6 +94,30 @@ router.post("/addEmployee", async (req, res) => {
     });
 
     const savedUser = await newUser.save();
+
+    // create entry in salary model
+    const newSalaryDetails = new Salary({
+      empId: savedUser._id,
+      empName: name,
+      basicPay: 0,
+      totalLeaves: 0,
+      travelAllowance: 0,
+      medicalAllowance: 0,
+      salary: 0,
+    });
+
+    await newSalaryDetails.save();
+
+    // create entry in SALARYRECEIPT MODEL
+    const newSalaryReceipt = new SalaryReceipt({
+      empId: savedUser._id,
+      empName: name,
+      currentSalary: 0,
+      monthlyReceipts: [],
+    });
+
+    await newSalaryReceipt.save();
+
     res.json(savedUser);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -164,12 +180,15 @@ router.get("/", auth, async (req, res) => {
 
 // @desc: approve/reject requests
 router.put("/takeAction", async (req, res) => {
+  let reqApproved = false;
+
   const user = await User.findOne({ _id: req.body.userReq.empId });
   let updatedNotificationList = [];
   user.notification.forEach((notification) => {
     if (notification.reqId === req.body.userReq.reqId) {
       if (req.body.userReq.approved) {
         //if approved by admin
+        reqApproved = true;
         notification.approved = true;
         notification.ticketClosed = true;
       } else {
@@ -212,6 +231,18 @@ router.put("/takeAction", async (req, res) => {
         else res.json(result);
       }
     );
+
+    // update emp's SALARY MODEL : increament leaveCount
+    const salDetail = await Salary.findOne({ empId: req.body.userReq.empId });
+    let currentLeaves = parseInt(salDetail.totalLeaves);
+    currentLeaves += 1;
+
+    let updatedSalDetails = await Salary.findOneAndUpdate(
+      { empId: req.body.userReq.empId },
+      { totalLeaves: currentLeaves },
+      { new: true }
+    );
+    console.log("updated total leaves : ", updatedSalDetails);
   } else if (req.body.userReq.title === "bonus request") {
     // bonus requests
     let updatedBonusReq = [];
@@ -248,6 +279,110 @@ router.put("/takeAction", async (req, res) => {
         else res.json(result);
       }
     );
+  }
+});
+
+// @desc: get list of all emp
+router.get("/getEmpList", async (req, res) => {
+  const empList = await User.find({});
+  res.send(empList);
+});
+
+// @desc: get list of emp's sal receipts
+router.get("/getEmpSalReceipts", async (req, res) => {
+  const getEmpSalReceipts = await SalaryReceipt.find({});
+  res.send(getEmpSalReceipts);
+});
+
+// @desc: generate emp sal receipt for particular month
+router.put("/generateSalReceipt", async (req, res) => {
+  try {
+    const empReceiptDoc = await SalaryReceipt.findOne({
+      empId: req.body.empId,
+    });
+
+    let monthlyReceipts = empReceiptDoc.monthlyReceipts;
+    monthlyReceipts.push({
+      month: req.body.month,
+      year: req.body.year,
+    });
+
+    const updatedEmpReceiptDoc = await SalaryReceipt.findOneAndUpdate(
+      { empId: req.body.empId },
+      {
+        monthlyReceipts: monthlyReceipts,
+      },
+      { new: true }
+    );
+    res.json(updatedEmpReceiptDoc);
+  } catch (e) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+// @desc: delete a user account
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+
+    // delete corresponding SALARY DETAILS too
+    const deletedSalDetails = await Salary.findOneAndDelete({
+      empId: req.params.id,
+    });
+
+    res.json(deletedUser);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+// @desc: get a particular users data
+router.get("/getUserData/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// @desc: get a particular users salary details
+router.get("/getUserSalDetails/:id", async (req, res) => {
+  try {
+    const userSalDetails = await Salary.findOne({ empId: req.params.id });
+    res.json(userSalDetails);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// @desc: update user salary details
+router.put("/updateSalaryDetails/:id", async (req, res) => {
+  try {
+    const salDetails = req.body.salDetails;
+    const salDoc = await Salary.findOneAndUpdate(
+      { empId: req.params.id },
+      {
+        basicPay: salDetails.basicPay,
+        totalLeaves: salDetails.totalLeaves,
+        travelAllowance: salDetails.travelAllowance,
+        medicalAllowance: salDetails.medicalAllowance,
+        salary: salDetails.salary,
+      },
+      { new: true }
+    );
+
+    // update corresponding SALARYRECEIPT MODEL's current salary:
+    const salReceipt = await SalaryReceipt.findOneAndUpdate(
+      { empId: req.params.id },
+      {
+        currentSalary: salDoc.salary,
+      }
+    );
+
+    res.json(salDoc);
+  } catch (e) {
+    res.status(500).json({ err: err.message });
   }
 });
 

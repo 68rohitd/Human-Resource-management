@@ -9,7 +9,6 @@ const userSchema = new Schema({
   address: { type: String },
   phoneNo: { type: String },
   role: { type: String },
-  salary: { type: String },
   team: { type: String },
   objective: { type: String },
   skills: { type: String },

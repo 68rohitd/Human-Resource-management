@@ -72,7 +72,6 @@ export default class MyRequests extends Component {
     return (
       <Consumer>
         {(value) => {
-          let { user } = value;
           const token = localStorage.getItem("auth-token");
 
           if (!token) return <Redirect to="/" />;
