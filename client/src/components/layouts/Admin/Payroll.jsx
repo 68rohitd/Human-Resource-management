@@ -28,23 +28,38 @@ export default class Payroll extends Component {
     ];
   }
 
-  componentDidMount = async () => {
-    const empSalReceipts = await axios.get("/api/admin/getEmpSalReceipts");
-    console.log(empSalReceipts.data);
-    this.setState({
-      empReceiptsList: empSalReceipts.data,
-    });
-  };
+  // componentDidMount = async () => {
+  //   const empSalReceipts = await axios.get("/api/admin/getAllEmpsSalReceipt");
+  //   this.setState({
+  //     empReceiptsList: empSalReceipts.data,
+  //   });
+  // };
 
-  onMonthClick = (month) => {
+  onMonthClick = async (month) => {
+    const empSalReceipts = await axios.get("/api/admin/getAllEmpsSalReceipt");
+    console.log(empSalReceipts.data);
+
+    let monthlyData = [];
+
+    empSalReceipts.data.forEach((emp) => {
+      let eachEmp = {
+        currentSalary: emp.currentSalary,
+        empId: emp.empId,
+      };
+      eachEmp["empName"] = emp.empName;
+      emp.monthlyReceipts.forEach((m) => {
+        eachEmp[m.month] = m;
+      });
+      monthlyData.push(eachEmp);
+    });
+
     this.setState({
       selectedMonth: month,
+      empReceiptsList: monthlyData,
     });
   };
 
   onCheckReceiptGenerated = (monthlyReceipts) => {
-    console.log(monthlyReceipts);
-
     for (let i = 0; i < monthlyReceipts.length; i++) {
       let curMonth = monthlyReceipts[i];
       if (curMonth.month === this.state.selectedMonth) return true;
@@ -53,14 +68,18 @@ export default class Payroll extends Component {
   };
 
   onGenerateSalReceipt = async (emp) => {
-    console.log(emp);
+    // 1. get sal details
+    const salDetails = await axios.get(
+      `/api/admin/getUserSalDetails/${emp.empId}`
+    );
     const res = await axios.put("/api/admin/generateSalReceipt", {
       empId: emp.empId,
       month: this.state.selectedMonth,
       year: this.curYear,
+      salDetails: salDetails.data,
     });
 
-    console.log("updates emp sal reciept", res.data);
+    console.log("generated payslip successfully: ", res.data);
   };
 
   render() {
@@ -97,47 +116,78 @@ export default class Payroll extends Component {
         </div>
 
         {this.state.selectedMonth !== "Select Month" ? (
-          <h1>
-            payroll tab for {this.state.selectedMonth} {this.curYear}{" "}
-          </h1>
-        ) : null}
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Salary</th>
-              <th scope="col">Status</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.empReceiptsList.map((emp, index) => {
-              return (
-                <tr key={index}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{emp.empName}</td>
-                  <td>{emp.currentSalary}</td>
-                  {this.onCheckReceiptGenerated(emp.monthlyReceipts) ? (
-                    <td>Generated</td>
-                  ) : (
-                    <>
-                      <td>Pending</td>
-                      <td>
-                        <input
-                          type="button"
-                          className="btn btn-primary"
-                          value="generate sal"
-                          onClick={() => this.onGenerateSalReceipt(emp)}
-                        />
-                      </td>
-                    </>
-                  )}
+          <>
+            <h1>
+              payroll tab for {this.state.selectedMonth} {this.curYear}
+            </h1>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Salary</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {this.state.empReceiptsList.map((emp, index) => {
+                  return (
+                    <tr key={index}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{emp.empName}</td>
+                      {emp[this.state.selectedMonth] ? (
+                        <>
+                          <td>
+                            {emp[this.state.selectedMonth].salDetails.salary}
+                          </td>
+                          <td>Generated</td>
+                        </>
+                      ) : (
+                        <>
+                          <td>{emp.currentSalary}</td>
+                          <td>Pending</td>
+                          <td>
+                            <input
+                              type="button"
+                              className="btn btn-primary"
+                              value="generate sal"
+                              onClick={() => this.onGenerateSalReceipt(emp)}
+                            />
+                          </td>
+                        </>
+                      )}
+                    </tr>
+                  );
+                })}
+                {/* {this.state.empReceiptsList.map((emp, index) => {
+                  return (
+                    <tr key={index}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{emp.empName}</td>
+                      <td>{emp.currentSalary}</td>
+                      {this.onCheckReceiptGenerated(emp.monthlyReceipts) ? (
+                        <td>Generated</td>
+                      ) : (
+                        <>
+                          <td>Pending</td>
+                          <td>
+                            <input
+                              type="button"
+                              className="btn btn-primary"
+                              value="generate sal"
+                              onClick={() => this.onGenerateSalReceipt(emp)}
+                            />
+                          </td>
+                        </>
+                      )}
+                    </tr>
+                  );
+                })} */}
+              </tbody>
+            </table>
+          </>
+        ) : null}
       </div>
     );
   }

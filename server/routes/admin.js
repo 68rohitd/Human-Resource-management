@@ -6,6 +6,7 @@ let Admin = require("../models/admin.model");
 let User = require("../models/user.model");
 let Salary = require("../models/salary.model");
 let SalaryReceipt = require("../models/salaryReceipt.model");
+const { json } = require("express");
 
 // @desc: register a user
 router.post("/register", async (req, res) => {
@@ -288,10 +289,23 @@ router.get("/getEmpList", async (req, res) => {
   res.send(empList);
 });
 
+// ************* SALARY PART: START **********************
 // @desc: get list of emp's sal receipts
-router.get("/getEmpSalReceipts", async (req, res) => {
-  const getEmpSalReceipts = await SalaryReceipt.find({});
-  res.send(getEmpSalReceipts);
+router.get("/getAllEmpsSalReceipt", async (req, res) => {
+  const AllEmpsSalReceipt = await SalaryReceipt.find({});
+  res.send(AllEmpsSalReceipt);
+});
+
+// @desc: get particular emp's sal receipt details
+router.get("/getSingleEmpSalReceipts/:id", async (req, res) => {
+  try {
+    const singleEmpSalReceipts = await SalaryReceipt.findOne({
+      empId: req.params.id,
+    });
+    res.json(singleEmpSalReceipts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 // @desc: generate emp sal receipt for particular month
@@ -305,6 +319,7 @@ router.put("/generateSalReceipt", async (req, res) => {
     monthlyReceipts.push({
       month: req.body.month,
       year: req.body.year,
+      salDetails: req.body.salDetails,
     });
 
     const updatedEmpReceiptDoc = await SalaryReceipt.findOneAndUpdate(
@@ -316,33 +331,7 @@ router.put("/generateSalReceipt", async (req, res) => {
     );
     res.json(updatedEmpReceiptDoc);
   } catch (e) {
-    res.status(500).json({ err: err.message });
-  }
-});
-
-// @desc: delete a user account
-router.delete("/delete/:id", async (req, res) => {
-  try {
-    const deletedUser = await User.findByIdAndDelete(req.params.id);
-
-    // delete corresponding SALARY DETAILS too
-    const deletedSalDetails = await Salary.findOneAndDelete({
-      empId: req.params.id,
-    });
-
-    res.json(deletedUser);
-  } catch (err) {
-    res.status(500).json({ err: err.message });
-  }
-});
-
-// @desc: get a particular users data
-router.get("/getUserData/:id", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    res.json(user);
-  } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ err: e });
   }
 });
 
@@ -384,6 +373,74 @@ router.put("/updateSalaryDetails/:id", async (req, res) => {
   } catch (e) {
     res.status(500).json({ err: err.message });
   }
+});
+// ************* SALARY PART: END **********************
+
+// @desc: delete a user account
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+
+    // delete corresponding SALARY DETAILS too
+    const deletedSalDetails = await Salary.findOneAndDelete({
+      empId: req.params.id,
+    });
+
+    // delete corresponding SALARYRECEIPT DETAILS too
+    const deletedSalReceipt = await SalaryReceipt.findOneAndDelete({
+      empId: req.params.id,
+    });
+
+    res.json(deletedUser);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+// @desc: get a particular users data
+router.get("/getUserData/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// @desc: search component
+router.post("/search", async (req, res) => {
+  let name = req.body.name;
+  let role = req.body.role;
+  let team = req.body.team;
+  let email = req.body.email;
+  let doj = req.body.doj;
+  // let startDoj = req.body.startDoj;
+  // let endDoj = req.body.endDoj;
+
+  // console.log(name, role, team, email, doj);
+
+  // if fields are empty, match everything
+  if (name === "") name = new RegExp(/.+/s);
+  if (role === "") role = new RegExp(/.+/s);
+  if (team === "") team = new RegExp(/.+/s);
+  if (email === "") email = new RegExp(/.+/s);
+  if (doj === "") doj = new RegExp(/.+/s);
+  // if (startDoj === "") startDoj = new RegExp(/.+/s);
+  // if (endDoj === "") endDoj = new RegExp(/.+/s);
+
+  // console.log(l, s, i, d);
+
+  User.find({
+    name: new RegExp(name),
+    role: new RegExp(role),
+    team: new RegExp(team),
+    email: new RegExp(email),
+    doj: new RegExp(doj),
+  })
+    .then((emp) => {
+      res.json(emp);
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 
 module.exports = router;
