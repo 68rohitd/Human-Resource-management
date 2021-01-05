@@ -23,6 +23,8 @@ import ViewEmployees from "./components/layouts/Admin/ViewEmployees";
 import EditEmpProfile from "./components/layouts/Admin/EditEmpProfile";
 import MySalDetails from "./components/layouts/Employee/MySalDetails";
 import Payroll from "./components/layouts/Admin/Payroll";
+import Statistics from "./components/layouts/Admin/Stats/Statistics";
+import SidePanel from "./components/layouts/Admin/SidePanel";
 export default class App extends Component {
   render() {
     return (
@@ -32,7 +34,7 @@ export default class App extends Component {
             <Header branding="HR" />
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/adminDashboard" component={Dashboard} />
+              {/* <Route exact path="/adminDashboard" component={Dashboard} /> */}
               <Route exact path="/login" component={Login} />
               <Route exact path="/add" component={AddEmployee} />
               <Route exact path="/signup" component={Signup} />
@@ -45,6 +47,7 @@ export default class App extends Component {
               <Route exact path="/otherRequest" component={OtherRequests} />
               <Route exact path="/viewEmployees" component={ViewEmployees} />
               <Route exact path="/mySalDetails" component={MySalDetails} />
+              <Route exact path="/statistics" component={Statistics} />
               <Route exact path="/payroll" component={Payroll} />
               <Route
                 exact

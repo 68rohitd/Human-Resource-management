@@ -62,10 +62,19 @@ router.post("/register", async (req, res) => {
 // @desc: add employee by admin
 router.post("/addEmployee", async (req, res) => {
   try {
-    let { email, name, address, phoneNo, role, team, doj } = req.body;
+    let { email, name, address, phoneNo, role, team, doj, gender } = req.body;
 
     // validation
-    if (!email || !name || !address || !phoneNo || !role || !team || !doj) {
+    if (
+      !email ||
+      !name ||
+      !address ||
+      !phoneNo ||
+      !role ||
+      !team ||
+      !doj ||
+      !gender
+    ) {
       return res.status(400).json({ msg: "Please enter all the fields" });
     }
 
@@ -86,6 +95,7 @@ router.post("/addEmployee", async (req, res) => {
       email,
       password: passwordHash,
       name,
+      gender,
       team,
       phoneNo,
       address,
@@ -332,6 +342,16 @@ router.put("/generateSalReceipt", async (req, res) => {
     res.json(updatedEmpReceiptDoc);
   } catch (e) {
     res.status(500).json({ err: e });
+  }
+});
+
+// @desc: get list of emp's salary details
+router.get("/getEmpSalList", async (req, res) => {
+  try {
+    const empSalList = await Salary.find({});
+    res.json(empSalList);
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 

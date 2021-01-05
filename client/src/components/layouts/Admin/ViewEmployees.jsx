@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { Component } from "react";
 import EmpCard from "./EmpCard";
 import SearchEmp from "./SearchEmp";
+import SidePanel from "./SidePanel";
 
 export default class ViewEmployees extends Component {
   constructor() {
@@ -30,25 +31,36 @@ export default class ViewEmployees extends Component {
     });
   };
 
+  onFilter = (empList) => {
+    this.setState({ empList });
+  };
+
   render() {
     return (
-      <div className="row">
-        <div className="col-3">
-          <SearchEmp />
+      <>
+        <div className="row">
+          {/* left part */}
+          <div className="col-3">
+            <SidePanel />
+          </div>
+
+          <div className="col-3">
+            <SearchEmp onFilter={this.onFilter} />
+          </div>
+          <div className="col">
+            {this.state.empList.map((emp, index) => {
+              return (
+                <EmpCard
+                  key={index}
+                  data={emp}
+                  onDelete={this.onDelete}
+                  onEdit={this.onEdit}
+                />
+              );
+            })}
+          </div>
         </div>
-        <div className="col">
-          {this.state.empList.map((emp, index) => {
-            return (
-              <EmpCard
-                key={index}
-                data={emp}
-                onDelete={this.onDelete}
-                onEdit={this.onEdit}
-              />
-            );
-          })}
-        </div>
-      </div>
+      </>
     );
   }
 }

@@ -5,7 +5,7 @@ import profilePic from "../../../assets/view-emp/userPic.png";
 export default class EmpCard extends Component {
   render() {
     const { data } = this.props;
-    console.log(data);
+
     return (
       <div>
         <div className="row jumbotron myCard p-0 m-3">
@@ -32,6 +32,10 @@ export default class EmpCard extends Component {
                 <p className="">
                   email:
                   {data.email}
+                </p>
+                <p className="">
+                  gender:
+                  {data.gender}
                 </p>
                 <p className="">
                   team:

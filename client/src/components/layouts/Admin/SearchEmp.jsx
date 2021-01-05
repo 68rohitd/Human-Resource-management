@@ -38,6 +38,7 @@ export default class SearchEmp extends Component {
         // endDoj,
       });
 
+      this.props.onFilter(res.data);
       console.log(res.data);
 
       this.setState({

@@ -107,7 +107,7 @@ body {
 }
 
 /* submit btn */
-.signUpForm .btn {
+/* .signUpForm .btn {
   background-color: #26ae60 !important;
   border-color: #26ae60;
   width: 30% !important;
@@ -121,7 +121,7 @@ body {
   width: 34% !important;
   background-color: #1d9651 !important;
   border-color: white;
-}
+} */
 
 .signUpAvatar {
   margin-top: -20%;

@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
+import SidePanel from "./SidePanel";
 
 export default class Payroll extends Component {
   constructor() {
@@ -84,111 +85,107 @@ export default class Payroll extends Component {
 
   render() {
     return (
-      <div>
-        {/* select criteria */}
-        <div className="container">
-          {/* select month */}
-          <div className="dropdown">
-            <button
-              className="btn btn-secondary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              {this.state.selectedMonth}
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              {this.month.map((m) => {
-                return (
-                  <li
-                    key={m}
-                    className="dropdown-item"
-                    onClick={() => this.onMonthClick(m)}
+      <>
+        <div className="row">
+          {/* left part */}
+          <div className="col-3">
+            <SidePanel />
+          </div>
+
+          {/* right part */}
+          <div className="col">
+            <div>
+              {/* select criteria */}
+              <div className="container">
+                {/* select month */}
+                <div className="dropdown">
+                  <button
+                    className="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
                   >
-                    {m}
-                  </li>
-                );
-              })}
+                    {this.state.selectedMonth}
+                  </button>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    {this.month.map((m) => {
+                      return (
+                        <li
+                          key={m}
+                          className="dropdown-item"
+                          onClick={() => this.onMonthClick(m)}
+                        >
+                          {m}
+                        </li>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {this.state.selectedMonth !== "Select Month" ? (
+                <>
+                  <h1>
+                    payroll tab for {this.state.selectedMonth} {this.curYear}
+                  </h1>
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Salary</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.empReceiptsList.map((emp, index) => {
+                        return (
+                          <tr key={index}>
+                            <th scope="row">{index + 1}</th>
+                            <td>{emp.empName}</td>
+                            {emp[this.state.selectedMonth] ? (
+                              <>
+                                <td>
+                                  {
+                                    emp[this.state.selectedMonth].salDetails
+                                      .salary
+                                  }
+                                </td>
+                                <td>Generated</td>
+                              </>
+                            ) : (
+                              <>
+                                <td>{emp.currentSalary}</td>
+                                <td>Pending</td>
+                                <td>
+                                  <input
+                                    type="button"
+                                    className="btn btn-primary"
+                                    value="generate sal"
+                                    onClick={() =>
+                                      this.onGenerateSalReceipt(emp)
+                                    }
+                                  />
+                                </td>
+                              </>
+                            )}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </>
+              ) : null}
             </div>
           </div>
         </div>
-
-        {this.state.selectedMonth !== "Select Month" ? (
-          <>
-            <h1>
-              payroll tab for {this.state.selectedMonth} {this.curYear}
-            </h1>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Salary</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.empReceiptsList.map((emp, index) => {
-                  return (
-                    <tr key={index}>
-                      <th scope="row">{index + 1}</th>
-                      <td>{emp.empName}</td>
-                      {emp[this.state.selectedMonth] ? (
-                        <>
-                          <td>
-                            {emp[this.state.selectedMonth].salDetails.salary}
-                          </td>
-                          <td>Generated</td>
-                        </>
-                      ) : (
-                        <>
-                          <td>{emp.currentSalary}</td>
-                          <td>Pending</td>
-                          <td>
-                            <input
-                              type="button"
-                              className="btn btn-primary"
-                              value="generate sal"
-                              onClick={() => this.onGenerateSalReceipt(emp)}
-                            />
-                          </td>
-                        </>
-                      )}
-                    </tr>
-                  );
-                })}
-                {/* {this.state.empReceiptsList.map((emp, index) => {
-                  return (
-                    <tr key={index}>
-                      <th scope="row">{index + 1}</th>
-                      <td>{emp.empName}</td>
-                      <td>{emp.currentSalary}</td>
-                      {this.onCheckReceiptGenerated(emp.monthlyReceipts) ? (
-                        <td>Generated</td>
-                      ) : (
-                        <>
-                          <td>Pending</td>
-                          <td>
-                            <input
-                              type="button"
-                              className="btn btn-primary"
-                              value="generate sal"
-                              onClick={() => this.onGenerateSalReceipt(emp)}
-                            />
-                          </td>
-                        </>
-                      )}
-                    </tr>
-                  );
-                })} */}
-              </tbody>
-            </table>
-          </>
-        ) : null}
-      </div>
+      </>
     );
   }
 }

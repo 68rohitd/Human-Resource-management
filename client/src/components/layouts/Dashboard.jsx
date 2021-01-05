@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Consumer } from "../../context";
+import SidePanel from "./Admin/SidePanel";
 
 export default class Dashboard extends Component {
   render() {
@@ -15,29 +16,48 @@ export default class Dashboard extends Component {
           if (token) {
             if (user && user.role === "admin")
               return (
-                <div className="container">
-                  {/* add emp */}
-                  <Link to="/add">
-                    <button className="btn btn-primary">add emp</button>
-                  </Link>
+                <>
+                  <div className="row">
+                    {/* left part */}
+                    <div className="col-3">
+                      <SidePanel />
+                    </div>
 
-                  {/* view requests */}
-                  <Link to="/viewRequests">
-                    <button className="btn btn-primary">View requests</button>
-                  </Link>
+                    {/* right part */}
+                    <div className="col">
+                      <div className="container">
+                        {/* add emp */}
+                        <Link to="/add">
+                          <button className="btn btn-primary">add emp</button>
+                        </Link>
 
-                  {/* view employees */}
-                  <Link to="/viewEmployees">
-                    <button className="btn btn-primary">View empl</button>
-                  </Link>
+                        {/* view requests */}
+                        <Link to="/viewRequests">
+                          <button className="btn btn-primary">
+                            View requests
+                          </button>
+                        </Link>
 
-                  {/* view employees */}
-                  <Link to="/payroll">
-                    <button className="btn btn-primary">
-                      payroll dashboard
-                    </button>
-                  </Link>
-                </div>
+                        {/* view employees */}
+                        <Link to="/viewEmployees">
+                          <button className="btn btn-primary">View empl</button>
+                        </Link>
+
+                        {/* payroll */}
+                        <Link to="/payroll">
+                          <button className="btn btn-primary">
+                            payroll dashboard
+                          </button>
+                        </Link>
+
+                        {/* stats */}
+                        <Link to="/statistics">
+                          <button className="btn btn-primary">stats</button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </>
               );
             else return <Redirect to="/" />;
           } else {

@@ -50,8 +50,7 @@ class Login extends Component {
           token: loggedInUser.data.token,
         },
       });
-      if (email === "admin@gmail.com")
-        this.props.history.push("/adminDashboard");
+      if (email === "admin@gmail.com") this.props.history.push("/statistics");
       else this.props.history.push("/empDashBoard");
     } catch (err) {
       // enable login btn

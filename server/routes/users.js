@@ -109,12 +109,14 @@ router.get("/", auth, async (req, res) => {
 
 // @update user profile
 router.route("/updateProfile").post((req, res) => {
+  console.log(req.body.user);
   User.findByIdAndUpdate(
     req.body.id,
     {
       name: req.body.user.name,
       address: req.body.user.address,
       email: req.body.user.email,
+      gender: req.body.user.gender,
       phoneNo: req.body.user.phoneNo,
       salary: req.body.user.salary,
       team: req.body.user.team,

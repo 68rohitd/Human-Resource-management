@@ -10,6 +10,7 @@ export default class EditEmpProfile extends Component {
       name: "",
       phoneNo: "",
       email: "",
+      gender: "",
       address: "",
       role: "",
       team: "",
@@ -37,6 +38,7 @@ export default class EditEmpProfile extends Component {
       id: userData.data._id,
       name: userData.data.name,
       address: userData.data.address,
+      gender: userData.data.gender,
       email: userData.data.email,
       role: userData.data.role,
       team: userData.data.team,
@@ -57,6 +59,7 @@ export default class EditEmpProfile extends Component {
     const updatedUser = {
       name: this.state.name,
       email: this.state.email,
+      gender: this.state.gender,
       address: this.state.address,
       role: this.state.role,
       phoneNo: this.state.phoneNo,
@@ -89,6 +92,7 @@ export default class EditEmpProfile extends Component {
     );
     console.log(res.data);
   };
+  onSelectGender = (gender) => this.setState({ gender });
 
   calSal = (e) => {
     e.preventDefault();
@@ -134,6 +138,38 @@ export default class EditEmpProfile extends Component {
                       onChange={this.onChange}
                     />
                   </div>
+                </div>
+              </div>
+
+              {/* gender */}
+              <div className="dropdown">
+                <label>gender</label>
+                <button
+                  className="btn btn-secondary dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  {this.state.gender}
+                </button>
+                <div
+                  className="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton"
+                >
+                  <li
+                    className="dropdown-item"
+                    onClick={() => this.onSelectGender("male")}
+                  >
+                    Male
+                  </li>
+                  <li
+                    className="dropdown-item"
+                    onClick={() => this.onSelectGender("female")}
+                  >
+                    Female
+                  </li>
                 </div>
               </div>
 
@@ -246,18 +282,6 @@ export default class EditEmpProfile extends Component {
                   onChange={this.onChange}
                 />
               </div>
-
-              {/* <div className="form-group">
-                <label htmlFor="name">total leaves</label>
-                <input
-                  name="totalLeaves"
-                  type="text"
-                  className="form-control"
-                  id="totalLeaves"
-                  value={this.state.totalLeaves}
-                  onChange={this.onChange}
-                />
-              </div> */}
 
               <p>Total leaves: {this.state.totalLeaves}</p>
 
