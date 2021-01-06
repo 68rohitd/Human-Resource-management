@@ -12,8 +12,8 @@ export default class PieChart extends Component {
       datasets: [
         {
           label: "emp count",
-          //   backgroundColor: "rgba(75,192,192,1)",
-          borderColor: "rgba(0,0,0,1)",
+          backgroundColor: "lightgreen",
+          borderColor: "white",
           borderWidth: 2,
           data: [],
         },
@@ -60,7 +60,10 @@ export default class PieChart extends Component {
 
   render() {
     return (
-      <div>
+      <div
+        className="chartContainer"
+        style={{ height: "250px", padding: "10px" }}
+      >
         <Bar
           data={this.state}
           options={{
@@ -75,13 +78,11 @@ export default class PieChart extends Component {
             },
             title: {
               display: true,
-              text: "no of emp per team",
+              text: "No. of employees per team",
               fontSize: 20,
+              position: "bottom",
             },
-            legend: {
-              display: true,
-              position: "right",
-            },
+            maintainAspectRatio: false,
           }}
         />
       </div>

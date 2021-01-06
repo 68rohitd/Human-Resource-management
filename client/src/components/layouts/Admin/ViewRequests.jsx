@@ -33,9 +33,9 @@ export default class ViewRequests extends Component {
           if (!token) return <Redirect to="/" />;
           return (
             <>
-              <div className="row">
+              <div className="row m-0">
                 {/* left part */}
-                <div className="col-3">
+                <div className="col-2 p-0 leftPart">
                   <SidePanel />
                 </div>
 

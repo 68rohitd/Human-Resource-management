@@ -12,8 +12,6 @@ export default class SearchEmp extends Component {
       email: "",
       team: "",
       doj: "",
-      //   startDoj: "",
-      //   endDoj: "",
       dojCheck: false,
     };
   }
@@ -34,8 +32,6 @@ export default class SearchEmp extends Component {
         team,
         email,
         doj,
-        // startDoj,
-        // endDoj,
       });
 
       this.props.onFilter(res.data);
@@ -47,8 +43,6 @@ export default class SearchEmp extends Component {
         team: "",
         email: "",
         doj: "",
-        // startDoj: "",
-        // endDoj: "",
       });
     } catch (err) {
       console.log("Error: ", err.response.data);
@@ -57,131 +51,95 @@ export default class SearchEmp extends Component {
 
   render() {
     return (
-      <div>
-        <div className="col mt-4">
-          <form className="myForm p-0 pb-4 px-3 mt-4">
-            <div className="row myHeading bg-dark mb-2">
-              <p className="text-center mb-0 py-3">Search & Filter</p>
-            </div>
-            <div className="row mt-3">
-              <div className="col">
-                <div className="form-group">
-                  <input
-                    name="name"
-                    placeholder="Name"
-                    type="text"
-                    id="name"
-                    className="form-control"
-                    onChange={this.onChange}
-                  />
-                </div>
+      <div className="container mt-3">
+        <form className="searchForm">
+          <div className="row mt-3">
+            <div className="col">
+              <label htmlFor="name">Name</label>
+              <div className="form-group">
+                <input
+                  name="name"
+                  placeholder="Joey Tribbiani"
+                  type="text"
+                  id="name"
+                  className="form-control"
+                  onChange={this.onChange}
+                />
               </div>
             </div>
 
-            <div className="form-group">
-              <input
-                placeholder="Role"
-                name="role"
-                type="text"
-                id="role"
-                className="form-control mb-3 mb-3"
-                onChange={this.onChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <input
-                placeholder="Email"
-                name="email"
-                type="email"
-                id="email"
-                className="form-control mb-3"
-                onChange={this.onChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <div className="row">
-                <div className="col">
-                  <input
-                    placeholder="Team"
-                    name="team"
-                    type="text"
-                    id="team"
-                    className="form-control mb-3"
-                    onChange={this.onChange}
-                  />
-                </div>
+            <div className="col">
+              <label htmlFor="role">Role</label>
+              <div className="form-group">
+                <input
+                  placeholder="Front End Developer"
+                  name="role"
+                  type="text"
+                  id="role"
+                  className="form-control mb-3 mb-3"
+                  onChange={this.onChange}
+                />
               </div>
             </div>
 
-            <div className="form-group">
-              <label>Date Of Joining</label>
-              <div className="row">
-                <div className="col">
-                  <input
-                    placeholder="Date"
-                    name="doj"
-                    type="date"
-                    id="doj"
-                    className="form-control mb-3"
-                    onChange={this.onChange}
-                  />
-                </div>
-                {/* <div className="col">
-                  <label htmlFor="dojRange">date range</label>
-                  <input
-                    type="checkbox"
-                    name="dojRange"
-                    id="dojRange"
-                    checked={this.state.dojCheck}
-                    onChange={this.toggleDateRange}
-                  />
-                </div> */}
+            <div className="col">
+              <label htmlFor="email">Email</label>
+              <div className="form-group">
+                <input
+                  placeholder="joey@gmail.com"
+                  name="email"
+                  type="email"
+                  id="email"
+                  className="form-control mb-3"
+                  onChange={this.onChange}
+                />
               </div>
             </div>
 
-            {/* {this.state.dojCheck ? (
-              <div>
-                <div className="row">
-                  <div className="col">
-                    <label>From: </label>
-                  </div>
-                  <div className="col">
-                    <input
-                      name="startDoj"
-                      type="date"
-                      id="startDoj"
-                      className="form-control mb-3"
-                      onChange={this.onChange}
-                    />
-                  </div>
-                </div>
-
-                <div className="row">
-                  <div className="col">
-                    <label>To:</label>
-                  </div>
-                  <div className="col">
-                    <input
-                      name="endDoj"
-                      type="date"
-                      id="endDoj"
-                      className="form-control mb-3"
-                      onChange={this.onChange}
-                    />
-                  </div>
-                </div>
+            <div className="col">
+              <label htmlFor="team">Team</label>
+              <div className="form-group">
+                <input
+                  placeholder="Development"
+                  name="team"
+                  type="text"
+                  id="team"
+                  className="form-control mb-3"
+                  onChange={this.onChange}
+                />
               </div>
-            ) : null} */}
-            <input
-              type="button"
-              value="Search"
-              onClick={this.onSubmit}
-              className="btn btn-dark btn-block mt-3"
-            />
-          </form>
-        </div>
+            </div>
+
+            <div className="col">
+              <label htmlFor="doj">Date Of Joining</label>
+              <div className="form-group">
+                <input
+                  placeholder="Date"
+                  name="doj"
+                  type="date"
+                  id="doj"
+                  className="form-control"
+                  onChange={this.onChange}
+                />
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="form-group">
+                <i
+                  className="fas fa-search"
+                  onClick={this.onSubmit}
+                  style={{ cursor: "pointer" }}
+                ></i>
+                {/* <input
+                  type="button"
+                  value="Search"
+                  className="btn btn-dark btn-block"
+                /> */}
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     );
   }

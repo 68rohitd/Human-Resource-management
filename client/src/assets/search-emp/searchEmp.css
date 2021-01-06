@@ -1,19 +1,3 @@
-.myCard {
-  word-break: break-word !important;
-  transform: scale(1);
-  box-shadow: 0px 0px 10px rgb(187, 187, 187);
-  transition: transform 0.2s, box-shadow 0.3s !important;
-  background-color: rgb(255, 255, 255);
-  border-style: solid !important;
-  border-width: 0.1px !important;
-  border-color: rgb(209, 209, 209) !important;
-}
-.myCard:hover {
-  transform: scale(1.02);
-  z-index: 1;
-  box-shadow: 0px 0px 20px rgb(119, 119, 119) !important;
-}
-
 .verticleLine {
   border-left: 1px solid rgb(206, 206, 206);
   margin-top: 15px;
@@ -41,12 +25,8 @@ button {
   /* padding: 5px !important; */
   justify-content: center !important;
 }
-.myForm {
-  /* margin: 0 auto; */
-  width: 100%;
-  box-shadow: 0px 0px 10px rgb(187, 187, 187);
-  /* border: grey solid; */
-  padding: 0px 12px 20px 10px;
-  margin-bottom: 100px;
-  border-radius: 10px;
+.searchForm {
+  /* border: rgb(190, 190, 190) solid 2px;
+  border-radius: 10px; */
+  padding: 5px;
 }

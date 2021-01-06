@@ -88,14 +88,14 @@ class AddEmployee extends Component {
               >
                 {(props) => (
                   <>
-                    <div className="row">
+                    <div className="row m-0">
                       {/* left part */}
-                      <div className="col-3">
+                      <div className="col-2  p-0 leftPart">
                         <SidePanel />
                       </div>
 
                       {/* right part */}
-                      <div className="col">
+                      <div className="col-6">
                         <div style={props}>
                           <form
                             className="signUpForm "

@@ -11,7 +11,7 @@ import About from "./components/layouts/About";
 import "./App.css";
 import Header from "./components/layouts/Header";
 import AddEmployee from "./components/layouts/AddEmployee";
-import Dashboard from "./components/layouts/Dashboard";
+// import Dashboard from "./components/layouts/Dashboard";
 import Profile from "./components/layouts/Profile";
 import EmpDashboard from "./components/layouts/EmpDashboard";
 import Attendence from "./components/layouts/Employee/Attendence";
@@ -24,7 +24,7 @@ import EditEmpProfile from "./components/layouts/Admin/EditEmpProfile";
 import MySalDetails from "./components/layouts/Employee/MySalDetails";
 import Payroll from "./components/layouts/Admin/Payroll";
 import Statistics from "./components/layouts/Admin/Stats/Statistics";
-import SidePanel from "./components/layouts/Admin/SidePanel";
+// import SidePanel from "./components/layouts/Admin/SidePanel";
 export default class App extends Component {
   render() {
     return (

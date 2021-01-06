@@ -11,11 +11,11 @@ export default class LineChart extends Component {
       labels: [], //x axis
       datasets: [
         {
-          label: "Progress",
+          label: "Hired",
           fill: false,
           lineTension: 0.5,
-          backgroundColor: "rgba(75,192,192,1)",
-          borderColor: "rgba(0,0,0,1)",
+          backgroundColor: "lightgreen",
+          borderColor: "grey",
           borderWidth: 2,
           data: [], //y axis
         },
@@ -62,7 +62,10 @@ export default class LineChart extends Component {
 
   render() {
     return (
-      <div>
+      <div
+        className="chartContainer"
+        style={{ width: "450px", height: "250px", padding: "10px" }}
+      >
         <Line
           data={this.state}
           options={{
@@ -77,12 +80,15 @@ export default class LineChart extends Component {
             },
             title: {
               display: true,
+              text: "No. of Employees hired",
+              position: "bottom",
               fontSize: 20,
             },
             legend: {
               display: true,
               position: "right",
             },
+            maintainAspectRatio: false,
           }}
         />
       </div>

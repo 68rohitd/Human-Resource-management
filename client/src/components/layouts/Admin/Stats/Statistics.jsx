@@ -4,6 +4,8 @@ import PieChart from "./PieChart";
 import BarChart from "./BarChart";
 import LineChart from "./LineChart";
 import SidePanel from "../SidePanel";
+import "../../../../assets/stats-styles/stats.css";
+import Card from "./Card";
 export default class Statistics extends Component {
   constructor() {
     super();
@@ -37,30 +39,40 @@ export default class Statistics extends Component {
 
   render() {
     return (
-      <div className="row">
+      <div className="row m-0">
         {/* left part */}
-        <div className="col-3">
+        <div className="col-2 p-0 leftPart">
           <SidePanel />
         </div>
 
         {/* right part */}
-        <div className="col">
-          <div>
-            <h1>stats</h1>
-            <div className="container">
-              <h1>emp count: {this.state.empList.length}</h1>
-              <h1>total expenses: ₹{this.state.totalExpenses}</h1>
+        <div className="col-9 rightPart container">
+          {/* numbers */}
+          <div className="row mt-5">
+            <div className="col-4 mr-3 ">
+              <Card
+                label="Total Expenses"
+                data={`₹ ${this.state.totalExpenses}`}
+              />
             </div>
+            <div className="col-4">
+              <Card label="Employee Count" data={this.state.empList.length} />
+            </div>
+          </div>
 
-            <div className="container">
+          {/* charts */}
+          <div className="row mt-5">
+            <div className="col my-4">
               <PieChart />
             </div>
 
-            <div className="container">
+            <div className="col my-4">
               <BarChart />
             </div>
+          </div>
 
-            <div className="container">
+          <div className="row mt-4">
+            <div className="col my-4">
               <LineChart />
             </div>
           </div>

@@ -38,26 +38,40 @@ export default class ViewEmployees extends Component {
   render() {
     return (
       <>
-        <div className="row">
+        <div className="row m-0">
           {/* left part */}
-          <div className="col-3">
+          <div className="col-2 p-0 leftPart">
             <SidePanel />
           </div>
 
-          <div className="col-3">
-            <SearchEmp onFilter={this.onFilter} />
-          </div>
+          {/* right part */}
           <div className="col">
-            {this.state.empList.map((emp, index) => {
-              return (
-                <EmpCard
-                  key={index}
-                  data={emp}
-                  onDelete={this.onDelete}
-                  onEdit={this.onEdit}
-                />
-              );
-            })}
+            <div className="row">
+              <SearchEmp onFilter={this.onFilter} />
+            </div>
+
+            <hr />
+
+            {/* search result */}
+            <div className="container">
+              <div
+                className="row"
+                style={{
+                  display: "flex",
+                }}
+              >
+                {this.state.empList.map((emp, index) => {
+                  return (
+                    <EmpCard
+                      key={index}
+                      data={emp}
+                      onDelete={this.onDelete}
+                      onEdit={this.onEdit}
+                    />
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </>

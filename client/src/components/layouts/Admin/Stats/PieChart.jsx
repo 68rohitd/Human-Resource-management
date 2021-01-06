@@ -8,13 +8,14 @@ export default class PieChart extends Component {
 
     this.state = {
       empList: [],
+
       // pie chart
       labels: ["Male", "Female"],
       datasets: [
         {
           label: "Gender",
           backgroundColor: ["#993299", "lightgreen"],
-          hoverBackgroundColor: ["#800080", "#329932"],
+          borderColor: "white",
           data: [],
         },
       ],
@@ -44,19 +45,24 @@ export default class PieChart extends Component {
 
   render() {
     return (
-      <div>
+      <div
+        className="chartContainer"
+        style={{ width: "450px", height: "250px", padding: "10px" }}
+      >
         <Pie
           data={this.state}
           options={{
             title: {
               display: true,
-              text: "male to female ratio",
+              text: "Male to Female ratio",
               fontSize: 20,
+              position: "bottom",
             },
             legend: {
               display: true,
-              position: "right",
+              position: "left",
             },
+            maintainAspectRatio: false,
           }}
         />
       </div>

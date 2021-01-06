@@ -86,9 +86,9 @@ export default class Payroll extends Component {
   render() {
     return (
       <>
-        <div className="row">
+        <div className="row m-0">
           {/* left part */}
-          <div className="col-3">
+          <div className="col-2 p-0 leftPart">
             <SidePanel />
           </div>
 
