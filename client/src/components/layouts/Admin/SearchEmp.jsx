@@ -36,14 +36,6 @@ export default class SearchEmp extends Component {
 
       this.props.onFilter(res.data);
       console.log(res.data);
-
-      this.setState({
-        name: "",
-        role: "",
-        team: "",
-        email: "",
-        doj: "",
-      });
     } catch (err) {
       console.log("Error: ", err.response.data);
     }
@@ -52,8 +44,8 @@ export default class SearchEmp extends Component {
   render() {
     return (
       <div className="container mt-3">
-        <form className="searchForm">
-          <div className="row mt-3">
+        <form onSubmit={this.onSubmit}>
+          <div className="row mt-3 px-3">
             <div className="col">
               <label htmlFor="name">Name</label>
               <div className="form-group">
@@ -124,18 +116,21 @@ export default class SearchEmp extends Component {
               </div>
             </div>
 
-            <div className="col">
-              <div className="form-group">
-                <i
-                  className="fas fa-search"
-                  onClick={this.onSubmit}
-                  style={{ cursor: "pointer" }}
-                ></i>
-                {/* <input
-                  type="button"
-                  value="Search"
-                  className="btn btn-dark btn-block"
-                /> */}
+            <div
+              className="col"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <div className="form-group m-0 p-0">
+                <button className="btn btn-secondary">
+                  <i
+                    className="fas fa-search p-2"
+                    style={{ cursor: "pointer", fontSize: "20px" }}
+                  ></i>
+                </button>
               </div>
             </div>
           </div>

@@ -434,10 +434,8 @@ router.post("/search", async (req, res) => {
   let team = req.body.team;
   let email = req.body.email;
   let doj = req.body.doj;
-  // let startDoj = req.body.startDoj;
-  // let endDoj = req.body.endDoj;
 
-  // console.log(name, role, team, email, doj);
+  console.log(name, role, team, email, doj);
 
   // if fields are empty, match everything
   if (name === "") name = new RegExp(/.+/s);

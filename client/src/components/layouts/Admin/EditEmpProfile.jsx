@@ -55,6 +55,12 @@ export default class EditEmpProfile extends Component {
     });
   }
 
+  onDelete = async () => {
+    const deletedEmp = await axios.delete(`/api/admin/delete/${this.state.id}`);
+    console.log("deleted: ", deletedEmp.data);
+    this.props.history.push("/viewEmployees");
+  };
+
   updateProfile = async () => {
     const updatedUser = {
       name: this.state.name,
@@ -92,6 +98,7 @@ export default class EditEmpProfile extends Component {
     );
     console.log(res.data);
   };
+
   onSelectGender = (gender) => this.setState({ gender });
 
   calSal = (e) => {
@@ -259,6 +266,13 @@ export default class EditEmpProfile extends Component {
                 className="btn btn-primary "
                 onClick={this.updateProfile}
                 value="update profile"
+              />
+
+              <input
+                type="button"
+                className="btn btn-primary "
+                onClick={this.onDelete}
+                value="delete emp profile"
               />
             </form>
           </div>

@@ -1,21 +1,21 @@
 .myCard {
-  width: 200px;
-  margin-left: 30px;
-  margin-right: 30px;
+  width: 250px;
+  margin-left: 10px;
+  margin-right: 10px;
   margin-bottom: 30px;
   padding: 15px;
 
   word-break: break-word !important;
   transform: scale(1);
-  box-shadow: 0px 0px 10px rgb(187, 187, 187);
+  /* box-shadow: 0px 0px 10px rgb(187, 187, 187); */
   transition: transform 0.2s, box-shadow 0.3s !important;
   border-radius: 10px;
   border-style: solid !important;
-  border-width: 0.1px !important;
+  border-width: 1px !important;
   border-color: rgb(209, 209, 209) !important;
 }
 .myCard:hover {
-  transform: scale(1.02);
+  transform: scale(1.01);
   z-index: 1;
   box-shadow: 0px 0px 20px rgb(119, 119, 119) !important;
 }

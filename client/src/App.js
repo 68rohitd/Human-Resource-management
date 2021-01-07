@@ -15,7 +15,7 @@ import AddEmployee from "./components/layouts/AddEmployee";
 import Profile from "./components/layouts/Profile";
 import EmpDashboard from "./components/layouts/EmpDashboard";
 import Attendence from "./components/layouts/Employee/Attendence";
-import ViewRequests from "./components/layouts/Admin/ViewRequests";
+import ViewRequests from "./components/layouts/Admin/View Requests/ViewRequests";
 import Home from "./components/layouts/Home";
 import MyRequests from "./components/layouts/Employee/MyRequests";
 import OtherRequests from "./components/layouts/Employee/OtherRequests";

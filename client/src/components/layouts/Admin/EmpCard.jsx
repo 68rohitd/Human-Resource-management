@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import profilePic from "../../../assets/view-emp/userPic.png";
+import maleProfilePic from "../../../assets/view-emp/maleUserPic.png";
+import femaleProfilePic from "../../../assets/view-emp/femaleUserPic.png";
 import "../../../assets/search-emp/empCard.css";
 
 export default class EmpCard extends Component {
@@ -10,18 +11,15 @@ export default class EmpCard extends Component {
     return (
       <div className="myCard">
         <div className="row">
-          <div className="col">
-            <img src={profilePic} alt="" width="100px" height="100px" />
-            <i
-              className="fas fa-pencil-alt"
-              style={{ cursor: "pointer" }}
-              onClick={() => this.props.onEdit(data)}
-            ></i>
-            <i
-              className="fas fa-times-circle"
-              style={{ cursor: "pointer" }}
-              onClick={() => this.props.onDelete(data)}
-            ></i>
+          <div
+            className="col"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <img
+              src={data.gender === "male" ? maleProfilePic : femaleProfilePic}
+              alt="profile pic"
+              width="100px"
+            />
           </div>
         </div>
 
@@ -30,13 +28,32 @@ export default class EmpCard extends Component {
         <div className="row">
           <div className="col">
             <span className="text-center">
-              <h2>{data.name}</h2>
-              <p style={{ fontSize: "13px" }}>{data.email}</p>
+              <h4>{data.name.toUpperCase()}</h4>
+
+              <p style={{ fontSize: "13px" }}>
+                <i className="fas fa-envelope"> {data.email}</i>
+              </p>
             </span>
-            <h5>{data.role}</h5>
-            <h5>{data.team}</h5>
-            <h5>{data.doj}</h5>
-            <h5>{data.skills}</h5>
+            <div className="text-center">
+              <span>Team: {data.team}</span> <br />
+              <span>Role: {data.role}</span> <br />
+              <span>
+                <i className="fas fa-calendar-alt"> {data.doj}</i>
+              </span>
+              <br />
+              {data.skills ? <h5>Skills: {data.skills}</h5> : null}
+            </div>
+            <hr />
+            <Link
+              to={`/editEmpProfile/${data._id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <input
+                type="button"
+                value="More Info"
+                className="btn btn-secondary btn-block"
+              />
+            </Link>
           </div>
         </div>
       </div>
