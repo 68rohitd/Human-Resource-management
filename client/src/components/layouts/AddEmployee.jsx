@@ -5,6 +5,8 @@ import axios from "axios";
 import { Spring } from "react-spring/renderprops";
 import "../../assets/add-emp/addEmp.css";
 import SidePanel from "./Admin/SidePanel";
+import toast from "toasted-notes";
+import "toasted-notes/src/styles.css";
 
 class AddEmployee extends Component {
   constructor() {
@@ -20,6 +22,9 @@ class AddEmployee extends Component {
       gender: "Select Value",
       doj: "",
       disabled: false,
+
+      // error
+      error: "",
     };
   }
 
@@ -55,7 +60,13 @@ class AddEmployee extends Component {
         team,
         doj,
       });
+
+      toast.notify("Added new employee", {
+        position: "top-right",
+      });
+
       console.log("created acc successfully: ", newUser.data);
+      this.props.history.push(`/editEmpProfile/${newUser.data._id}`);
     } catch (err) {
       // enable signup btn
       this.setState({
@@ -70,8 +81,6 @@ class AddEmployee extends Component {
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   render() {
-    // const { error } = this.state;
-
     return (
       <Consumer>
         {(value) => {
@@ -104,6 +113,12 @@ class AddEmployee extends Component {
                         }}
                       >
                         <div style={props}>
+                          {this.state.error ? (
+                            <div className="alert alert-danger my-3">
+                              {this.state.error}
+                            </div>
+                          ) : null}
+
                           <form
                             className="addEmpForm"
                             onSubmit={this.onSubmit.bind(this, dispatch)}

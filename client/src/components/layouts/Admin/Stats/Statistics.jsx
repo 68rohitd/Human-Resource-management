@@ -6,6 +6,8 @@ import LineChart from "./LineChart";
 import SidePanel from "../SidePanel";
 import "../../../../assets/stats-styles/stats.css";
 import Card from "./Card";
+import { Consumer } from "../../../../context";
+import { Redirect } from "react-router-dom";
 export default class Statistics extends Component {
   constructor() {
     super();
@@ -39,45 +41,61 @@ export default class Statistics extends Component {
 
   render() {
     return (
-      <div className="row m-0">
-        {/* left part */}
-        <div className="col-2 p-0 leftPart">
-          <SidePanel />
-        </div>
+      <Consumer>
+        {(value) => {
+          let { user } = value;
+          const token = localStorage.getItem("auth-token");
 
-        {/* right part */}
-        <div className="col-9 rightPart container">
-          {/* numbers */}
-          <div className="row mt-5">
-            <div className="col-4 mr-3 ">
-              <Card
-                label="Total Expenses"
-                data={`₹ ${this.state.totalExpenses}`}
-              />
-            </div>
-            <div className="col-4">
-              <Card label="Employee Count" data={this.state.empList.length} />
-            </div>
-          </div>
+          if (!token) return <Redirect to="/login" />;
+          if (user && user.role !== "admin")
+            return <Redirect to="/empDashBoard" />;
 
-          {/* charts */}
-          <div className="row mt-5">
-            <div className="col my-4">
-              <PieChart />
-            </div>
+          return (
+            <div className="row m-0">
+              {/* left part */}
+              <div className="col-2 p-0 leftPart">
+                <SidePanel />
+              </div>
 
-            <div className="col my-4">
-              <BarChart />
-            </div>
-          </div>
+              {/* right part */}
+              <div className="col-9 rightPart container">
+                {/* numbers */}
+                <div className="row mt-5">
+                  <div className="col mr-3 ">
+                    <Card
+                      label="Total Expenses"
+                      data={`₹ ${this.state.totalExpenses}`}
+                    />
+                  </div>
+                  <div className="col">
+                    <Card
+                      label="Employee Count"
+                      data={this.state.empList.length}
+                    />
+                  </div>
+                </div>
 
-          <div className="row mt-4">
-            <div className="col my-4">
-              <LineChart />
+                {/* charts */}
+                <div className="row mt-5">
+                  <div className="col my-4">
+                    <PieChart />
+                  </div>
+
+                  <div className="col my-4">
+                    <BarChart />
+                  </div>
+                </div>
+
+                <div className="row mt-4">
+                  <div className="col my-4">
+                    <LineChart />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
+          );
+        }}
+      </Consumer>
     );
   }
 }

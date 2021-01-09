@@ -18,6 +18,40 @@ const reducer = (state, action) => {
         token: undefined,
         user: undefined,
       };
+
+    case "APPROVED_REJECTED_LEAVE":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          leaveRequests: state.user.leaveRequests.filter(
+            (req) => req.reqId !== action.payload.reqId
+          ),
+        },
+      };
+
+    case "APPROVED_REJECTED_BONUS":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          bonusRequests: state.user.bonusRequests.filter(
+            (req) => req.reqId !== action.payload.reqId
+          ),
+        },
+      };
+
+    case "APPROVED_REJECTED_LOAN":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          loanRequests: state.user.loanRequests.filter(
+            (req) => req.reqId !== action.payload.reqId
+          ),
+        },
+      };
+
     default:
       return state;
   }

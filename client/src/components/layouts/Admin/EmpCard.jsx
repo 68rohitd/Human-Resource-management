@@ -16,7 +16,7 @@ export default class EmpCard extends Component {
             style={{ display: "flex", justifyContent: "center" }}
           >
             <img
-              src={data.gender === "male" ? maleProfilePic : femaleProfilePic}
+              src={data.gender === "Male" ? maleProfilePic : femaleProfilePic}
               alt="profile pic"
               width="100px"
             />

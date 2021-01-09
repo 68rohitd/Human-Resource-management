@@ -10,9 +10,7 @@
   /* box-shadow: 0px 0px 10px rgb(187, 187, 187); */
   transition: transform 0.2s, box-shadow 0.3s !important;
   border-radius: 10px;
-  border-style: solid !important;
-  border-width: 1px !important;
-  border-color: rgb(209, 209, 209) !important;
+  border: rgb(238, 238, 238) solid 1px;
 }
 .myCard:hover {
   transform: scale(1.01);

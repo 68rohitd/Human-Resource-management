@@ -73,7 +73,7 @@ router.post("/addEmployee", async (req, res) => {
       !role ||
       !team ||
       !doj ||
-      !gender
+      gender === "Select Value"
     ) {
       return res.status(400).json({ msg: "Please enter all the fields" });
     }
@@ -194,6 +194,9 @@ router.put("/takeAction", async (req, res) => {
   let reqApproved = false;
 
   const user = await User.findOne({ _id: req.body.userReq.empId });
+
+  if (!user) return res.status(400).json({ msg: "user not found" });
+
   let updatedNotificationList = [];
   user.notification.forEach((notification) => {
     if (notification.reqId === req.body.userReq.reqId) {
@@ -253,7 +256,6 @@ router.put("/takeAction", async (req, res) => {
       { totalLeaves: currentLeaves },
       { new: true }
     );
-    console.log("updated total leaves : ", updatedSalDetails);
   } else if (req.body.userReq.title === "bonus request") {
     // bonus requests
     let updatedBonusReq = [];
@@ -339,7 +341,7 @@ router.put("/generateSalReceipt", async (req, res) => {
       },
       { new: true }
     );
-    res.json(updatedEmpReceiptDoc);
+    res.json({ updatedEmpReceiptDoc, monthlyReceipts });
   } catch (e) {
     res.status(500).json({ err: e });
   }
@@ -411,6 +413,35 @@ router.delete("/delete/:id", async (req, res) => {
       empId: req.params.id,
     });
 
+    // delete req's if sent by this user
+    const admin = await Admin.findOne({});
+    const empId = req.params.id;
+
+    let updatedLeaveRequests = [];
+    let updatedBonusRequests = [];
+    let updatedLoanRequests = [];
+
+    updatedLeaveRequests = admin.leaveRequests.filter(
+      (req) => req.empId !== empId
+    );
+
+    updatedBonusRequests = admin.bonusRequests.filter(
+      (req) => req.empId !== empId
+    );
+
+    updatedLoanRequests = admin.loanRequests.filter(
+      (req) => req.empId !== empId
+    );
+
+    await Admin.findOneAndUpdate(
+      {},
+      {
+        leaveRequests: updatedLeaveRequests,
+        bonusRequests: updatedBonusRequests,
+        loanRequests: updatedLoanRequests,
+      }
+    );
+
     res.json(deletedUser);
   } catch (err) {
     res.status(500).json({ err: err.message });
@@ -443,8 +474,6 @@ router.post("/search", async (req, res) => {
   if (team === "") team = new RegExp(/.+/s);
   if (email === "") email = new RegExp(/.+/s);
   if (doj === "") doj = new RegExp(/.+/s);
-  // if (startDoj === "") startDoj = new RegExp(/.+/s);
-  // if (endDoj === "") endDoj = new RegExp(/.+/s);
 
   // console.log(l, s, i, d);
 

@@ -1,5 +1,8 @@
 import axios from "axios";
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import toast from "toasted-notes";
+import "toasted-notes/src/styles.css";
 
 export default class EditEmpProfile extends Component {
   constructor() {
@@ -56,12 +59,25 @@ export default class EditEmpProfile extends Component {
   }
 
   onDelete = async () => {
-    const deletedEmp = await axios.delete(`/api/admin/delete/${this.state.id}`);
-    console.log("deleted: ", deletedEmp.data);
-    this.props.history.push("/viewEmployees");
+    try {
+      const deletedEmp = await axios.delete(
+        `/api/admin/delete/${this.state.id}`
+      );
+
+      toast.notify("Deleted profile successfully", {
+        position: "top-right",
+      });
+
+      console.log("deleted: ", deletedEmp.data);
+      this.props.history.push("/viewEmployees");
+    } catch (e) {
+      console.log("Error", e);
+    }
   };
 
-  updateProfile = async () => {
+  updateProfile = async (e) => {
+    e.preventDefault();
+
     const updatedUser = {
       name: this.state.name,
       email: this.state.email,
@@ -74,11 +90,20 @@ export default class EditEmpProfile extends Component {
       doj: this.state.doj,
     };
 
-    const res = await axios.post("/api/users/updateProfile", {
-      user: updatedUser,
-      id: this.state.id,
-    });
-    console.log(res.data);
+    try {
+      const res = await axios.post("/api/users/updateProfile", {
+        user: updatedUser,
+        id: this.state.id,
+      });
+
+      toast.notify("Updated profile", {
+        position: "top-right",
+      });
+
+      console.log(res.data);
+    } catch (e) {
+      console.log("Error: ", e);
+    }
   };
 
   updateSalDetails = async () => {
@@ -96,6 +121,11 @@ export default class EditEmpProfile extends Component {
         salDetails: updatedSal,
       }
     );
+
+    toast.notify("Updated salary details", {
+      position: "top-right",
+    });
+
     console.log(res.data);
   };
 
@@ -127,169 +157,169 @@ export default class EditEmpProfile extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <div className="row m-0">
-          <div className="container mt-3 form">
-            <form className="py-2">
-              <h4>Employee Profile</h4>
-              <div className="row mt-3">
+          {/* form */}
+          <div className="col">
+            <form
+              className="addEmpForm"
+              onSubmit={this.updateProfile.bind(this)}
+            >
+              <h3>Employee Profile</h3>
+              <hr />
+
+              <div className="row">
                 <div className="col">
-                  <div className="form-group">
-                    <label htmlFor="name">Name</label>
-                    <input
-                      name="name"
-                      type="text"
-                      className="form-control"
-                      id="name"
-                      value={this.state.name}
-                      onChange={this.onChange}
-                    />
-                  </div>
+                  {/* name */}
+                  <label htmlFor="name">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    className="form-control"
+                    value={this.state.name}
+                    onChange={this.onChange}
+                    required
+                  />
                 </div>
-              </div>
-
-              {/* gender */}
-              <div className="dropdown">
-                <label>gender</label>
-                <button
-                  className="btn btn-secondary dropdown-toggle"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  {this.state.gender}
-                </button>
-                <div
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <li
-                    className="dropdown-item"
-                    onClick={() => this.onSelectGender("male")}
-                  >
-                    Male
-                  </li>
-                  <li
-                    className="dropdown-item"
-                    onClick={() => this.onSelectGender("female")}
-                  >
-                    Female
-                  </li>
+                <div className="col">
+                  {/* email */}
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={this.state.email}
+                    className="form-control mb-3 "
+                    onChange={this.onChange}
+                    required
+                  />
                 </div>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="email">Email address</label>
-                <input
-                  type="email"
-                  name="email"
-                  className="form-control"
-                  id="email"
-                  aria-describedby="emailHelp"
-                  value={this.state.email}
-                  onChange={this.onChange}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="phoneNo">phoneNo</label>
-                <input
-                  type="phoneNo"
-                  name="phoneNo"
-                  className="form-control"
-                  id="phoneNo"
-                  aria-describedby="phoneNo"
-                  value={this.state.phoneNo}
-                  onChange={this.onChange}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="doj">Date of Joining</label>
-                <input
-                  type="date"
-                  name="doj"
-                  className="form-control"
-                  id="doj"
-                  value={this.state.doj}
-                  onChange={this.onChange}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="team">team</label>
-                <input
-                  type="team"
-                  name="team"
-                  className="form-control"
-                  id="team"
-                  aria-describedby="team"
-                  value={this.state.team}
-                  onChange={this.onChange}
-                />
               </div>
 
               <div className="row">
                 <div className="col">
-                  <div className="form-group">
-                    <label htmlFor="address">address</label>
-                    <input
-                      type="text"
-                      name="address"
-                      className="form-control"
-                      id="address"
-                      value={this.state.address}
-                      onChange={this.onChange}
-                    />
-                  </div>
+                  {/* address */}
+                  <label htmlFor="address">Address</label>
+                  <textarea
+                    name="address"
+                    value={this.state.address}
+                    id="address"
+                    rows="1"
+                    className="form-control mb-3 "
+                    onChange={this.onChange}
+                    required
+                  />
                 </div>
-
                 <div className="col">
-                  <div className="form-group">
-                    <label htmlFor="role">Role</label>
-                    <input
-                      type="text"
-                      name="role"
-                      className="form-control"
-                      id="role"
-                      value={this.state.role}
-                      onChange={this.onChange}
-                    />
-                  </div>
+                  {/* phone no */}
+                  <label htmlFor="phoneNo">Phone No.</label>
+                  <input
+                    type="number"
+                    value={this.state.phoneNo}
+                    name="phoneNo"
+                    className="form-control mb-3 "
+                    onChange={this.onChange}
+                    required
+                  />
                 </div>
               </div>
 
-              <input
-                type="button"
-                className="btn btn-primary "
-                onClick={this.updateProfile}
-                value="update profile"
-              />
+              <div className="row">
+                {/* team */}
+                <div className="col">
+                  <label htmlFor="team">Team</label>
+                  <input
+                    type="text"
+                    value={this.state.team}
+                    name="team"
+                    className="form-control mb-3 "
+                    onChange={this.onChange}
+                    required
+                  />
+                </div>
 
+                {/* role */}
+                <div className="col">
+                  <label htmlFor="role">Role</label>
+                  <input
+                    type="text"
+                    name="role"
+                    value={this.state.role}
+                    className="form-control mb-3 "
+                    onChange={this.onChange}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                {/* doj */}
+                <div className="col">
+                  <label htmlFor="doj">Date Of Joining</label>
+                  <input
+                    type="date"
+                    name="doj"
+                    value={this.state.doj}
+                    className="form-control mb-3 "
+                    onChange={this.onChange}
+                    required
+                  />
+                </div>
+
+                {/* gender */}
+                <div className="col">
+                  <div className="col">
+                    <label>Gender</label>
+                    <div className="dropdown">
+                      <button
+                        className="btn btn-light dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        {this.state.gender}
+                      </button>
+                      <div
+                        className="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        <li
+                          className="dropdown-item"
+                          onClick={() => this.onSelectGender("Male")}
+                        >
+                          Male
+                        </li>
+                        <li
+                          className="dropdown-item"
+                          onClick={() => this.onSelectGender("Female")}
+                        >
+                          Female
+                        </li>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <input
-                type="button"
-                className="btn btn-primary "
-                onClick={this.onDelete}
-                value="delete emp profile"
+                disabled={this.state.disabled}
+                type="submit"
+                value="Submit"
+                className="btn btn-success btn-block "
               />
             </form>
           </div>
-        </div>
 
-        <hr />
-
-        {/* salary details */}
-        <div className="row m-0">
-          <div className="container">
-            <form className="py-2">
-              <h4>Salary details</h4>
+          {/* salary details */}
+          <div className="col">
+            <form className="addEmpForm">
+              <h3>Employee Salary Details</h3>
+              <hr />
               <div className="form-group">
-                <label htmlFor="name">basic pay</label>
+                <label htmlFor="name">Basic Pay</label>
                 <input
                   name="basicPay"
-                  type="text"
+                  type="number"
                   className="form-control"
                   id="basicPay"
                   value={this.state.basicPay}
@@ -297,13 +327,11 @@ export default class EditEmpProfile extends Component {
                 />
               </div>
 
-              <p>Total leaves: {this.state.totalLeaves}</p>
-
               <div className="form-group">
-                <label htmlFor="name">travel allowance</label>
+                <label htmlFor="name">Travel Allowance</label>
                 <input
                   name="travelAllowance"
-                  type="text"
+                  type="number"
                   className="form-control"
                   id="travelAllowance"
                   value={this.state.travelAllowance}
@@ -312,10 +340,10 @@ export default class EditEmpProfile extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="name">medical allowance</label>
+                <label htmlFor="name">mMdical Allowance</label>
                 <input
                   name="medicalAllowance"
-                  type="text"
+                  type="number"
                   className="form-control"
                   id="medicalAllowance"
                   value={this.state.medicalAllowance}
@@ -323,23 +351,53 @@ export default class EditEmpProfile extends Component {
                 />
               </div>
 
-              <input
-                type="button"
-                className="btn btn-primary "
-                onClick={this.calSal}
-                value="cal sal"
-              />
-              <p>
-                <b>{this.state.salary}</b>
-              </p>
+              <p>Total leaves: {this.state.totalLeaves}</p>
+
+              <div className="input-group mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  disabled={true}
+                  defaultValue={this.state.salary}
+                  aria-label="Recipient's username"
+                  aria-describedby="button-addon2"
+                />
+                <div className="input-group-append">
+                  <button
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    id="button-addon2"
+                    onClick={this.calSal}
+                  >
+                    Calculate Salary
+                  </button>
+                </div>
+              </div>
 
               <input
                 type="button"
-                className="btn btn-primary "
+                className="btn btn-success btn-block"
                 onClick={this.updateSalDetails}
-                value="update sal details"
+                value="Update Salary Details"
               />
             </form>
+          </div>
+
+          <div className="col-1 mt-5">
+            <input
+              className="btn btn-danger"
+              type="button"
+              value="Delete profile"
+              onClick={this.onDelete}
+            />
+
+            <Link to="/statistics">
+              <input
+                className="btn btn-success mt-3"
+                type="button"
+                value="Go to Dashboard"
+              />
+            </Link>
           </div>
         </div>
       </div>

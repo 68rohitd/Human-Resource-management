@@ -8,8 +8,10 @@ export default class EmpDashboard extends Component {
       <Consumer>
         {(value) => {
           let { user } = value;
+          const token = localStorage.getItem("auth-token");
+          if (!token) return <Redirect to="/login" />;
 
-          if (!user) return <Redirect to="/" />;
+          if (user && user.role === "admin") return <Redirect to="/" />;
 
           return (
             <div className="container">

@@ -33,7 +33,7 @@ export default class PieChart extends Component {
     let maleCount = 0;
     let femaleCount = 0;
     this.state.empList.forEach((emp) => {
-      if (emp.gender === "male") maleCount = parseInt(maleCount) + 1;
+      if (emp.gender === "Male") maleCount = parseInt(maleCount) + 1;
       else femaleCount = parseInt(femaleCount) + 1;
     });
 

@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import { Consumer } from "../../../context";
 import EmpCard from "./EmpCard";
 import SearchEmp from "./SearchEmp";
 import SidePanel from "./SidePanel";
@@ -10,6 +12,7 @@ export default class ViewEmployees extends Component {
 
     this.state = {
       empList: [],
+      loading: true,
     };
   }
 
@@ -18,6 +21,7 @@ export default class ViewEmployees extends Component {
     console.log("List: ", empList.data);
     this.setState({
       empList: empList.data,
+      loading: false,
     });
   };
 
@@ -28,37 +32,57 @@ export default class ViewEmployees extends Component {
 
   render() {
     return (
-      <>
-        <div className="row m-0">
-          {/* left part */}
-          <div className="col-2 p-0 leftPart">
-            <SidePanel />
-          </div>
+      <Consumer>
+        {(value) => {
+          let { user } = value;
 
-          {/* right part */}
-          <div className="col">
-            <div className="row">
-              <SearchEmp onFilter={this.onFilter} />
-            </div>
+          const token = localStorage.getItem("auth-token");
 
-            <hr />
+          if (!token) return <Redirect to="/login" />;
+          if (user && user.role !== "admin")
+            return <Redirect to="/empDashBoard" />;
 
-            {/* search result */}
-            <div className="container">
-              <div
-                className="row"
-                style={{
-                  display: "flex",
-                }}
-              >
-                {this.state.empList.map((emp, index) => {
-                  return <EmpCard key={index} data={emp} />;
-                })}
+          return (
+            <>
+              <div className="row m-0">
+                {/* left part */}
+                <div className="col-2 p-0 leftPart">
+                  <SidePanel />
+                </div>
+
+                {/* right part */}
+                <div className="col">
+                  <div className="row">
+                    <SearchEmp onFilter={this.onFilter} />
+                  </div>
+
+                  <hr />
+
+                  {/* emp list */}
+                  {this.state.loading ? (
+                    <h1 className="text-center">Loading...</h1>
+                  ) : this.state.empList.length ? (
+                    <div className="container">
+                      <div
+                        className="row"
+                        style={{
+                          display: "flex",
+                        }}
+                      >
+                        {this.state.empList.map((emp, index) => {
+                          return <EmpCard key={index} data={emp} />;
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    <h1>No employees found</h1>
+                  )}
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </>
+            </>
+          );
+        }}
+      </Consumer>
     );
   }
 }

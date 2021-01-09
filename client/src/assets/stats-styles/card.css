@@ -3,6 +3,9 @@
   background-color: #263238;
   border-radius: 10px;
   color: white;
+  width: fit-content;
+  min-width: 300px;
+  float: left;
 }
 
 .myData {
