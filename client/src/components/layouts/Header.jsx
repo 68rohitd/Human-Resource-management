@@ -22,26 +22,6 @@ class Header extends Component {
     });
   };
 
-  OnDeleteAccount = async (dispatch) => {
-    const token = localStorage.getItem("auth-token");
-    const userId = localStorage.getItem("userId");
-
-    try {
-      await axios.delete(`/users/delete/${userId}`, {
-        headers: { "x-auth-token": token },
-      });
-
-      localStorage.setItem("auth-token", "");
-      localStorage.setItem("userId", "");
-
-      dispatch({
-        type: "LOGGED_OUT",
-      });
-    } catch (err) {
-      console.log(err.response.data);
-    }
-  };
-
   getInfo = (todos) => {
     let completed = 0;
     todos.forEach((todoItem) => {

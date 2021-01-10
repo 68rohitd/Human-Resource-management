@@ -52,7 +52,7 @@ class Signup extends Component {
       console.log("logged in successfully: ", loggedInUser.data);
 
       localStorage.setItem("auth-token", loggedInUser.data.token);
-      localStorage.setItem("userId", loggedInUser.data.user.id);
+      localStorage.setItem("userId", loggedInUser.data.user._id);
 
       dispatch({
         type: "LOGGED_IN",
@@ -61,7 +61,8 @@ class Signup extends Component {
           token: loggedInUser.data.token,
         },
       });
-      this.props.history.push("/adminDashboard");
+
+      this.props.history.push("/");
     } catch (err) {
       // enable signup btn
       this.setState({
@@ -130,7 +131,7 @@ class Signup extends Component {
                               alt=""
                             />
                             <h3 className="signUpText text-center mt-3">
-                              Create your new Account!
+                              Create new Admin Account!
                             </h3>
 
                             {error.length ? (

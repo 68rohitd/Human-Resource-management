@@ -15,20 +15,38 @@ class AddEmployee extends Component {
     this.state = {
       email: "",
       name: "",
-      role: "",
       address: "",
       phoneNo: "",
-      team: "",
+      role: "Select Role",
+      team: "Select Team",
       gender: "Select Value",
       doj: "",
       disabled: false,
 
       // error
       error: "",
+
+      // teams and roels
+      teamList: [],
+      roleList: [],
     };
   }
 
+  componentDidMount = async () => {
+    const teamAndRoleList = await axios.get("/api/admin/getTeamsAndRoles");
+    console.log(teamAndRoleList.data[0]);
+
+    this.setState({
+      teamList: teamAndRoleList.data[0].teamNames,
+      roleList: teamAndRoleList.data[0].roleNames,
+    });
+  };
+
   onSelectGender = (gender) => this.setState({ gender });
+
+  onTeamSelect = (team) => this.setState({ team });
+
+  onRoleSelect = (role) => this.setState({ role });
 
   onSubmit = async (dispatch, e) => {
     e.preventDefault();
@@ -186,27 +204,84 @@ class AddEmployee extends Component {
                               {/* team */}
                               <div className="col">
                                 <label htmlFor="team">Team</label>
-                                <input
+                                <div className="dropdown">
+                                  <button
+                                    className="btn btn-light dropdown-toggle"
+                                    type="button"
+                                    id="dropdownMenuButton"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                  >
+                                    {this.state.team}
+                                  </button>
+                                  <div
+                                    className="dropdown-menu"
+                                    aria-labelledby="dropdownMenuButton"
+                                  >
+                                    {this.state.teamList.map((teamName) => (
+                                      <li
+                                        key={teamName}
+                                        className="dropdown-item"
+                                        onClick={() =>
+                                          this.onTeamSelect(teamName)
+                                        }
+                                      >
+                                        {teamName}
+                                      </li>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                {/* <input
                                   type="text"
                                   name="team"
                                   className="form-control mb-3 "
                                   placeholder="Devops"
                                   onChange={this.onChange}
                                   required
-                                />
+                                /> */}
                               </div>
 
                               {/* role */}
                               <div className="col">
                                 <label htmlFor="role">Role</label>
-                                <input
+                                <div className="dropdown mb-3">
+                                  <button
+                                    className="btn btn-light dropdown-toggle"
+                                    type="button"
+                                    id="dropdownMenuButton"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                  >
+                                    {this.state.role}
+                                  </button>
+                                  <div
+                                    className="dropdown-menu"
+                                    aria-labelledby="dropdownMenuButton"
+                                  >
+                                    {this.state.roleList.map((roleName) => (
+                                      <li
+                                        key={roleName}
+                                        className="dropdown-item"
+                                        onClick={() =>
+                                          this.onRoleSelect(roleName)
+                                        }
+                                      >
+                                        {roleName}
+                                      </li>
+                                    ))}
+                                  </div>
+                                </div>
+                                {/* <input
                                   type="text"
                                   name="role"
                                   className="form-control mb-3 "
                                   placeholder="ML Engineer"
                                   onChange={this.onChange}
                                   required
-                                />
+                                /> */}
                               </div>
                             </div>
 
@@ -226,40 +301,38 @@ class AddEmployee extends Component {
 
                               {/* gender */}
                               <div className="col">
-                                <div className="col">
-                                  <label>Gender</label>
-                                  <div className="dropdown">
-                                    <button
-                                      className="btn btn-light dropdown-toggle"
-                                      type="button"
-                                      id="dropdownMenuButton"
-                                      data-toggle="dropdown"
-                                      aria-haspopup="true"
-                                      aria-expanded="false"
+                                <label>Gender</label>
+                                <div className="dropdown">
+                                  <button
+                                    className="btn btn-light dropdown-toggle"
+                                    type="button"
+                                    id="dropdownMenuButton"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                  >
+                                    {this.state.gender}
+                                  </button>
+                                  <div
+                                    className="dropdown-menu"
+                                    aria-labelledby="dropdownMenuButton"
+                                  >
+                                    <li
+                                      className="dropdown-item"
+                                      onClick={() =>
+                                        this.onSelectGender("Male")
+                                      }
                                     >
-                                      {this.state.gender}
-                                    </button>
-                                    <div
-                                      className="dropdown-menu"
-                                      aria-labelledby="dropdownMenuButton"
+                                      Male
+                                    </li>
+                                    <li
+                                      className="dropdown-item"
+                                      onClick={() =>
+                                        this.onSelectGender("Female")
+                                      }
                                     >
-                                      <li
-                                        className="dropdown-item"
-                                        onClick={() =>
-                                          this.onSelectGender("Male")
-                                        }
-                                      >
-                                        Male
-                                      </li>
-                                      <li
-                                        className="dropdown-item"
-                                        onClick={() =>
-                                          this.onSelectGender("Female")
-                                        }
-                                      >
-                                        Female
-                                      </li>
-                                    </div>
+                                      Female
+                                    </li>
                                   </div>
                                 </div>
                               </div>

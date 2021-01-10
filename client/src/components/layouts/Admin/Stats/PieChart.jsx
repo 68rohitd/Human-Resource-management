@@ -23,10 +23,16 @@ export default class PieChart extends Component {
   }
 
   componentDidMount = async () => {
-    const empList = await axios.get("/api/admin/getEmpList");
-    this.setState({ empList: empList.data }, () => {
-      this.onFilterGender();
+    axios.get("/api/admin/getEmpList").then((empList) => {
+      this.setState({ empList: empList.data }, () => {
+        this.onFilterGender();
+      });
     });
+
+    // const empList = await axios.get("/api/admin/getEmpList");
+    // this.setState({ empList: empList.data }, () => {
+    //   this.onFilterGender();
+    // });
   };
 
   onFilterGender = () => {

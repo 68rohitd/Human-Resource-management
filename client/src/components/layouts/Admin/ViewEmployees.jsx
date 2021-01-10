@@ -75,7 +75,7 @@ export default class ViewEmployees extends Component {
                       </div>
                     </div>
                   ) : (
-                    <h1>No employees found</h1>
+                    <h1 className="text-center">No employees found...</h1>
                   )}
                 </div>
               </div>

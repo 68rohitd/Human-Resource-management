@@ -61,6 +61,17 @@ export default class SidePanel extends Component {
               Payroll
             </li>
           </Link>
+
+          {/* options */}
+          <Link to="/options" style={{ textDecoration: "none" }}>
+            <li className="list-group-item text-dark font-weight-bold border-0 my-1 myList">
+              <i
+                className="fas fa-sliders-h mr-4"
+                style={{ fontSize: "20px" }}
+              ></i>{" "}
+              Options
+            </li>
+          </Link>
         </ul>
       </div>
     );

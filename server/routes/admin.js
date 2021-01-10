@@ -7,6 +7,7 @@ let User = require("../models/user.model");
 let Salary = require("../models/salary.model");
 let SalaryReceipt = require("../models/salaryReceipt.model");
 const { json } = require("express");
+const TeamAndRole = require("../models/teams.and.roles.model");
 
 // @desc: register a user
 router.post("/register", async (req, res) => {
@@ -57,6 +58,60 @@ router.post("/register", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// @desc: login a user
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // validate
+    if (!email || !password)
+      return res.status(400).json({ msg: "Please enter all the fields" });
+
+    const user = await Admin.findOne({ email: email });
+    if (!user)
+      return res
+        .status(400)
+        .json({ msg: "No account with this email has been registered" });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch)
+      return res.status(400).json({ msg: "Invalid username or password" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    res.json({
+      token,
+      user,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// @desc: verify a user against token
+router.post("/tokenIsValid", async (req, res) => {
+  try {
+    const token = req.header("x-auth-token");
+    if (!token) return res.json(false);
+
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    if (!verified) return res.json(false);
+
+    const user = await Admin.findById(verified.id);
+    if (!user) return res.json(false);
+
+    return res.json(true);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+// @desc: get user details of logged in user
+router.get("/", auth, async (req, res) => {
+  const user = await Admin.findById(req.user);
+  res.json({
+    user,
+  });
 });
 
 // @desc: add employee by admin
@@ -135,64 +190,8 @@ router.post("/addEmployee", async (req, res) => {
   }
 });
 
-// @desc: login a user
-router.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    // validate
-    if (!email || !password)
-      return res.status(400).json({ msg: "Please enter all the fields" });
-
-    const user = await Admin.findOne({ email: email });
-    if (!user)
-      return res
-        .status(400)
-        .json({ msg: "No account with this email has been registered" });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(400).json({ msg: "Invalid username or password" });
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    res.json({
-      token,
-      user,
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// @desc: verify a user against token
-router.post("/tokenIsValid", async (req, res) => {
-  try {
-    const token = req.header("x-auth-token");
-    if (!token) return res.json(false);
-
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    if (!verified) return res.json(false);
-
-    const user = await Admin.findById(verified.id);
-    if (!user) return res.json(false);
-
-    return res.json(true);
-  } catch (err) {
-    res.status(500).json({ err: err.message });
-  }
-});
-
-// @desc: get user details of logged in user
-router.get("/", auth, async (req, res) => {
-  const user = await Admin.findById(req.user);
-  res.json({
-    user,
-  });
-});
-
 // @desc: approve/reject requests
 router.put("/takeAction", async (req, res) => {
-  let reqApproved = false;
-
   const user = await User.findOne({ _id: req.body.userReq.empId });
 
   if (!user) return res.status(400).json({ msg: "user not found" });
@@ -202,7 +201,6 @@ router.put("/takeAction", async (req, res) => {
     if (notification.reqId === req.body.userReq.reqId) {
       if (req.body.userReq.approved) {
         //if approved by admin
-        reqApproved = true;
         notification.approved = true;
         notification.ticketClosed = true;
       } else {
@@ -225,7 +223,7 @@ router.put("/takeAction", async (req, res) => {
     }
   );
 
-  const admin = await Admin.findOne({ email: "admin@gmail.com" });
+  const admin = await Admin.findById(req.body.adminId);
 
   if (req.body.userReq.title === "leave request") {
     // leave requests
@@ -236,8 +234,8 @@ router.put("/takeAction", async (req, res) => {
         updatedLeaveReq.push(request);
     });
 
-    Admin.findOneAndUpdate(
-      { email: "admin@gmail.com" },
+    Admin.findByIdAndUpdate(
+      req.body.adminId,
       { leaveRequests: updatedLeaveReq },
       { new: true },
       function (err, result) {
@@ -245,6 +243,16 @@ router.put("/takeAction", async (req, res) => {
         else res.json(result);
       }
     );
+
+    // Admin.findOneAndUpdate(
+    //   { email: "admin@gmail.com" },
+    //   { leaveRequests: updatedLeaveReq },
+    //   { new: true },
+    //   function (err, result) {
+    //     if (err) res.status(400).json("Error: ", err);
+    //     else res.json(result);
+    //   }
+    // );
 
     // update emp's SALARY MODEL : increament leaveCount
     const salDetail = await Salary.findOne({ empId: req.body.userReq.empId });
@@ -265,8 +273,8 @@ router.put("/takeAction", async (req, res) => {
         updatedBonusReq.push(request);
     });
 
-    Admin.findOneAndUpdate(
-      { email: "admin@gmail.com" },
+    Admin.findByIdAndUpdate(
+      req.body.adminId,
       { bonusRequests: updatedBonusReq },
       { new: true },
       function (err, result) {
@@ -274,6 +282,16 @@ router.put("/takeAction", async (req, res) => {
         else res.json(result);
       }
     );
+
+    // Admin.findOneAndUpdate(
+    //   { email: "admin@gmail.com" },
+    //   { bonusRequests: updatedBonusReq },
+    //   { new: true },
+    //   function (err, result) {
+    //     if (err) res.status(400).json("Error: ", err);
+    //     else res.json(result);
+    //   }
+    // );
   } else {
     // loan requests
     let updatedLoanReq = [];
@@ -283,8 +301,8 @@ router.put("/takeAction", async (req, res) => {
         updatedLoanReq.push(request);
     });
 
-    Admin.findOneAndUpdate(
-      { email: "admin@gmail.com" },
+    Admin.findByIdAndUpdate(
+      req.body.adminId,
       { loanRequests: updatedLoanReq },
       { new: true },
       function (err, result) {
@@ -292,6 +310,16 @@ router.put("/takeAction", async (req, res) => {
         else res.json(result);
       }
     );
+
+    // Admin.findOneAndUpdate(
+    //   { email: "admin@gmail.com" },
+    //   { loanRequests: updatedLoanReq },
+    //   { new: true },
+    //   function (err, result) {
+    //     if (err) res.status(400).json("Error: ", err);
+    //     else res.json(result);
+    //   }
+    // );
   }
 });
 
@@ -301,7 +329,100 @@ router.get("/getEmpList", async (req, res) => {
   res.send(empList);
 });
 
-// ************* SALARY PART: START **********************
+// @desc: delete a user account
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+
+    // delete corresponding SALARY DETAILS too
+    const deletedSalDetails = await Salary.findOneAndDelete({
+      empId: req.params.id,
+    });
+
+    // delete corresponding SALARYRECEIPT DETAILS too
+    const deletedSalReceipt = await SalaryReceipt.findOneAndDelete({
+      empId: req.params.id,
+    });
+
+    // delete req's if sent by this user
+    const admin = await Admin.findById(req.body.adminId);
+
+    const empId = req.params.id;
+
+    let updatedLeaveRequests = [];
+    let updatedBonusRequests = [];
+    let updatedLoanRequests = [];
+
+    updatedLeaveRequests = admin.leaveRequests.filter(
+      (req) => req.empId !== empId
+    );
+
+    updatedBonusRequests = admin.bonusRequests.filter(
+      (req) => req.empId !== empId
+    );
+
+    updatedLoanRequests = admin.loanRequests.filter(
+      (req) => req.empId !== empId
+    );
+
+    await Admin.findOneAndUpdate(
+      {},
+      {
+        leaveRequests: updatedLeaveRequests,
+        bonusRequests: updatedBonusRequests,
+        loanRequests: updatedLoanRequests,
+      }
+    );
+
+    res.json(deletedUser);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+// @desc: get a particular users data
+router.get("/getUserData/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// @desc: search component
+router.post("/search", async (req, res) => {
+  let name = req.body.name;
+  let role = req.body.role;
+  let team = req.body.team;
+  let email = req.body.email;
+  let doj = req.body.doj;
+
+  console.log(name, role, team, email, doj);
+
+  // if fields are empty, match everything
+  if (name === "") name = new RegExp(/.+/s);
+  if (role === "") role = new RegExp(/.+/s);
+  if (team === "") team = new RegExp(/.+/s);
+  if (email === "") email = new RegExp(/.+/s);
+  if (doj === "") doj = new RegExp(/.+/s);
+
+  // console.log(l, s, i, d);
+
+  User.find({
+    name: new RegExp(name, "i"),
+    role: new RegExp(role, "i"),
+    team: new RegExp(team, "i"),
+    email: new RegExp(email, "i"),
+    doj: new RegExp(doj, "i"),
+  })
+    .then((emp) => {
+      res.json(emp);
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
+// ************************** SALARY PART: START ***********************************
 // @desc: get list of emp's sal receipts
 router.get("/getAllEmpsSalReceipt", async (req, res) => {
   const AllEmpsSalReceipt = await SalaryReceipt.find({});
@@ -396,98 +517,64 @@ router.put("/updateSalaryDetails/:id", async (req, res) => {
     res.status(500).json({ err: err.message });
   }
 });
-// ************* SALARY PART: END **********************
+// ************************** SALARY PART: END ***********************************
 
-// @desc: delete a user account
-router.delete("/delete/:id", async (req, res) => {
+// ********************** OPTIONS PANEL APIS BEGIN *******************************
+// @desc: get team list (adding a new team)
+router.get("/getTeamsAndRoles", async (req, res) => {
+  const teamsAndRoles = await TeamAndRole.find({});
+  res.json(teamsAndRoles);
+});
+
+// @desc: add new team
+router.post("/addNewTeam", async (req, res) => {
+  const teamName = req.body.teamName;
+  const teamObj = await TeamAndRole.find({});
+
+  let teamList = teamObj[0].teamNames;
+
+  teamList.push(teamName);
+
+  const updatedTeamObj = await TeamAndRole.findOneAndUpdate(
+    {},
+    {
+      teamNames: teamList,
+    },
+    { new: true }
+  );
+
+  res.json(updatedTeamObj);
+});
+
+// @desc: add new team
+router.post("/addNewRole", async (req, res) => {
+  const roleName = req.body.roleName;
+  const teamObj = await TeamAndRole.find({});
+
+  let roleList = teamObj[0].roleNames;
+  roleList.push(roleName);
+
+  const updatedTeamObj = await TeamAndRole.findOneAndUpdate(
+    {},
+    {
+      roleNames: roleList,
+    },
+    { new: true }
+  );
+
+  res.json(updatedTeamObj);
+});
+
+// @desc: delete admin account
+router.delete("/deleteAdminAcc/:id", async (req, res) => {
   try {
-    const deletedUser = await User.findByIdAndDelete(req.params.id);
-
-    // delete corresponding SALARY DETAILS too
-    const deletedSalDetails = await Salary.findOneAndDelete({
-      empId: req.params.id,
-    });
-
-    // delete corresponding SALARYRECEIPT DETAILS too
-    const deletedSalReceipt = await SalaryReceipt.findOneAndDelete({
-      empId: req.params.id,
-    });
-
-    // delete req's if sent by this user
-    const admin = await Admin.findOne({});
-    const empId = req.params.id;
-
-    let updatedLeaveRequests = [];
-    let updatedBonusRequests = [];
-    let updatedLoanRequests = [];
-
-    updatedLeaveRequests = admin.leaveRequests.filter(
-      (req) => req.empId !== empId
-    );
-
-    updatedBonusRequests = admin.bonusRequests.filter(
-      (req) => req.empId !== empId
-    );
-
-    updatedLoanRequests = admin.loanRequests.filter(
-      (req) => req.empId !== empId
-    );
-
-    await Admin.findOneAndUpdate(
-      {},
-      {
-        leaveRequests: updatedLeaveRequests,
-        bonusRequests: updatedBonusRequests,
-        loanRequests: updatedLoanRequests,
-      }
-    );
-
-    res.json(deletedUser);
-  } catch (err) {
-    res.status(500).json({ err: err.message });
+    const deletedAdminAcc = await Admin.findByIdAndDelete(req.params.id);
+    res.json(deletedAdminAcc);
+  } catch (e) {
+    res.status(500).json(e);
   }
 });
 
-// @desc: get a particular users data
-router.get("/getUserData/:id", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    res.json(user);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// @desc: search component
-router.post("/search", async (req, res) => {
-  let name = req.body.name;
-  let role = req.body.role;
-  let team = req.body.team;
-  let email = req.body.email;
-  let doj = req.body.doj;
-
-  console.log(name, role, team, email, doj);
-
-  // if fields are empty, match everything
-  if (name === "") name = new RegExp(/.+/s);
-  if (role === "") role = new RegExp(/.+/s);
-  if (team === "") team = new RegExp(/.+/s);
-  if (email === "") email = new RegExp(/.+/s);
-  if (doj === "") doj = new RegExp(/.+/s);
-
-  // console.log(l, s, i, d);
-
-  User.find({
-    name: new RegExp(name),
-    role: new RegExp(role),
-    team: new RegExp(team),
-    email: new RegExp(email),
-    doj: new RegExp(doj),
-  })
-    .then((emp) => {
-      res.json(emp);
-    })
-    .catch((err) => res.status(400).json("Error: " + err));
-});
+// ********************** OPTIONS PANEL APIS END *******************************
 
 module.exports = router;

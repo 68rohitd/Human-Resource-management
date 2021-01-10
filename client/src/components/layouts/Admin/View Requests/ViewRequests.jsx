@@ -108,8 +108,12 @@ export default class ViewRequests extends Component {
     req.ticketClosed = true;
 
     try {
-      const res = await axios.put("/api/admin/takeAction", { userReq: req });
-      console.log(res.data);
+      const adminId = localStorage.getItem("userId");
+      const res = await axios.put("/api/admin/takeAction", {
+        userReq: req,
+        adminId: adminId,
+      });
+      console.log("approved successfully", res.data);
     } catch (e) {
       console.log("Error: ", e.response.data.msg);
     }
@@ -124,8 +128,12 @@ export default class ViewRequests extends Component {
     req.ticketClosed = true;
 
     try {
-      const res = await axios.put("/api/admin/takeAction", { userReq: req });
-      console.log(res.data);
+      const adminId = localStorage.getItem("userId");
+      const res = await axios.put("/api/admin/takeAction", {
+        userReq: req,
+        adminId: adminId,
+      });
+      console.log("rejected successfully: ", res.data);
     } catch (e) {
       console.log("Error: ", e.response.data.msg);
     }
@@ -135,7 +143,7 @@ export default class ViewRequests extends Component {
     return (
       <Consumer>
         {(value) => {
-          let { user } = value;
+          let { user } = this.state;
 
           const token = localStorage.getItem("auth-token");
 

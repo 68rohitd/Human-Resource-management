@@ -19,6 +19,10 @@ export default class EditEmpProfile extends Component {
       team: "",
       doj: "",
 
+      // teams and roels
+      teamList: [],
+      roleList: [],
+
       // sal details
       basicPay: "",
       totalLeaves: "",
@@ -35,6 +39,7 @@ export default class EditEmpProfile extends Component {
     const userSalData = await axios.get(
       `/api/admin/getUserSalDetails/${userId}`
     );
+    const teamAndRoleList = await axios.get("/api/admin/getTeamsAndRoles");
 
     this.setState({
       // form
@@ -49,6 +54,9 @@ export default class EditEmpProfile extends Component {
       objective: userData.data.objective,
       doj: userData.data.doj,
 
+      teamList: teamAndRoleList.data[0].teamNames,
+      roleList: teamAndRoleList.data[0].roleNames,
+
       // sal details
       basicPay: userSalData.data.basicPay,
       totalLeaves: userSalData.data.totalLeaves,
@@ -60,8 +68,14 @@ export default class EditEmpProfile extends Component {
 
   onDelete = async () => {
     try {
+      const adminId = localStorage.getItem("userId");
       const deletedEmp = await axios.delete(
-        `/api/admin/delete/${this.state.id}`
+        `/api/admin/delete/${this.state.id}`,
+        {
+          data: {
+            adminId: adminId,
+          },
+        }
       );
 
       toast.notify("Deleted profile successfully", {
@@ -131,6 +145,9 @@ export default class EditEmpProfile extends Component {
 
   onSelectGender = (gender) => this.setState({ gender });
 
+  onTeamSelect = (team) => this.setState({ team });
+
+  onRoleSelect = (role) => this.setState({ role });
   calSal = (e) => {
     e.preventDefault();
     let totalSal = 0;
@@ -227,27 +244,80 @@ export default class EditEmpProfile extends Component {
                 {/* team */}
                 <div className="col">
                   <label htmlFor="team">Team</label>
-                  <input
+                  <div className="dropdown">
+                    <button
+                      className="btn btn-light dropdown-toggle"
+                      type="button"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      {this.state.team}
+                    </button>
+                    <div
+                      className="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      {this.state.teamList.map((teamName) => (
+                        <li
+                          key={teamName}
+                          className="dropdown-item"
+                          onClick={() => this.onTeamSelect(teamName)}
+                        >
+                          {teamName}
+                        </li>
+                      ))}
+                    </div>
+                  </div>
+                  {/* <input
                     type="text"
                     value={this.state.team}
                     name="team"
                     className="form-control mb-3 "
                     onChange={this.onChange}
                     required
-                  />
+                  /> */}
                 </div>
 
                 {/* role */}
                 <div className="col">
                   <label htmlFor="role">Role</label>
-                  <input
+                  <div className="dropdown mb-3">
+                    <button
+                      className="btn btn-light dropdown-toggle"
+                      type="button"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      {this.state.role}
+                    </button>
+                    <div
+                      className="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      {this.state.roleList.map((roleName) => (
+                        <li
+                          key={roleName}
+                          className="dropdown-item"
+                          onClick={() => this.onRoleSelect(roleName)}
+                        >
+                          {roleName}
+                        </li>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* <input
                     type="text"
                     name="role"
                     value={this.state.role}
                     className="form-control mb-3 "
                     onChange={this.onChange}
                     required
-                  />
+                  /> */}
                 </div>
               </div>
 

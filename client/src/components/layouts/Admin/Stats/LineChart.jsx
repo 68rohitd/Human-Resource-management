@@ -24,12 +24,16 @@ export default class LineChart extends Component {
   }
 
   componentDidMount = async () => {
-    const empList = await axios.get("/api/admin/getEmpList");
-    this.setState({ empList: empList.data }, () => {
-      this.onPopulateLineChart();
+    axios.get("/api/admin/getEmpList").then((empList) => {
+      this.setState({ empList: empList.data }, () => {
+        this.onPopulateLineChart();
+      });
     });
 
-    console.log(empList.data);
+    // const empList = await axios.get("/api/admin/getEmpList");
+    // this.setState({ empList: empList.data }, () => {
+    //   this.onPopulateLineChart();
+    // });
   };
 
   onPopulateLineChart = () => {

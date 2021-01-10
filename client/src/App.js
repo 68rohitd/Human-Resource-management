@@ -22,6 +22,8 @@ import EditEmpProfile from "./components/layouts/Admin/EditEmpProfile";
 import MySalDetails from "./components/layouts/Employee/MySalDetails";
 import Payroll from "./components/layouts/Admin/Payroll";
 import Statistics from "./components/layouts/Admin/Stats/Statistics";
+import Options from "./components/layouts/Admin/Options";
+
 export default class App extends Component {
   render() {
     return (
@@ -29,28 +31,35 @@ export default class App extends Component {
         <Router>
           <div>
             <Header branding="HR" />
+
             <Switch>
-              <Route exact path="/" component={Statistics} />
+              {/* general */}
               <Route exact path="/login" component={Login} />
-              <Route exact path="/add" component={AddEmployee} />
               <Route exact path="/signup" component={Signup} />
               <Route exact path="/contactus" component={ContactUs} />
+              <Route exact path="/about" component={About} />
+
+              {/* emp related */}
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/attendence" component={Attendence} />
-              <Route exact path="/empDashboard" component={EmpDashboard} />
-              <Route exact path="/viewRequests" component={ViewRequests} />
               <Route exact path="/myRequests" component={MyRequests} />
+              <Route exact path="/empDashboard" component={EmpDashboard} />
               <Route exact path="/otherRequest" component={OtherRequests} />
-              <Route exact path="/viewEmployees" component={ViewEmployees} />
               <Route exact path="/mySalDetails" component={MySalDetails} />
+
+              {/* admin related */}
+              <Route exact path="/" component={Statistics} />
+              <Route exact path="/add" component={AddEmployee} />
+              <Route exact path="/viewRequests" component={ViewRequests} />
               <Route exact path="/statistics" component={Statistics} />
+              <Route exact path="/options" component={Options} />
               <Route exact path="/payroll" component={Payroll} />
+              <Route exact path="/viewEmployees" component={ViewEmployees} />
               <Route
                 exact
                 path="/editEmpProfile/:id"
                 component={EditEmpProfile}
               />
-              <Route exact path="/about" component={About} />
               <Route component={PageNotFound} />
             </Switch>
           </div>
