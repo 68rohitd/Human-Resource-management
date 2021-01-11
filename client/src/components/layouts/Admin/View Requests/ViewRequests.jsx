@@ -135,7 +135,7 @@ export default class ViewRequests extends Component {
       });
       console.log("rejected successfully: ", res.data);
     } catch (e) {
-      console.log("Error: ", e.response.data.msg);
+      console.log("Error: ", e.response);
     }
   };
 
@@ -227,24 +227,26 @@ export default class ViewRequests extends Component {
                         flexDirection: "row",
                       }}
                     >
-                      {user ? (
-                        user.loanRequests.length ? (
-                          user.loanRequests.map((req, index) => {
-                            return (
-                              <LoanRequestCard
-                                key={index}
-                                req={req}
-                                onApprove={this.onApprove}
-                                onReject={this.onReject}
-                              />
-                            );
-                          })
+                      <div className="row">
+                        {user ? (
+                          user.loanRequests.length ? (
+                            user.loanRequests.map((req, index) => {
+                              return (
+                                <LoanRequestCard
+                                  key={index}
+                                  req={req}
+                                  onApprove={this.onApprove}
+                                  onReject={this.onReject}
+                                />
+                              );
+                            })
+                          ) : (
+                            <small>No loan requests pending...</small>
+                          )
                         ) : (
-                          <small>No loan requests pending...</small>
-                        )
-                      ) : (
-                        <small>Loaing loan requests...</small>
-                      )}
+                          <small>Loaing loan requests...</small>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

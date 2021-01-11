@@ -9,6 +9,7 @@ const salarySchema = new Schema({
   totalLeaves: { type: String },
   travelAllowance: { type: String },
   medicalAllowance: { type: String },
+  bonus: { type: String },
   salary: { type: String },
 });
 

@@ -232,15 +232,6 @@ class AddEmployee extends Component {
                                     ))}
                                   </div>
                                 </div>
-
-                                {/* <input
-                                  type="text"
-                                  name="team"
-                                  className="form-control mb-3 "
-                                  placeholder="Devops"
-                                  onChange={this.onChange}
-                                  required
-                                /> */}
                               </div>
 
                               {/* role */}
@@ -274,14 +265,6 @@ class AddEmployee extends Component {
                                     ))}
                                   </div>
                                 </div>
-                                {/* <input
-                                  type="text"
-                                  name="role"
-                                  className="form-control mb-3 "
-                                  placeholder="ML Engineer"
-                                  onChange={this.onChange}
-                                  required
-                                /> */}
                               </div>
                             </div>
 

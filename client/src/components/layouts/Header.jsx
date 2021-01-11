@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { Consumer } from "../../context";
 import "../../assets/header-styles/header.css";
 

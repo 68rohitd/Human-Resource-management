@@ -69,7 +69,6 @@ export class Provider extends Component {
   }
 
   async componentDidMount() {
-    console.log("contex mounted");
     // check if logged in
     let token = localStorage.getItem("auth-token");
     if (token === null) {
@@ -83,7 +82,6 @@ export class Provider extends Component {
         headers: { "x-auth-token": token },
       });
       if (tokenRes.data) {
-        console.log("admin logged in");
         //logged in
         const adminRes = await axios.get("/api/admin", {
           headers: { "x-auth-token": token },

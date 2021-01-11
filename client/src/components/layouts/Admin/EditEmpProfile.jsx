@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import toast from "toasted-notes";
 import "toasted-notes/src/styles.css";
+import LoanDetailsCard from "./LoanDetailsCard";
 
 export default class EditEmpProfile extends Component {
   constructor() {
@@ -28,11 +29,15 @@ export default class EditEmpProfile extends Component {
       totalLeaves: "",
       travelAllowance: "",
       medicalAllowance: "",
+      bonus: "",
       salary: "",
+
+      // loan details
+      empLoanHistory: [],
     };
   }
 
-  async componentDidMount() {
+  componentDidMount = async () => {
     const userId = this.props.match.params.id;
 
     const userData = await axios.get(`/api/admin/getUserData/${userId}`);
@@ -40,6 +45,9 @@ export default class EditEmpProfile extends Component {
       `/api/admin/getUserSalDetails/${userId}`
     );
     const teamAndRoleList = await axios.get("/api/admin/getTeamsAndRoles");
+    const empLoanHistory = await axios.get(
+      `/api/admin/getEmpLoanHistory/${userId}`
+    );
 
     this.setState({
       // form
@@ -62,9 +70,13 @@ export default class EditEmpProfile extends Component {
       totalLeaves: userSalData.data.totalLeaves,
       travelAllowance: userSalData.data.travelAllowance,
       medicalAllowance: userSalData.data.medicalAllowance,
+      bonus: userSalData.data.bonus,
       salary: userSalData.data.salary,
+
+      // loan details
+      empLoanHistory: empLoanHistory.data,
     });
-  }
+  };
 
   onDelete = async () => {
     try {
@@ -126,6 +138,7 @@ export default class EditEmpProfile extends Component {
       totalLeaves: this.state.totalLeaves,
       travelAllowance: this.state.travelAllowance,
       medicalAllowance: this.state.medicalAllowance,
+      bonus: this.state.bonus,
       salary: this.state.salary,
     };
 
@@ -148,7 +161,8 @@ export default class EditEmpProfile extends Component {
   onTeamSelect = (team) => this.setState({ team });
 
   onRoleSelect = (role) => this.setState({ role });
-  calSal = (e) => {
+
+  onCalSal = (e) => {
     e.preventDefault();
     let totalSal = 0;
     const {
@@ -156,12 +170,14 @@ export default class EditEmpProfile extends Component {
       totalLeaves,
       travelAllowance,
       medicalAllowance,
+      bonus,
     } = this.state;
 
     totalSal =
       parseInt(basicPay) +
       parseInt(travelAllowance) +
-      parseInt(medicalAllowance);
+      parseInt(medicalAllowance) +
+      parseInt(bonus);
 
     const perDaySal = totalSal / 30;
     if (totalLeaves > 3) {
@@ -170,175 +186,105 @@ export default class EditEmpProfile extends Component {
     this.setState({ salary: totalSal });
   };
 
+  onGetDate = (date) => {
+    const d = new Date(date);
+    let returnDate = d.toLocaleDateString("en-GB");
+    return returnDate;
+  };
+
+  onMarkAsPaid = async (loanDetails) => {
+    try {
+      const paidLoan = await axios.put("/api/admin/loanPaid", {
+        loanId: loanDetails._id,
+      });
+
+      toast.notify("successfully updated data", {
+        position: "top-right",
+      });
+
+      console.log("marked as paid: ", paidLoan.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  onUpdateLoanDetails = async () => {};
+
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   render() {
     return (
       <div className="container">
         <div className="row m-0">
-          {/* form */}
+          {/* profile form  col 1*/}
           <div className="col">
-            <form
-              className="addEmpForm"
-              onSubmit={this.updateProfile.bind(this)}
-            >
-              <h3>Employee Profile</h3>
-              <hr />
+            <div className="row">
+              <form
+                className="addEmpForm"
+                onSubmit={this.updateProfile.bind(this)}
+              >
+                <h3>Employee Profile</h3>
+                <hr />
 
-              <div className="row">
-                <div className="col">
-                  {/* name */}
-                  <label htmlFor="name">Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    className="form-control"
-                    value={this.state.name}
-                    onChange={this.onChange}
-                    required
-                  />
-                </div>
-                <div className="col">
-                  {/* email */}
-                  <label htmlFor="email">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={this.state.email}
-                    className="form-control mb-3 "
-                    onChange={this.onChange}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col">
-                  {/* address */}
-                  <label htmlFor="address">Address</label>
-                  <textarea
-                    name="address"
-                    value={this.state.address}
-                    id="address"
-                    rows="1"
-                    className="form-control mb-3 "
-                    onChange={this.onChange}
-                    required
-                  />
-                </div>
-                <div className="col">
-                  {/* phone no */}
-                  <label htmlFor="phoneNo">Phone No.</label>
-                  <input
-                    type="number"
-                    value={this.state.phoneNo}
-                    name="phoneNo"
-                    className="form-control mb-3 "
-                    onChange={this.onChange}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="row">
-                {/* team */}
-                <div className="col">
-                  <label htmlFor="team">Team</label>
-                  <div className="dropdown">
-                    <button
-                      className="btn btn-light dropdown-toggle"
-                      type="button"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      {this.state.team}
-                    </button>
-                    <div
-                      className="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      {this.state.teamList.map((teamName) => (
-                        <li
-                          key={teamName}
-                          className="dropdown-item"
-                          onClick={() => this.onTeamSelect(teamName)}
-                        >
-                          {teamName}
-                        </li>
-                      ))}
-                    </div>
-                  </div>
-                  {/* <input
-                    type="text"
-                    value={this.state.team}
-                    name="team"
-                    className="form-control mb-3 "
-                    onChange={this.onChange}
-                    required
-                  /> */}
-                </div>
-
-                {/* role */}
-                <div className="col">
-                  <label htmlFor="role">Role</label>
-                  <div className="dropdown mb-3">
-                    <button
-                      className="btn btn-light dropdown-toggle"
-                      type="button"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      {this.state.role}
-                    </button>
-                    <div
-                      className="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      {this.state.roleList.map((roleName) => (
-                        <li
-                          key={roleName}
-                          className="dropdown-item"
-                          onClick={() => this.onRoleSelect(roleName)}
-                        >
-                          {roleName}
-                        </li>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* <input
-                    type="text"
-                    name="role"
-                    value={this.state.role}
-                    className="form-control mb-3 "
-                    onChange={this.onChange}
-                    required
-                  /> */}
-                </div>
-              </div>
-
-              <div className="row">
-                {/* doj */}
-                <div className="col">
-                  <label htmlFor="doj">Date Of Joining</label>
-                  <input
-                    type="date"
-                    name="doj"
-                    value={this.state.doj}
-                    className="form-control mb-3 "
-                    onChange={this.onChange}
-                    required
-                  />
-                </div>
-
-                {/* gender */}
-                <div className="col">
+                <div className="row">
                   <div className="col">
-                    <label>Gender</label>
+                    {/* name */}
+                    <label htmlFor="name">Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      className="form-control"
+                      value={this.state.name}
+                      onChange={this.onChange}
+                      required
+                    />
+                  </div>
+                  <div className="col">
+                    {/* email */}
+                    <label htmlFor="email">Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={this.state.email}
+                      className="form-control mb-3 "
+                      onChange={this.onChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col">
+                    {/* address */}
+                    <label htmlFor="address">Address</label>
+                    <textarea
+                      name="address"
+                      value={this.state.address}
+                      id="address"
+                      rows="1"
+                      className="form-control mb-3 "
+                      onChange={this.onChange}
+                      required
+                    />
+                  </div>
+                  <div className="col">
+                    {/* phone no */}
+                    <label htmlFor="phoneNo">Phone No.</label>
+                    <input
+                      type="number"
+                      value={this.state.phoneNo}
+                      name="phoneNo"
+                      className="form-control mb-3 "
+                      onChange={this.onChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="row">
+                  {/* team */}
+                  <div className="col">
+                    <label htmlFor="team">Team</label>
                     <div className="dropdown">
                       <button
                         className="btn btn-light dropdown-toggle"
@@ -348,45 +294,147 @@ export default class EditEmpProfile extends Component {
                         aria-haspopup="true"
                         aria-expanded="false"
                       >
-                        {this.state.gender}
+                        {this.state.team}
                       </button>
                       <div
                         className="dropdown-menu"
                         aria-labelledby="dropdownMenuButton"
                       >
-                        <li
-                          className="dropdown-item"
-                          onClick={() => this.onSelectGender("Male")}
-                        >
-                          Male
-                        </li>
-                        <li
-                          className="dropdown-item"
-                          onClick={() => this.onSelectGender("Female")}
-                        >
-                          Female
-                        </li>
+                        {this.state.teamList.map((teamName) => (
+                          <li
+                            key={teamName}
+                            className="dropdown-item"
+                            onClick={() => this.onTeamSelect(teamName)}
+                          >
+                            {teamName}
+                          </li>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* role */}
+                  <div className="col">
+                    <label htmlFor="role">Role</label>
+                    <div className="dropdown mb-3">
+                      <button
+                        className="btn btn-light dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        {this.state.role}
+                      </button>
+                      <div
+                        className="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        {this.state.roleList.map((roleName) => (
+                          <li
+                            key={roleName}
+                            className="dropdown-item"
+                            onClick={() => this.onRoleSelect(roleName)}
+                          >
+                            {roleName}
+                          </li>
+                        ))}
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <input
-                disabled={this.state.disabled}
-                type="submit"
-                value="Submit"
-                className="btn btn-success btn-block "
-              />
-            </form>
+
+                <div className="row">
+                  {/* doj */}
+                  <div className="col">
+                    <label htmlFor="doj">Date Of Joining</label>
+                    <input
+                      type="date"
+                      name="doj"
+                      value={this.state.doj}
+                      className="form-control mb-3 "
+                      onChange={this.onChange}
+                      required
+                    />
+                  </div>
+
+                  {/* gender */}
+                  <div className="col">
+                    <div className="col">
+                      <label>Gender</label>
+                      <div className="dropdown">
+                        <button
+                          className="btn btn-light dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          {this.state.gender}
+                        </button>
+                        <div
+                          className="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton"
+                        >
+                          <li
+                            className="dropdown-item"
+                            onClick={() => this.onSelectGender("Male")}
+                          >
+                            Male
+                          </li>
+                          <li
+                            className="dropdown-item"
+                            onClick={() => this.onSelectGender("Female")}
+                          >
+                            Female
+                          </li>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <input
+                  disabled={this.state.disabled}
+                  type="submit"
+                  value="Submit"
+                  className="btn btn-success btn-block "
+                />
+              </form>
+            </div>
+
+            {/* emp loan history */}
+            <div className="row">
+              {this.state.empLoanHistory.length ? (
+                <form className="addEmpForm">
+                  <h3>Employee Loan History</h3>
+                  <hr />
+
+                  {this.state.empLoanHistory.map((loan) => (
+                    <LoanDetailsCard
+                      key={loan.reqId}
+                      loanDetails={loan}
+                      onGetDate={this.onGetDate}
+                      onMarkAsPaid={this.onMarkAsPaid}
+                    />
+                  ))}
+                </form>
+              ) : (
+                <div className="addEmpForm">
+                  <h3>No loan history available</h3>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* salary details */}
+          {/* salary details col2 */}
           <div className="col">
             <form className="addEmpForm">
               <h3>Employee Salary Details</h3>
               <hr />
               <div className="form-group">
-                <label htmlFor="name">Basic Pay</label>
+                <label htmlFor="basicPay">Basic Pay</label>
                 <input
                   name="basicPay"
                   type="number"
@@ -398,7 +446,7 @@ export default class EditEmpProfile extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="name">Travel Allowance</label>
+                <label htmlFor="travelAllowance">Travel Allowance</label>
                 <input
                   name="travelAllowance"
                   type="number"
@@ -410,13 +458,26 @@ export default class EditEmpProfile extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="name">mMdical Allowance</label>
+                <label htmlFor="medicalAllowance">Medical Allowance</label>
                 <input
                   name="medicalAllowance"
                   type="number"
                   className="form-control"
                   id="medicalAllowance"
                   value={this.state.medicalAllowance}
+                  onChange={this.onChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="bonus">Bonus</label>
+                <input
+                  name="bonus"
+                  type="number"
+                  min="0"
+                  className="form-control"
+                  id="bonus"
+                  value={this.state.bonus}
                   onChange={this.onChange}
                 />
               </div>
@@ -437,7 +498,7 @@ export default class EditEmpProfile extends Component {
                     className="btn btn-outline-secondary"
                     type="button"
                     id="button-addon2"
-                    onClick={this.calSal}
+                    onClick={this.onCalSal}
                   >
                     Calculate Salary
                   </button>
@@ -453,6 +514,7 @@ export default class EditEmpProfile extends Component {
             </form>
           </div>
 
+          {/* option col 3 */}
           <div className="col-1 mt-5">
             <input
               className="btn btn-danger"

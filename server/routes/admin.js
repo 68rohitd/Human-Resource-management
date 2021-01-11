@@ -8,6 +8,7 @@ let Salary = require("../models/salary.model");
 let SalaryReceipt = require("../models/salaryReceipt.model");
 const { json } = require("express");
 const TeamAndRole = require("../models/teams.and.roles.model");
+const Loan = require("../models/loan.model");
 
 // @desc: register a user
 router.post("/register", async (req, res) => {
@@ -169,6 +170,7 @@ router.post("/addEmployee", async (req, res) => {
       totalLeaves: 0,
       travelAllowance: 0,
       medicalAllowance: 0,
+      bonus: 0,
       salary: 0,
     });
 
@@ -193,14 +195,17 @@ router.post("/addEmployee", async (req, res) => {
 // @desc: approve/reject requests
 router.put("/takeAction", async (req, res) => {
   const user = await User.findOne({ _id: req.body.userReq.empId });
-
   if (!user) return res.status(400).json({ msg: "user not found" });
+  // console.log("req: ", req.body.userReq);
+  let isApproved = false;
 
+  // update emp's notification list: status from PENDING --> Approved/Rejected
   let updatedNotificationList = [];
   user.notification.forEach((notification) => {
     if (notification.reqId === req.body.userReq.reqId) {
       if (req.body.userReq.approved) {
         //if approved by admin
+        isApproved = true;
         notification.approved = true;
         notification.ticketClosed = true;
       } else {
@@ -223,6 +228,7 @@ router.put("/takeAction", async (req, res) => {
     }
   );
 
+  // remove that particular req from admins req tab
   const admin = await Admin.findById(req.body.adminId);
 
   if (req.body.userReq.title === "leave request") {
@@ -244,30 +250,29 @@ router.put("/takeAction", async (req, res) => {
       }
     );
 
-    // Admin.findOneAndUpdate(
-    //   { email: "admin@gmail.com" },
-    //   { leaveRequests: updatedLeaveReq },
-    //   { new: true },
-    //   function (err, result) {
-    //     if (err) res.status(400).json("Error: ", err);
-    //     else res.json(result);
-    //   }
-    // );
+    // if approved: update emp's SALARY MODEL : increament leaveCount by no of leaves taken
+    // cal date difference
+    if (isApproved) {
+      const dateOne = new Date(req.body.userReq.fromDate);
+      const dateTwo = new Date(req.body.userReq.toDate);
+      const differenceInTime = dateTwo.getTime() - dateOne.getTime();
+      const differenceInDays = differenceInTime / (1000 * 3600 * 24) + 1;
 
-    // update emp's SALARY MODEL : increament leaveCount
-    const salDetail = await Salary.findOne({ empId: req.body.userReq.empId });
-    let currentLeaves = parseInt(salDetail.totalLeaves);
-    currentLeaves += 1;
+      const salDetail = await Salary.findOne({ empId: req.body.userReq.empId });
+      let currentLeaves = parseInt(salDetail.totalLeaves);
+      currentLeaves += differenceInDays;
 
-    let updatedSalDetails = await Salary.findOneAndUpdate(
-      { empId: req.body.userReq.empId },
-      { totalLeaves: currentLeaves },
-      { new: true }
-    );
+      await Salary.findOneAndUpdate(
+        { empId: req.body.userReq.empId },
+        { totalLeaves: currentLeaves },
+        { new: true }
+      );
+    }
   } else if (req.body.userReq.title === "bonus request") {
     // bonus requests
     let updatedBonusReq = [];
 
+    // remove that particular req from admin's notification
     admin.bonusRequests.forEach((request) => {
       if (request.reqId !== req.body.userReq.reqId)
         updatedBonusReq.push(request);
@@ -282,44 +287,48 @@ router.put("/takeAction", async (req, res) => {
         else res.json(result);
       }
     );
-
-    // Admin.findOneAndUpdate(
-    //   { email: "admin@gmail.com" },
-    //   { bonusRequests: updatedBonusReq },
-    //   { new: true },
-    //   function (err, result) {
-    //     if (err) res.status(400).json("Error: ", err);
-    //     else res.json(result);
-    //   }
-    // );
   } else {
-    // loan requests
-    let updatedLoanReq = [];
+    try {
+      // loan requests
+      // remove that particular req from admin's notification
+      let updatedLoanReq = [];
 
-    admin.loanRequests.forEach((request) => {
-      if (request.reqId !== req.body.userReq.reqId)
-        updatedLoanReq.push(request);
-    });
+      admin.loanRequests.forEach((request) => {
+        if (request.reqId !== req.body.userReq.reqId)
+          updatedLoanReq.push(request);
+      });
 
-    Admin.findByIdAndUpdate(
-      req.body.adminId,
-      { loanRequests: updatedLoanReq },
-      { new: true },
-      function (err, result) {
-        if (err) res.status(400).json("Error: ", err);
-        else res.json(result);
+      Admin.findByIdAndUpdate(
+        req.body.adminId,
+        { loanRequests: updatedLoanReq },
+        { new: true },
+        function (err, result) {
+          if (err) res.status(400).json("Error: ", err);
+        }
+      );
+
+      // add loan details to LOAN MODEL only if approved
+      if (isApproved) {
+        const newLoan = new Loan({
+          reqId: req.body.userReq.reqId,
+          empId: req.body.userReq.empId,
+          date: req.body.userReq.date,
+          empName: req.body.userReq.empName,
+          gender: req.body.userReq.gender,
+          empRole: req.body.userReq.empRole,
+          empTeam: req.body.userReq.empTeam,
+          empEmail: req.body.userReq.empEmail,
+          loanNote: req.body.userReq.loanNote,
+          amount: req.body.userReq.amount,
+          loanRepaid: false,
+        });
+
+        const savedLoan = await newLoan.save();
+        res.json(savedLoan);
       }
-    );
-
-    // Admin.findOneAndUpdate(
-    //   { email: "admin@gmail.com" },
-    //   { loanRequests: updatedLoanReq },
-    //   { new: true },
-    //   function (err, result) {
-    //     if (err) res.status(400).json("Error: ", err);
-    //     else res.json(result);
-    //   }
-    // );
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
   }
 });
 
@@ -343,6 +352,9 @@ router.delete("/delete/:id", async (req, res) => {
     const deletedSalReceipt = await SalaryReceipt.findOneAndDelete({
       empId: req.params.id,
     });
+
+    // delete corresponding LOAN DETAILS too
+    await Loan.deleteMany({ empId: req.params.id });
 
     // delete req's if sent by this user
     const admin = await Admin.findById(req.body.adminId);
@@ -499,6 +511,7 @@ router.put("/updateSalaryDetails/:id", async (req, res) => {
         totalLeaves: salDetails.totalLeaves,
         travelAllowance: salDetails.travelAllowance,
         medicalAllowance: salDetails.medicalAllowance,
+        bonus: salDetails.bonus,
         salary: salDetails.salary,
       },
       { new: true }
@@ -574,7 +587,44 @@ router.delete("/deleteAdminAcc/:id", async (req, res) => {
     res.status(500).json(e);
   }
 });
-
 // ********************** OPTIONS PANEL APIS END *******************************
 
+// ********************** LOAN APIS START *******************************
+// @desc: get all loan docs from LOAN MODEL
+router.get("/getLoanList", async (req, res) => {
+  try {
+    const loanList = await Loan.find({});
+    res.json(loanList);
+  } catch (e) {
+    res.status(500).json(e);
+  }
+});
+
+// @desc: get single emp's loan history
+router.get("/getEmpLoanHistory/:id", async (req, res) => {
+  try {
+    const empLoanHistory = await Loan.find({ empId: req.params.id });
+    res.json(empLoanHistory);
+  } catch (e) {
+    res.status(500).json(e);
+  }
+});
+
+// @desc: mark particular loan as paid
+router.put("/loanPaid", async (req, res) => {
+  try {
+    const loan = await Loan.findByIdAndUpdate(
+      req.body.loanId,
+      {
+        loanRepaid: true,
+      },
+      { new: true }
+    );
+
+    res.json(loan);
+  } catch (e) {
+    res.status(500).json(e);
+  }
+});
+// ********************** LOAN APIS START *******************************
 module.exports = router;

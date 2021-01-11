@@ -190,4 +190,30 @@ router.put("/loanRequest", async (req, res) => {
   );
 });
 
+// @desc: change emp password
+router.put("/changePassword/:id", async (req, res) => {
+  try {
+    const oldPassword = req.body.oldPassword;
+    const newPassword = req.body.newPassword;
+
+    const user = await User.findById(req.params.id);
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch)
+      return res
+        .status(400)
+        .json({ msg: "old password dont match with our database" });
+
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(newPassword, salt);
+
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, {
+      password: passwordHash,
+    });
+
+    res.json(updatedUser);
+  } catch (e) {
+    res.status(400).json("Error: ", e);
+  }
+});
 module.exports = router;

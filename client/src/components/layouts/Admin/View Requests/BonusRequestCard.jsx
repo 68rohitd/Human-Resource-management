@@ -27,7 +27,7 @@ export default class BonusRequestCard extends Component {
                   <div className="col">
                     <img
                       src={
-                        gender === "male" ? maleProfilePic : femaleProfilePic
+                        gender === "Male" ? maleProfilePic : femaleProfilePic
                       }
                       alt="profile pic"
                       width="100px"

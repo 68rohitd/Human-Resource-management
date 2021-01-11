@@ -49,6 +49,7 @@ export default class otherRequest extends Component {
       title: "loan request",
       reqId: uuidv4(),
       empId: user._id,
+      date: new Date(),
       empName: user.name,
       gender: user.gender,
       empRole: user.role,
@@ -58,6 +59,7 @@ export default class otherRequest extends Component {
       amount: this.state.amount,
       approved: false,
       ticketClosed: false,
+      loanRepaid: false,
     };
 
     // push to admin notification

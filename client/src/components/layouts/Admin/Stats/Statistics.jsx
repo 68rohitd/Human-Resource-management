@@ -15,23 +15,45 @@ export default class Statistics extends Component {
     this.state = {
       empList: [],
       empSalList: [],
+      loanList: [],
       totalExpenses: 0,
+      loanExpenses: 0,
     };
   }
 
   componentDidMount = async () => {
     const empList = await axios.get("/api/admin/getEmpList");
     const empSalList = await axios.get("/api/admin/getEmpSalList");
+    const loanList = await axios.get("/api/admin/getLoanList");
+
     this.setState(
-      { empList: empList.data, empSalList: empSalList.data },
+      {
+        empList: empList.data,
+        empSalList: empSalList.data,
+        loanList: loanList.data,
+      },
       () => {
         this.calTotalExpenses();
+        this.calLoanExpenses();
       }
     );
   };
 
+  calLoanExpenses = () => {
+    let totalLoan = 0;
+
+    console.log("emp loan list: ", this.state.loanList);
+
+    this.state.loanList.forEach((loan) => {
+      if (!loan.loanRepaid) totalLoan += parseInt(loan.amount);
+    });
+
+    this.setState({ loanExpenses: totalLoan });
+  };
+
   calTotalExpenses = () => {
     let totalExpenses = 0;
+    console.log("emp sal list: ", this.state.empSalList);
     this.state.empSalList.forEach((emp) => {
       totalExpenses += parseInt(emp.salary);
     });
@@ -61,10 +83,16 @@ export default class Statistics extends Component {
               <div className="col-9 rightPart container">
                 {/* numbers */}
                 <div className="row mt-5">
-                  <div className="col mr-3 ">
+                  <div className="col ">
                     <Card
-                      label="Total Expenses"
+                      label="Salary Expenses"
                       data={`₹ ${this.state.totalExpenses}`}
+                    />
+                  </div>
+                  <div className="col ">
+                    <Card
+                      label="Loan Expenses"
+                      data={`₹ ${this.state.loanExpenses}`}
                     />
                   </div>
                   <div className="col">
