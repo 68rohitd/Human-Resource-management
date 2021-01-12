@@ -4,15 +4,26 @@ import { Consumer } from "../../../context";
 import { v4 as uuidv4 } from "uuid";
 import { Redirect } from "react-router-dom";
 import EmpSidePanel from "./EmpSidePanel";
+import toast from "toasted-notes";
+import "toasted-notes/src/styles.css";
 
 export default class otherRequest extends Component {
   constructor() {
     super();
 
     this.state = {
-      bonusNote: "",
+      // loan related
+      loanReason: "Medical Expenditure",
+      otherLoanReason: "",
       loanNote: "",
+      ModeOfRepayment: "Deduction from salary",
       amount: "",
+      timePeriod: "",
+
+      // bonus related
+      bonusReason: "Employee Referral Program",
+      otherBonusReason: "",
+      bonusNote: "",
     };
   }
 
@@ -20,6 +31,10 @@ export default class otherRequest extends Component {
 
   onBonusSubmit = async (user, e) => {
     e.preventDefault();
+
+    let bonusReason = this.state.otherBonusReason
+      ? this.state.otherBonusReason
+      : this.state.bonusReason;
 
     const request = {
       title: "bonus request",
@@ -31,6 +46,7 @@ export default class otherRequest extends Component {
       empTeam: user.team,
       empEmail: user.email,
       bonusNote: this.state.bonusNote,
+      bonusReason,
       approved: false,
       ticketClosed: false,
     };
@@ -46,6 +62,10 @@ export default class otherRequest extends Component {
   onLoanSubmit = async (user, e) => {
     e.preventDefault();
 
+    let loanReason = this.state.otherLoanReason
+      ? this.state.otherLoanReason
+      : this.state.loanReason;
+
     const request = {
       title: "loan request",
       reqId: uuidv4(),
@@ -58,6 +78,9 @@ export default class otherRequest extends Component {
       empEmail: user.email,
       loanNote: this.state.loanNote,
       amount: this.state.amount,
+      loanReason,
+      modeOfRepayment: this.state.ModeOfRepayment,
+      timePeriod: this.state.timePeriod,
       approved: false,
       ticketClosed: false,
       loanRepaid: false,
@@ -68,8 +91,20 @@ export default class otherRequest extends Component {
       request,
     });
 
-    console.log("res: ", res.data);
+    toast.notify("Successfully submitted loan request", {
+      position: "top-right",
+    });
+
+    console.log("successfully submitted req: ", res.data);
   };
+
+  onReasonSelect = (loanReason) =>
+    this.setState({ loanReason, otherLoanReason: "" });
+
+  onModeOfRepaymentSelect = (ModeOfRepayment) =>
+    this.setState({ ModeOfRepayment });
+
+  onBonusReasonSelect = (bonusReason) => this.setState({ bonusReason });
 
   render() {
     return (
@@ -88,61 +123,315 @@ export default class otherRequest extends Component {
               </div>
 
               {/* right part */}
-              <div className="col rightPart container ">
-                <div className="container">
-                  <h1>Req for bonus</h1>
-                  <form onSubmit={this.onBonusSubmit.bind(this, user)}>
-                    <div className="form-group">
-                      <label htmlFor="reason">note</label>
-                      <input
-                        type="text"
-                        name="bonusNote"
-                        className="form-control"
-                        id="bonusNote"
-                        value={this.state.bonusNote}
-                        onChange={this.onChange}
-                      />
-                    </div>
-                    <input
-                      type="submit"
-                      className="btn btn-primary"
-                      value="send request"
-                    />
-                  </form>
+              <div className="col rightPart container">
+                <div className="row">
+                  {/* loan col */}
+                  <div className="col mx-5">
+                    <form
+                      className="addEmpForm"
+                      onSubmit={this.onLoanSubmit.bind(this, user)}
+                    >
+                      <h1>Request for Loan</h1>
+                      <hr />
 
-                  <hr />
+                      <div className="row">
+                        {/* reason dropdown */}
+                        <div className="col">
+                          <div className="form-group">
+                            <label htmlFor="loanReason">Loan Reason</label>
+                            <div className="dropdown">
+                              <button
+                                className="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              >
+                                {this.state.loanReason}
+                              </button>
+                              <div
+                                className="dropdown-menu"
+                                aria-labelledby="dropdownMenuButton"
+                              >
+                                <li
+                                  className="dropdown-item"
+                                  onClick={() =>
+                                    this.onReasonSelect("Medical Expenditure")
+                                  }
+                                >
+                                  Medical Expenditure
+                                </li>
+                                <li
+                                  className="dropdown-item"
+                                  onClick={() =>
+                                    this.onReasonSelect("Moving Expenditure")
+                                  }
+                                >
+                                  Moving Expenditure
+                                </li>
+                                <li
+                                  className="dropdown-item"
+                                  onClick={() =>
+                                    this.onReasonSelect("Buy Assets")
+                                  }
+                                >
+                                  Buy Assets
+                                </li>
+                                <li
+                                  className="dropdown-item"
+                                  onClick={() => this.onReasonSelect("Other")}
+                                >
+                                  Other
+                                </li>
+                              </div>
+                            </div>
 
-                  <h1>req for loan</h1>
-                  <form onSubmit={this.onLoanSubmit.bind(this, user)}>
-                    <div className="form-group">
-                      <label htmlFor="reason">amt </label>
-                      <input
-                        type="number"
-                        name="amount"
-                        className="form-control"
-                        id="amount"
-                        value={this.state.amount}
-                        onChange={this.onChange}
-                      />
-                    </div>
+                            {this.state.loanReason === "Other" ? (
+                              <input
+                                type="text"
+                                name="otherLoanReason"
+                                className="form-control mt-2"
+                                placeholder="Other reason"
+                                onChange={this.onChange}
+                                value={this.state.otherLoanReason}
+                              />
+                            ) : null}
+                          </div>
+                        </div>
 
-                    <div className="form-group">
-                      <label htmlFor="reason">note</label>
+                        {/* mode of repayment */}
+                        <div className="col">
+                          <div className="form-group">
+                            <label htmlFor="paymentMode">
+                              Mode of Repayment
+                            </label>
+
+                            {/* mode of payment dropdown */}
+                            <div className="dropdown">
+                              <button
+                                className="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                id="dropdownMenuButton2"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              >
+                                {this.state.ModeOfRepayment}
+                              </button>
+                              <div
+                                className="dropdown-menu"
+                                aria-labelledby="dropdownMenuButton2"
+                              >
+                                <li
+                                  className="dropdown-item"
+                                  onClick={() =>
+                                    this.onModeOfRepaymentSelect(
+                                      "Deduction from salary"
+                                    )
+                                  }
+                                >
+                                  Deduction from salary
+                                </li>
+                                <li
+                                  className="dropdown-item"
+                                  onClick={() =>
+                                    this.onModeOfRepaymentSelect(
+                                      "One Time Payment"
+                                    )
+                                  }
+                                >
+                                  One Time Payment
+                                </li>
+                                <li
+                                  className="dropdown-item"
+                                  onClick={() =>
+                                    this.onModeOfRepaymentSelect("Installment")
+                                  }
+                                >
+                                  Installment
+                                </li>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="reason">Explain reason in brief</label>
+                        <textarea
+                          required={true}
+                          type="text"
+                          name="loanNote"
+                          className="form-control"
+                          id="loanNote"
+                          value={this.state.loanNote}
+                          onChange={this.onChange}
+                        />
+                      </div>
+
+                      <div className="row">
+                        <div className="col">
+                          <div className="form-group">
+                            <label htmlFor="reason">Loan Amount </label>
+                            <input
+                              required={true}
+                              type="number"
+                              name="amount"
+                              className="form-control"
+                              id="amount"
+                              value={this.state.amount}
+                              onChange={this.onChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col">
+                          <div className="form-group">
+                            <label htmlFor="reason">
+                              Time Period (in months)
+                            </label>
+                            <input
+                              required={true}
+                              type="number"
+                              name="timePeriod"
+                              className="form-control"
+                              id="timePeriod"
+                              value={this.state.timePeriod}
+                              onChange={this.onChange}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
                       <input
-                        type="text"
-                        name="loanNote"
-                        className="form-control"
-                        id="loanNote"
-                        value={this.state.loanNote}
-                        onChange={this.onChange}
+                        type="submit"
+                        className="btn btn-primary"
+                        value="Submit Request"
                       />
-                    </div>
-                    <input
-                      type="submit"
-                      className="btn btn-primary"
-                      value="send request"
-                    />
-                  </form>
+                    </form>
+                  </div>
+
+                  {/* bonus col */}
+                  <div className="col mx-5">
+                    <form
+                      className="addEmpForm"
+                      onSubmit={this.onBonusSubmit.bind(this, user)}
+                    >
+                      <h1>Request for Bonus</h1>
+                      <hr />
+
+                      <div className="form-group">
+                        <label htmlFor="paymentMode">Bonus Reason</label>
+
+                        {/* bonus reason dropdown */}
+                        <div className="form-group">
+                          <div className="dropdown">
+                            <button
+                              className="btn btn-secondary dropdown-toggle"
+                              type="button"
+                              id="dropdownMenuButton2"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                            >
+                              {this.state.bonusReason}
+                            </button>
+                            <div
+                              className="dropdown-menu"
+                              aria-labelledby="dropdownMenuButton2"
+                            >
+                              <li
+                                className="dropdown-item"
+                                onClick={() =>
+                                  this.onBonusReasonSelect(
+                                    "Employee Referral Program"
+                                  )
+                                }
+                              >
+                                Employee Referral Program
+                              </li>
+                              <li
+                                className="dropdown-item"
+                                onClick={() =>
+                                  this.onBonusReasonSelect(
+                                    "Exceptional Achievement"
+                                  )
+                                }
+                              >
+                                Exceptional Achievement
+                              </li>
+                              <li
+                                className="dropdown-item"
+                                onClick={() =>
+                                  this.onBonusReasonSelect(
+                                    "Exceptional Service"
+                                  )
+                                }
+                              >
+                                Exceptional Service
+                              </li>
+                              <li
+                                className="dropdown-item"
+                                onClick={() =>
+                                  this.onBonusReasonSelect("Special Project(s)")
+                                }
+                              >
+                                Special Project(s)
+                              </li>
+                              <li
+                                className="dropdown-item"
+                                onClick={() =>
+                                  this.onBonusReasonSelect("Budget Savings")
+                                }
+                              >
+                                Budget Savings
+                              </li>
+                              <li
+                                className="dropdown-item"
+                                onClick={() =>
+                                  this.onBonusReasonSelect("Other")
+                                }
+                              >
+                                Other
+                              </li>
+                            </div>
+                          </div>
+
+                          {this.state.bonusReason === "Other" ? (
+                            <input
+                              type="text"
+                              className="form-control mt-2"
+                              name="otherBonusReason"
+                              placeholder="Other reason"
+                              value={this.state.otherBonusReason}
+                              onChange={this.onChange}
+                            />
+                          ) : null}
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="reason">
+                          Explain the circumstances
+                        </label>
+                        <textarea
+                          required={true}
+                          type="text"
+                          name="bonusNote"
+                          className="form-control"
+                          id="bonusNote"
+                          value={this.state.bonusNote}
+                          onChange={this.onChange}
+                        />
+                      </div>
+
+                      <input
+                        type="submit"
+                        className="btn btn-primary"
+                        value="Submit Request"
+                      />
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>

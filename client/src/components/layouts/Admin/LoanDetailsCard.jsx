@@ -2,19 +2,33 @@ import React, { Component } from "react";
 
 export default class LoanDetailsCard extends Component {
   render() {
-    const { loanRepaid, date, amount, loanNote } = this.props.loanDetails;
+    const {
+      loanRepaid,
+      date,
+      amount,
+      loanNote,
+      loanReason,
+      modeOfRepayment,
+      timePeriod,
+    } = this.props.loanDetails;
     console.log(this.props);
     return (
       <>
         <div className="row">
           <div className="col">
             <h6>Date: </h6>
-            <h6>Loan amount: </h6>
+            <h6>Amount: </h6>
+            <h6>Subject: </h6>
+            <h6>Time Period: </h6>
+            <h6>Mode Of Payment: </h6>
           </div>
 
           <div className="col">
             <h6>{this.props.onGetDate(date)}</h6>
             <h6>₹{amount}</h6>
+            <h6>{loanReason}</h6>
+            <h6>{timePeriod}</h6>
+            <h6>{modeOfRepayment}</h6>
           </div>
 
           <div className="col">

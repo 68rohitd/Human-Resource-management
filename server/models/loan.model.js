@@ -13,6 +13,9 @@ const loanSchema = new Schema({
   empTeam: { type: String },
   empEmail: { type: String },
   loanNote: { type: String },
+  loanReason: { type: String },
+  modeOfRepayment: { type: String },
+  timePeriod: { type: String },
   amount: { type: String },
   loanRepaid: { type: Boolean },
 });

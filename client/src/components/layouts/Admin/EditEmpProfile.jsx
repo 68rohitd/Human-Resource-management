@@ -216,9 +216,10 @@ export default class EditEmpProfile extends Component {
     return (
       <div className="container">
         <div className="row m-0">
-          {/* profile form  col 1*/}
+          {/* col 1*/}
           <div className="col">
             <div className="row">
+              {/* profile details */}
               <form
                 className="addEmpForm"
                 onSubmit={this.updateProfile.bind(this)}

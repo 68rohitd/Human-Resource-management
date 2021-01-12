@@ -319,6 +319,9 @@ router.put("/takeAction", async (req, res) => {
           empTeam: req.body.userReq.empTeam,
           empEmail: req.body.userReq.empEmail,
           loanNote: req.body.userReq.loanNote,
+          loanReason: req.body.userReq.loanReason,
+          modeOfRepayment: req.body.userReq.modeOfRepayment,
+          timePeriod: req.body.userReq.timePeriod,
           amount: req.body.userReq.amount,
           loanRepaid: false,
         });

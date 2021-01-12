@@ -62,56 +62,71 @@ export default class Attendence extends Component {
               </div>
 
               {/* right part */}
-              <div className="col rightPart container ">
-                <div className="container">
-                  <h1>apply for leave</h1>
-                  <form onSubmit={this.onSubmit.bind(this, user)}>
-                    <div className="form-group">
-                      <label htmlFor="fromDate">from</label>
-                      <input
-                        type="date"
-                        name="fromDate"
-                        className="form-control"
-                        id="fromDate"
-                        value={this.state.fromDate}
-                        onChange={this.onChange}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="toDate">to</label>
-                      <input
-                        type="date"
-                        name="toDate"
-                        className="form-control"
-                        id="toDate"
-                        value={this.state.toDate}
-                        onChange={this.onChange}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="reason">reason</label>
-                      <input
-                        type="text"
-                        name="reason"
-                        className="form-control"
-                        id="reason"
-                        value={this.state.reason}
-                        onChange={this.onChange}
-                      />
-                    </div>
-                    <input
-                      type="submit"
-                      className="btn btn-primary"
-                      value="Submit"
-                    />
-                  </form>
-
+              <div
+                className="col rightPart container"
+                style={{
+                  display: "flex ",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                <form
+                  className="addEmpForm"
+                  onSubmit={this.onSubmit.bind(this, user)}
+                >
+                  <h1>Apply for leave</h1>
                   <hr />
+                  <div className="row">
+                    <div className="col">
+                      <div className="form-group">
+                        <label htmlFor="fromDate">From</label>
+                        <input
+                          type="date"
+                          name="fromDate"
+                          className="form-control"
+                          id="fromDate"
+                          value={this.state.fromDate}
+                          onChange={this.onChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="form-group">
+                        <label htmlFor="toDate">To</label>
+                        <input
+                          type="date"
+                          name="toDate"
+                          className="form-control"
+                          id="toDate"
+                          value={this.state.toDate}
+                          onChange={this.onChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
 
-                  <h1>mark attendence</h1>
-                </div>
+                  <div className="row">
+                    <div className="col">
+                      <div className="form-group">
+                        <label htmlFor="reason">Reason</label>
+                        <textarea
+                          type="text"
+                          name="reason"
+                          className="form-control"
+                          id="reason"
+                          rows="5"
+                          value={this.state.reason}
+                          onChange={this.onChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <input
+                    type="submit"
+                    className="btn btn-primary"
+                    value="Submit"
+                  />
+                </form>
               </div>
             </div>
           );

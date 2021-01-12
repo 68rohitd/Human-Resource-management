@@ -12,7 +12,7 @@ export default class ViewRequests extends Component {
     super();
 
     this.state = {
-      user: undefined,
+      admin: undefined,
     };
   }
 
@@ -28,9 +28,9 @@ export default class ViewRequests extends Component {
         const adminRes = await axios.get("/api/admin", {
           headers: { "x-auth-token": token },
         });
-
+        console.log("admin profile: ", adminRes.data.user);
         this.setState({
-          user: adminRes.data.user,
+          admin: adminRes.data.user,
         });
       }
     } catch (e) {
@@ -41,13 +41,13 @@ export default class ViewRequests extends Component {
   callDispatch = (dispatch, req) => {
     switch (req.title) {
       case "leave request":
-        let leaveUser = this.state.user;
+        let leaveUser = this.state.admin;
         leaveUser.leaveRequests = leaveUser.leaveRequests.filter(
           (eachReq) => eachReq.reqId !== req.reqId
         );
 
         this.setState({
-          user: leaveUser,
+          admin: leaveUser,
         });
 
         dispatch({
@@ -59,13 +59,13 @@ export default class ViewRequests extends Component {
         break;
 
       case "bonus request":
-        let bonusUser = this.state.user;
+        let bonusUser = this.state.admin;
         bonusUser.bonusRequests = bonusUser.bonusRequests.filter(
           (eachReq) => eachReq.reqId !== req.reqId
         );
 
         this.setState({
-          user: bonusUser,
+          admin: bonusUser,
         });
         dispatch({
           type: "APPROVED_REJECTED_BONUS",
@@ -76,13 +76,13 @@ export default class ViewRequests extends Component {
         break;
 
       case "loan request":
-        let loanUser = this.state.user;
+        let loanUser = this.state.admin;
         loanUser.loanRequests = loanUser.loanRequests.filter(
           (eachReq) => eachReq.reqId !== req.reqId
         );
 
         this.setState({
-          user: loanUser,
+          admin: loanUser,
         });
         dispatch({
           type: "APPROVED_REJECTED_LOAN",
