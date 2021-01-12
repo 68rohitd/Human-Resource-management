@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PieChart from "./PieChart";
 import BarChart from "./BarChart";
 import LineChart from "./LineChart";
-import SidePanel from "../SidePanel";
+import AdminSidePanel from "../AdminSidePanel";
 import "../../../../assets/stats-styles/stats.css";
 import Card from "./Card";
 import { Consumer } from "../../../../context";
@@ -76,7 +76,7 @@ export default class Statistics extends Component {
             <div className="row m-0">
               {/* left part */}
               <div className="col-2 p-0 leftPart">
-                <SidePanel />
+                <AdminSidePanel />
               </div>
 
               {/* right part */}

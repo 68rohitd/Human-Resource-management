@@ -26,7 +26,7 @@ export default class EmpCard extends Component {
         <hr />
 
         <div className="row">
-          <div className="col">
+          <div className="col p-0">
             <span className="text-center">
               <h4>{data.name.toUpperCase()}</h4>
 
@@ -46,12 +46,16 @@ export default class EmpCard extends Component {
             <hr />
             <Link
               to={`/editEmpProfile/${data._id}`}
-              style={{ textDecoration: "none" }}
+              style={{
+                textDecoration: "none",
+                display: "flex",
+                justifyContent: "center",
+              }}
             >
               <input
                 type="button"
-                value="More Info"
-                className="btn btn-secondary btn-block"
+                value="Full Details"
+                className="btn btn-secondary"
               />
             </Link>
           </div>

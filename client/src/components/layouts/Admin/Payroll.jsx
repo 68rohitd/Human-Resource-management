@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
-import SidePanel from "./SidePanel";
+import AdminSidePanel from "./AdminSidePanel";
 import "../../../assets/payroll/payroll.css";
 import emptyImg from "../../../assets/payroll/empty.png";
 import { Link, Redirect } from "react-router-dom";
@@ -125,7 +125,7 @@ export default class Payroll extends Component {
               <div className="row m-0">
                 {/* left part */}
                 <div className="col-2 p-0 leftPart">
-                  <SidePanel />
+                  <AdminSidePanel />
                 </div>
 
                 {/* right part */}

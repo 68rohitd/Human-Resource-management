@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 import axios from "axios";
 import { Spring } from "react-spring/renderprops";
 import "../../assets/add-emp/addEmp.css";
-import SidePanel from "./Admin/SidePanel";
+import AdminSidePanel from "./Admin/AdminSidePanel";
 import toast from "toasted-notes";
 import "toasted-notes/src/styles.css";
 
@@ -118,7 +118,7 @@ class AddEmployee extends Component {
                     <div className="row m-0">
                       {/* left part */}
                       <div className="col-2  p-0 leftPart">
-                        <SidePanel />
+                        <AdminSidePanel />
                       </div>
 
                       {/* right part */}

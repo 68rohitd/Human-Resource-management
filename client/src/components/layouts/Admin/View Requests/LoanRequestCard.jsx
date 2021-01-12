@@ -3,6 +3,7 @@ import "../../../../assets/view-req/leaveReqCard.css";
 import maleProfilePic from "../../../../assets/view-emp/maleUserPic.png";
 import femaleProfilePic from "../../../../assets/view-emp/femaleUserPic.png";
 import { Consumer } from "../../../../context";
+import { Link } from "react-router-dom";
 
 export default class LoanRequestCard extends Component {
   render() {
@@ -12,6 +13,7 @@ export default class LoanRequestCard extends Component {
           let { dispatch } = value;
 
           const {
+            empId,
             empName,
             loanNote,
             empEmail,
@@ -24,21 +26,26 @@ export default class LoanRequestCard extends Component {
           return (
             <div className="leaveReqCard">
               <div className="container mb-3">
-                <div className="row">
-                  <div className="col">
-                    <img
-                      src={
-                        gender === "Male" ? maleProfilePic : femaleProfilePic
-                      }
-                      alt="profile pic"
-                      width="100px"
-                    />
+                <Link
+                  to={`/editEmpProfile/${empId}`}
+                  style={{ textDecoration: "none", color: "#303030" }}
+                >
+                  <div className="row">
+                    <div className="col">
+                      <img
+                        src={
+                          gender === "Male" ? maleProfilePic : femaleProfilePic
+                        }
+                        alt="profile pic"
+                        width="100px"
+                      />
+                    </div>
+                    <div className="col text-right">
+                      <h4>{empName}</h4>
+                      <h6>{empEmail}</h6>
+                    </div>
                   </div>
-                  <div className="col text-right">
-                    <h4>{empName}</h4>
-                    <h6>{empEmail}</h6>
-                  </div>
-                </div>
+                </Link>
                 <hr className="m-0 my-3" />
 
                 <div className="row">

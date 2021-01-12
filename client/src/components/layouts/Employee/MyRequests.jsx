@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { Consumer } from "../../../context";
+import EmpSidePanel from "./EmpSidePanel";
 
 export default class MyRequests extends Component {
   constructor() {
@@ -76,140 +77,150 @@ export default class MyRequests extends Component {
 
           if (!token) return <Redirect to="/" />;
           return (
-            <div className="container">
-              <div>
-                <h1>Leave requests</h1>
-                <h3>open tickets</h3>
-                {this.state.openedLeavesTickets.map((req, index) => {
-                  return (
-                    <div key={index} className="card">
-                      <span>Name: {req.empName}</span>
-                      <span>Reason: {req.reason}</span>
-                      <span>
-                        {req.ticketClosed ? (
-                          req.approved ? (
-                            <span>status: approved</span>
-                          ) : (
-                            <span>status: rejected</span>
-                          )
-                        ) : (
-                          <span>status: pending</span>
-                        )}
-                      </span>
-                    </div>
-                  );
-                })}
-                <h3>closed tickets</h3>
-                {this.state.closedLeavesTickets.map((req, index) => {
-                  return (
-                    <div key={index} className="card">
-                      <span>Name: {req.empName}</span>
-                      <span>Reason: {req.reason}</span>
-                      <span>
-                        {req.ticketClosed ? (
-                          req.approved ? (
-                            <span>status: approved</span>
-                          ) : (
-                            <span>status: rejected</span>
-                          )
-                        ) : (
-                          <span>status: pending</span>
-                        )}
-                      </span>
-                    </div>
-                  );
-                })}
+            <div className="row m-0">
+              {/* left part */}
+              <div className="col-2 p-0 leftPart">
+                <EmpSidePanel />
               </div>
 
-              <hr />
+              {/* right part */}
+              <div className="col rightPart container ">
+                <div className="container">
+                  <div>
+                    <h1>Leave requests</h1>
+                    <h3>open tickets</h3>
+                    {this.state.openedLeavesTickets.map((req, index) => {
+                      return (
+                        <div key={index} className="card">
+                          <span>Name: {req.empName}</span>
+                          <span>Reason: {req.reason}</span>
+                          <span>
+                            {req.ticketClosed ? (
+                              req.approved ? (
+                                <span>status: approved</span>
+                              ) : (
+                                <span>status: rejected</span>
+                              )
+                            ) : (
+                              <span>status: pending</span>
+                            )}
+                          </span>
+                        </div>
+                      );
+                    })}
+                    <h3>closed tickets</h3>
+                    {this.state.closedLeavesTickets.map((req, index) => {
+                      return (
+                        <div key={index} className="card">
+                          <span>Name: {req.empName}</span>
+                          <span>Reason: {req.reason}</span>
+                          <span>
+                            {req.ticketClosed ? (
+                              req.approved ? (
+                                <span>status: approved</span>
+                              ) : (
+                                <span>status: rejected</span>
+                              )
+                            ) : (
+                              <span>status: pending</span>
+                            )}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
 
-              <div>
-                <h1>Bonus requests</h1>
-                <h3>open tickets</h3>
-                {this.state.openedBonusTickets.map((req, index) => {
-                  return (
-                    <div key={index} className="card">
-                      <span>Name: {req.empName}</span>
-                      <span>Note: {req.bonusNote}</span>
-                      <span>
-                        {req.ticketClosed ? (
-                          req.approved ? (
-                            <span>status: approved</span>
-                          ) : (
-                            <span>status: rejected</span>
-                          )
-                        ) : (
-                          <span>status: pending</span>
-                        )}
-                      </span>
-                    </div>
-                  );
-                })}
-                <h3>closed tickets</h3>
-                {this.state.closedBonusTickets.map((req, index) => {
-                  return (
-                    <div key={index} className="card">
-                      <span>Name: {req.empName}</span>
-                      <span>Note: {req.bonusNote}</span>
-                      <span>
-                        {req.ticketClosed ? (
-                          req.approved ? (
-                            <span>status: approved</span>
-                          ) : (
-                            <span>status: rejected</span>
-                          )
-                        ) : (
-                          <span>status: pending</span>
-                        )}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
+                  <hr />
 
-              <hr />
-              <div>
-                <h1>Loan requests</h1>
-                <h3>open tickets</h3>
-                {this.state.openedLoanTickets.map((req, index) => {
-                  return (
-                    <div key={index} className="card">
-                      <span>Name: {req.empName}</span>
-                      <span>Note: {req.loanNote}</span>
-                      <span>
-                        {req.ticketClosed ? (
-                          req.approved ? (
-                            <span>status: approved</span>
-                          ) : (
-                            <span>status: rejected</span>
-                          )
-                        ) : (
-                          <span>status: pending</span>
-                        )}
-                      </span>
-                    </div>
-                  );
-                })}
-                <h3>closed tickets</h3>
-                {this.state.closedLoanTickets.map((req, index) => {
-                  return (
-                    <div key={index} className="card">
-                      <span>Name: {req.empName}</span>
-                      <span>Note: {req.loanNote}</span>
-                      <span>
-                        {req.ticketClosed ? (
-                          req.approved ? (
-                            <span>status: approved</span>
-                          ) : (
-                            <span>status: rejected</span>
-                          )
-                        ) : (
-                          <span>status: pending</span>
-                        )}
-                      </span>
-                    </div>
-                  );
-                })}
+                  <div>
+                    <h1>Bonus requests</h1>
+                    <h3>open tickets</h3>
+                    {this.state.openedBonusTickets.map((req, index) => {
+                      return (
+                        <div key={index} className="card">
+                          <span>Name: {req.empName}</span>
+                          <span>Note: {req.bonusNote}</span>
+                          <span>
+                            {req.ticketClosed ? (
+                              req.approved ? (
+                                <span>status: approved</span>
+                              ) : (
+                                <span>status: rejected</span>
+                              )
+                            ) : (
+                              <span>status: pending</span>
+                            )}
+                          </span>
+                        </div>
+                      );
+                    })}
+                    <h3>closed tickets</h3>
+                    {this.state.closedBonusTickets.map((req, index) => {
+                      return (
+                        <div key={index} className="card">
+                          <span>Name: {req.empName}</span>
+                          <span>Note: {req.bonusNote}</span>
+                          <span>
+                            {req.ticketClosed ? (
+                              req.approved ? (
+                                <span>status: approved</span>
+                              ) : (
+                                <span>status: rejected</span>
+                              )
+                            ) : (
+                              <span>status: pending</span>
+                            )}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <hr />
+                  <div>
+                    <h1>Loan requests</h1>
+                    <h3>open tickets</h3>
+                    {this.state.openedLoanTickets.map((req, index) => {
+                      return (
+                        <div key={index} className="card">
+                          <span>Name: {req.empName}</span>
+                          <span>Note: {req.loanNote}</span>
+                          <span>
+                            {req.ticketClosed ? (
+                              req.approved ? (
+                                <span>status: approved</span>
+                              ) : (
+                                <span>status: rejected</span>
+                              )
+                            ) : (
+                              <span>status: pending</span>
+                            )}
+                          </span>
+                        </div>
+                      );
+                    })}
+                    <h3>closed tickets</h3>
+                    {this.state.closedLoanTickets.map((req, index) => {
+                      return (
+                        <div key={index} className="card">
+                          <span>Name: {req.empName}</span>
+                          <span>Note: {req.loanNote}</span>
+                          <span>
+                            {req.ticketClosed ? (
+                              req.approved ? (
+                                <span>status: approved</span>
+                              ) : (
+                                <span>status: rejected</span>
+                              )
+                            ) : (
+                              <span>status: pending</span>
+                            )}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
           );

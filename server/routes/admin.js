@@ -456,6 +456,12 @@ router.get("/getSingleEmpSalReceipts/:id", async (req, res) => {
 // @desc: generate emp sal receipt for particular month
 router.put("/generateSalReceipt", async (req, res) => {
   try {
+    // update emp SALARY profile: clear bonus, total leaves
+    await Salary.findOneAndUpdate(
+      { empId: req.body.empId },
+      { bonus: 0, totalLeaves: 0 }
+    );
+
     const empReceiptDoc = await SalaryReceipt.findOne({
       empId: req.body.empId,
     });

@@ -2,9 +2,9 @@ import axios from "axios";
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { Consumer } from "../../../../context";
-import SidePanel from "../SidePanel";
+import AdminSidePanel from "../AdminSidePanel";
 import BonusRequestCard from "./BonusRequestCard";
-import RequestCard from "./LeaveRequestCard";
+import LeaveRequestCard from "./LeaveRequestCard";
 import LoanRequestCard from "./LoanRequestCard";
 
 export default class ViewRequests extends Component {
@@ -17,10 +17,8 @@ export default class ViewRequests extends Component {
   }
 
   componentDidMount = async () => {
-    console.log("view req page mounted...");
     try {
       const token = localStorage.getItem("auth-token");
-      // first check in admin model
       const tokenRes = await axios.post("/api/admin/tokenIsValid", null, {
         headers: { "x-auth-token": token },
       });
@@ -143,7 +141,9 @@ export default class ViewRequests extends Component {
     return (
       <Consumer>
         {(value) => {
-          let { user } = this.state;
+          let { admin } = this.state;
+
+          let { user } = value;
 
           const token = localStorage.getItem("auth-token");
 
@@ -156,7 +156,7 @@ export default class ViewRequests extends Component {
               <div className="row m-0">
                 {/* left part */}
                 <div className="col-2 p-0 leftPart">
-                  <SidePanel />
+                  <AdminSidePanel />
                 </div>
 
                 {/* right part */}
@@ -169,26 +169,31 @@ export default class ViewRequests extends Component {
                         flexDirection: "row",
                       }}
                     >
-                      {user ? (
-                        user.leaveRequests.length ? (
-                          user.leaveRequests.map((req, index) => {
-                            return (
-                              <RequestCard
-                                key={index}
-                                req={req}
-                                onApprove={this.onApprove}
-                                onReject={this.onReject}
-                              />
-                            );
-                          })
+                      <div className="row">
+                        {admin ? (
+                          admin.leaveRequests.length ? (
+                            admin.leaveRequests.map((req, index) => {
+                              return (
+                                <LeaveRequestCard
+                                  key={index}
+                                  req={req}
+                                  onApprove={this.onApprove}
+                                  onReject={this.onReject}
+                                />
+                              );
+                            })
+                          ) : (
+                            <small className="ml-4">
+                              No leave requests pending...
+                            </small>
+                          )
                         ) : (
-                          <small>No leave requests pending...</small>
-                        )
-                      ) : (
-                        <small>Loading leave requests...</small>
-                      )}
+                          <small className="ml-4">
+                            Loading leave requests...
+                          </small>
+                        )}
+                      </div>
                     </div>
-
                     <hr />
 
                     <h1>Bonus Requests</h1>
@@ -198,24 +203,30 @@ export default class ViewRequests extends Component {
                         flexDirection: "row",
                       }}
                     >
-                      {user ? (
-                        user.bonusRequests.length ? (
-                          user.bonusRequests.map((req, index) => {
-                            return (
-                              <BonusRequestCard
-                                key={index}
-                                req={req}
-                                onApprove={this.onApprove}
-                                onReject={this.onReject}
-                              />
-                            );
-                          })
+                      <div className="row">
+                        {admin ? (
+                          admin.bonusRequests.length ? (
+                            admin.bonusRequests.map((req, index) => {
+                              return (
+                                <BonusRequestCard
+                                  key={index}
+                                  req={req}
+                                  onApprove={this.onApprove}
+                                  onReject={this.onReject}
+                                />
+                              );
+                            })
+                          ) : (
+                            <small className="ml-4">
+                              No bonus requests pending...
+                            </small>
+                          )
                         ) : (
-                          <small>No bonus requests pending...</small>
-                        )
-                      ) : (
-                        <small>Loading bonus requests...</small>
-                      )}
+                          <small className="ml-4">
+                            Loading bonus requests...
+                          </small>
+                        )}
+                      </div>
                     </div>
 
                     <hr />
@@ -228,9 +239,9 @@ export default class ViewRequests extends Component {
                       }}
                     >
                       <div className="row">
-                        {user ? (
-                          user.loanRequests.length ? (
-                            user.loanRequests.map((req, index) => {
+                        {admin ? (
+                          admin.loanRequests.length ? (
+                            admin.loanRequests.map((req, index) => {
                               return (
                                 <LoanRequestCard
                                   key={index}
@@ -241,10 +252,14 @@ export default class ViewRequests extends Component {
                               );
                             })
                           ) : (
-                            <small>No loan requests pending...</small>
+                            <small className="ml-4">
+                              No loan requests pending...
+                            </small>
                           )
                         ) : (
-                          <small>Loaing loan requests...</small>
+                          <small className="ml-4">
+                            Loaing loan requests...
+                          </small>
                         )}
                       </div>
                     </div>

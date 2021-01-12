@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 import { Consumer } from "../../../context";
 import EmpCard from "./EmpCard";
 import SearchEmp from "./SearchEmp";
-import SidePanel from "./SidePanel";
+import AdminSidePanel from "./AdminSidePanel";
 
 export default class ViewEmployees extends Component {
   constructor() {
@@ -47,7 +47,7 @@ export default class ViewEmployees extends Component {
               <div className="row m-0">
                 {/* left part */}
                 <div className="col-2 p-0 leftPart">
-                  <SidePanel />
+                  <AdminSidePanel />
                 </div>
 
                 {/* right part */}

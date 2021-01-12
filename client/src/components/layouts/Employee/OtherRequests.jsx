@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Consumer } from "../../../context";
 import { v4 as uuidv4 } from "uuid";
 import { Redirect } from "react-router-dom";
+import EmpSidePanel from "./EmpSidePanel";
 
 export default class otherRequest extends Component {
   constructor() {
@@ -80,60 +81,70 @@ export default class otherRequest extends Component {
           if (!token) return <Redirect to="/" />;
 
           return (
-            <div className="container">
-              <h1>Req for bonus</h1>
-              <form onSubmit={this.onBonusSubmit.bind(this, user)}>
-                <div className="form-group">
-                  <label htmlFor="reason">note</label>
-                  <input
-                    type="text"
-                    name="bonusNote"
-                    className="form-control"
-                    id="bonusNote"
-                    value={this.state.bonusNote}
-                    onChange={this.onChange}
-                  />
-                </div>
-                <input
-                  type="submit"
-                  className="btn btn-primary"
-                  value="send request"
-                />
-              </form>
+            <div className="row m-0">
+              {/* left part */}
+              <div className="col-2 p-0 leftPart">
+                <EmpSidePanel />
+              </div>
 
-              <hr />
+              {/* right part */}
+              <div className="col rightPart container ">
+                <div className="container">
+                  <h1>Req for bonus</h1>
+                  <form onSubmit={this.onBonusSubmit.bind(this, user)}>
+                    <div className="form-group">
+                      <label htmlFor="reason">note</label>
+                      <input
+                        type="text"
+                        name="bonusNote"
+                        className="form-control"
+                        id="bonusNote"
+                        value={this.state.bonusNote}
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    <input
+                      type="submit"
+                      className="btn btn-primary"
+                      value="send request"
+                    />
+                  </form>
 
-              <h1>req for loan</h1>
-              <form onSubmit={this.onLoanSubmit.bind(this, user)}>
-                <div className="form-group">
-                  <label htmlFor="reason">amt </label>
-                  <input
-                    type="number"
-                    name="amount"
-                    className="form-control"
-                    id="amount"
-                    value={this.state.amount}
-                    onChange={this.onChange}
-                  />
-                </div>
+                  <hr />
 
-                <div className="form-group">
-                  <label htmlFor="reason">note</label>
-                  <input
-                    type="text"
-                    name="loanNote"
-                    className="form-control"
-                    id="loanNote"
-                    value={this.state.loanNote}
-                    onChange={this.onChange}
-                  />
+                  <h1>req for loan</h1>
+                  <form onSubmit={this.onLoanSubmit.bind(this, user)}>
+                    <div className="form-group">
+                      <label htmlFor="reason">amt </label>
+                      <input
+                        type="number"
+                        name="amount"
+                        className="form-control"
+                        id="amount"
+                        value={this.state.amount}
+                        onChange={this.onChange}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="reason">note</label>
+                      <input
+                        type="text"
+                        name="loanNote"
+                        className="form-control"
+                        id="loanNote"
+                        value={this.state.loanNote}
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    <input
+                      type="submit"
+                      className="btn btn-primary"
+                      value="send request"
+                    />
+                  </form>
                 </div>
-                <input
-                  type="submit"
-                  className="btn btn-primary"
-                  value="send request"
-                />
-              </form>
+              </div>
             </div>
           );
         }}
