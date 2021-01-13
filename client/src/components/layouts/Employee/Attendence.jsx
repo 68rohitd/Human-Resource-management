@@ -4,6 +4,8 @@ import { Consumer } from "../../../context";
 import { v4 as uuidv4 } from "uuid";
 import { Redirect } from "react-router-dom";
 import EmpSidePanel from "./EmpSidePanel";
+import toast from "toasted-notes";
+import "toasted-notes/src/styles.css";
 
 export default class Attendence extends Component {
   constructor() {
@@ -29,7 +31,9 @@ export default class Attendence extends Component {
       gender: user.gender,
       empRole: user.role,
       empTeam: user.team,
+      subject: "Leave request",
       empEmail: user.email,
+      date: new Date(),
       fromDate: this.state.fromDate,
       toDate: this.state.toDate,
       reason: this.state.reason,
@@ -40,6 +44,10 @@ export default class Attendence extends Component {
     // push to admin notification
     const res = await axios.put("/api/users/applyLeave", {
       request,
+    });
+
+    toast.notify("Successfully submitted loan request", {
+      position: "top-right",
     });
 
     console.log("res: ", res.data);
@@ -74,7 +82,7 @@ export default class Attendence extends Component {
                   className="addEmpForm"
                   onSubmit={this.onSubmit.bind(this, user)}
                 >
-                  <h1>Apply for leave</h1>
+                  <h1>Apply for Leave</h1>
                   <hr />
                   <div className="row">
                     <div className="col">

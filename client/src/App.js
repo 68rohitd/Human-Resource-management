@@ -23,6 +23,7 @@ import MySalDetails from "./components/layouts/Employee/MySalDetails";
 import Payroll from "./components/layouts/Admin/Payroll";
 import Statistics from "./components/layouts/Admin/Stats/Statistics";
 import Options from "./components/layouts/Admin/Options";
+import ViewSingleRequest from "./components/layouts/Employee/ViewSingleRequest";
 
 export default class App extends Component {
   render() {
@@ -46,6 +47,11 @@ export default class App extends Component {
               <Route exact path="/empDashboard" component={EmpDashboard} />
               <Route exact path="/otherRequest" component={OtherRequests} />
               <Route exact path="/mySalDetails" component={MySalDetails} />
+              <Route
+                exact
+                path="/viewSingleRequest/:title/:reqId"
+                component={ViewSingleRequest}
+              />
 
               {/* admin related */}
               <Route exact path="/" component={Statistics} />

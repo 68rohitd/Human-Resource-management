@@ -96,7 +96,7 @@ export class Provider extends Component {
           headers: { "x-auth-token": token },
         });
         if (tokenRes.data) {
-          console.log("emp logged in");
+          // console.log("emp logged in");
 
           //logged in
           const userRes = await axios.get("/api/users", {

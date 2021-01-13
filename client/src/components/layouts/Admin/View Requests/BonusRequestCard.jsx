@@ -50,14 +50,27 @@ export default class BonusRequestCard extends Component {
               <div className="row">
                 <div className="col">
                   <h6>Team: </h6>
+                </div>
+                <div className="col">
+                  <h6 className="text-right">{empTeam}</h6>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col">
                   <h6>Role: </h6>
+                </div>
+                <div className="col">
+                  <h6 className="text-right">{empRole}</h6>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col">
                   <h6>Subject: </h6>
                 </div>
-
-                <div className="col text-right">
-                  <h6>{empTeam}</h6>
-                  <h6>{empRole}</h6>
-                  <h6>{bonusReason}</h6>
+                <div className="col">
+                  <h6 className="text-right">{bonusReason}</h6>
                 </div>
               </div>
 
@@ -79,7 +92,7 @@ export default class BonusRequestCard extends Component {
                 >
                   <input
                     type="button"
-                    className="btn btn-success"
+                    className="btn btn-success btn-block"
                     value="Accept"
                     onClick={() =>
                       this.props.onApprove(this.props.req, dispatch)
@@ -97,7 +110,7 @@ export default class BonusRequestCard extends Component {
                 >
                   <input
                     type="button"
-                    className="btn btn-danger"
+                    className="btn btn-danger btn-block"
                     value="Reject"
                     onClick={() =>
                       this.props.onReject(this.props.req, dispatch)

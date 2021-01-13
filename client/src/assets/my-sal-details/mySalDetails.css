@@ -1,0 +1,12 @@
+.mySalDetails {
+  background-color: rgb(243, 243, 243);
+  width: 60%;
+  padding: 30px;
+  border-radius: 10px;
+
+  margin: auto;
+}
+
+.myHrLine {
+  margin: 8px 0 8px 0;
+}

@@ -1,0 +1,13 @@
+.mySingleReqCard {
+  background-color: rgb(243, 243, 243);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.reasonArea {
+  background-color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 7px;
+  /* min-height: 120px; */
+}

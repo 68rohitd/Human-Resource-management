@@ -51,22 +51,56 @@ export default class LoanRequestCard extends Component {
               <hr className="m-0 my-3" />
 
               <div className="row">
-                <div className="col">
+                <div className="col pr-0">
                   <h6>Team: </h6>
-                  <h6>Role: </h6>
-                  <h6>Loan Amount: </h6>
-                  <h6>Subject: </h6>
-                  <h6>Time Period: </h6>
-                  <h6>Mode of Repayment: </h6>
                 </div>
+                <div className="col pl-0">
+                  <h6 className="text-right">{empTeam}</h6>
+                </div>
+              </div>
 
-                <div className="col text-right">
-                  <h6>{empTeam}</h6>
-                  <h6>{empRole}</h6>
-                  <h6>₹{amount}</h6>
-                  <h6>{loanReason}</h6>
-                  <h6>{timePeriod} months</h6>
-                  <h6>{modeOfRepayment}</h6>
+              <div className="row">
+                <div className="col pr-0">
+                  <h6>Role: </h6>
+                </div>
+                <div className="col pl-0">
+                  <h6 className="text-right">{empRole}</h6>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col pr-0">
+                  <h6>Loan Amount: </h6>
+                </div>
+                <div className="col pl-0">
+                  <h6 className="text-right">₹{amount}</h6>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col pr-0">
+                  <h6>Subject: </h6>
+                </div>
+                <div className="col pl-0">
+                  <h6 className="text-right">{loanReason}</h6>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col pr-0">
+                  <h6>Time Period: </h6>
+                </div>
+                <div className="col pl-0">
+                  <h6 className="text-right">{timePeriod} months</h6>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col pr-0">
+                  <h6>Mode Of Repayment: </h6>
+                </div>
+                <div className="col pl-0">
+                  <h6 className="text-right">{modeOfRepayment}</h6>
                 </div>
               </div>
 
@@ -88,7 +122,7 @@ export default class LoanRequestCard extends Component {
                 >
                   <input
                     type="button"
-                    className="btn btn-success"
+                    className="btn btn-success btn-block"
                     value="Accept"
                     onClick={() =>
                       this.props.onApprove(this.props.req, dispatch)
@@ -106,7 +140,7 @@ export default class LoanRequestCard extends Component {
                 >
                   <input
                     type="button"
-                    className="btn btn-danger"
+                    className="btn btn-danger btn-block"
                     value="Reject"
                     onClick={() =>
                       this.props.onReject(this.props.req, dispatch)

@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 let auth = require("../middleware/auth");
 let User = require("../models/user.model");
 let Admin = require("../models/admin.model");
+const { json } = require("express");
 
 // @desc: login a user
 router.post("/login", async (req, res) => {
@@ -215,5 +216,15 @@ router.put("/changePassword/:id", async (req, res) => {
   } catch (e) {
     res.status(400).json("Error: ", e);
   }
+});
+
+// @desc: get particular req details from USER.notification model
+router.get("/getSingleReqDetails/:userId/:reqId", async (req, res) => {
+  const user = await User.findById(req.params.userId);
+  const reqDetails = user.notification.filter(
+    (request) => request.reqId === req.params.reqId
+  );
+
+  res.json(reqDetails);
 });
 module.exports = router;

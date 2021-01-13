@@ -43,6 +43,7 @@ export default class otherRequest extends Component {
       empName: user.name,
       gender: user.gender,
       empRole: user.role,
+      date: new Date(),
       empTeam: user.team,
       empEmail: user.email,
       bonusNote: this.state.bonusNote,
@@ -54,6 +55,10 @@ export default class otherRequest extends Component {
     // push to admin notification
     const res = await axios.put("/api/users/bonusRequest", {
       request,
+    });
+
+    toast.notify("Successfully submitted bonus request", {
+      position: "top-right",
     });
 
     console.log("res: ", res.data);
@@ -126,7 +131,7 @@ export default class otherRequest extends Component {
               <div className="col rightPart container">
                 <div className="row">
                   {/* loan col */}
-                  <div className="col mx-5">
+                  <div className="col ml-3">
                     <form
                       className="addEmpForm"
                       onSubmit={this.onLoanSubmit.bind(this, user)}
@@ -189,6 +194,7 @@ export default class otherRequest extends Component {
 
                             {this.state.loanReason === "Other" ? (
                               <input
+                                required
                                 type="text"
                                 name="otherLoanReason"
                                 className="form-control mt-2"
@@ -312,7 +318,7 @@ export default class otherRequest extends Component {
                   </div>
 
                   {/* bonus col */}
-                  <div className="col mx-5">
+                  <div className="col mr-3">
                     <form
                       className="addEmpForm"
                       onSubmit={this.onBonusSubmit.bind(this, user)}
@@ -399,6 +405,7 @@ export default class otherRequest extends Component {
 
                           {this.state.bonusReason === "Other" ? (
                             <input
+                              required={true}
                               type="text"
                               className="form-control mt-2"
                               name="otherBonusReason"

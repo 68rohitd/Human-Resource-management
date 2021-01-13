@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { Component } from "react";
 import EmpSidePanel from "./EmpSidePanel";
+import "../../../assets/my-sal-details/mySalDetails.css";
+import SalaryStructure from "./SalaryStructure";
 
 export default class MySalReciept extends Component {
   constructor() {
@@ -11,6 +13,7 @@ export default class MySalReciept extends Component {
       totalLeaves: "",
       travelAllowance: "",
       medicalAllowance: "",
+      bonus: "",
       salary: "",
 
       // payslip
@@ -49,6 +52,7 @@ export default class MySalReciept extends Component {
       totalLeaves: userSalData.data.totalLeaves,
       travelAllowance: userSalData.data.travelAllowance,
       medicalAllowance: userSalData.data.medicalAllowance,
+      bonus: userSalData.data.bonus,
       salary: userSalData.data.salary,
     });
   }
@@ -75,6 +79,15 @@ export default class MySalReciept extends Component {
   };
 
   render() {
+    const {
+      basicPay,
+      totalLeaves,
+      travelAllowance,
+      medicalAllowance,
+      bonus,
+      salary,
+    } = this.state;
+
     return (
       <div className="row m-0">
         {/* left part */}
@@ -83,80 +96,98 @@ export default class MySalReciept extends Component {
         </div>
 
         {/* right part */}
-        <div className="col rightPart container ">
-          <div className="jumbotron">
-            <div className="card">
-              <h1>salary Details</h1>
-              <p>basic Pay: {this.state.basicPay}</p>
-              <p>medical allowance: {this.state.medicalAllowance}</p>
-              <p>travel allowance: {this.state.travelAllowance}</p>
-              <p>total leaves: {this.state.totalLeaves}</p>
-              <p>gross salary: {this.state.salary}</p>
+        <div className="col rightPart container">
+          <div className="row ">
+            <div className="col ">
+              {/* current salary details */}
+              <div className="mySalDetails">
+                <SalaryStructure
+                  title="Salary Details"
+                  basicPay={basicPay}
+                  totalLeaves={totalLeaves}
+                  travelAllowance={travelAllowance}
+                  medicalAllowance={medicalAllowance}
+                  bonus={bonus}
+                  salary={salary}
+                />
+              </div>
             </div>
           </div>
 
-          <div>
-            <h2>payslip</h2>
-            <div className="container">
-              {/* select month */}
-              <div className="dropdown">
-                <button
-                  className="btn btn-secondary dropdown-toggle"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  {this.state.selectedMonth}
-                </button>
-                <div
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  {this.month.map((m) => {
-                    return (
-                      <li
-                        key={m}
-                        className="dropdown-item"
-                        onClick={() => this.onMonthClick(m)}
+          {/* salary slip part */}
+          <div className="row my-3">
+            <div className="col">
+              <div className="mySalDetails">
+                {/* select month */}
+                <div className="row ">
+                  {/* dropdown col */}
+                  <div className="col">
+                    <div className="dropdown">
+                      <button
+                        className="btn btn-secondary dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
                       >
-                        {m}
-                      </li>
-                    );
-                  })}
+                        {this.state.selectedMonth}
+                      </button>
+                      <div
+                        className="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        {this.month.map((m) => {
+                          return (
+                            <li
+                              key={m}
+                              className="dropdown-item"
+                              onClick={() => this.onMonthClick(m)}
+                            >
+                              {m}
+                            </li>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* search button */}
+                  <div className="col">
+                    <input
+                      type="button"
+                      className="btn btn-primary"
+                      value="search"
+                      onClick={this.onFindSalReceipt}
+                    />
+                  </div>
+                </div>
+
+                {/* card */}
+                <div className="row">
+                  <div className="col">
+                    {this.state.salDetails ? (
+                      <SalaryStructure
+                        title={`${this.state.salDetails.month}, ${this.state.salDetails.year}`}
+                        basicPay={this.state.salDetails.salDetails.basicPay}
+                        totalLeaves={
+                          this.state.salDetails.salDetails.totalLeaves
+                        }
+                        travelAllowance={
+                          this.state.salDetails.salDetails.travelAllowance
+                        }
+                        medicalAllowance={
+                          this.state.salDetails.salDetails.medicalAllowance
+                        }
+                        bonus={this.state.salDetails.salDetails.bonus}
+                        salary={this.state.salDetails.salDetails.salary}
+                      />
+                    ) : (
+                      <h6 className="mt-3">No data available to display</h6>
+                    )}
+                  </div>
                 </div>
               </div>
-
-              <input
-                type="button"
-                className="btn btn-primary"
-                value="search"
-                onClick={this.onFindSalReceipt}
-              />
-
-              {this.state.salDetails ? (
-                <div className="jumbotron">
-                  <h1>month: {this.state.salDetails.month} </h1>
-                  <h1>year: {this.state.salDetails.year} </h1>
-                  <p>basic pay: {this.state.salDetails.salDetails.basicPay} </p>
-                  <p>
-                    medical allowance:{" "}
-                    {this.state.salDetails.salDetails.medicalAllowance}{" "}
-                  </p>
-                  <p>
-                    travelling allowance:{" "}
-                    {this.state.salDetails.salDetails.travelAllowance}{" "}
-                  </p>
-                  <p>bonus: {this.state.salDetails.salDetails.bonus} </p>
-                  <p>
-                    total leaves: {this.state.salDetails.salDetails.totalLeaves}{" "}
-                  </p>
-                  <p>gross: {this.state.salDetails.salDetails.salary} </p>
-                </div>
-              ) : (
-                <h1>no data to show</h1>
-              )}
             </div>
           </div>
         </div>
