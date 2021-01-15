@@ -324,7 +324,7 @@ class AddEmployee extends Component {
                               disabled={this.state.disabled}
                               type="submit"
                               value="Submit"
-                              className="btn btn-success btn-block "
+                              className="btn btn-primary btn-block "
                             />
                           </form>
                         </div>

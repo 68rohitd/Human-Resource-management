@@ -117,8 +117,9 @@ export default class otherRequest extends Component {
         {(value) => {
           let { user } = value;
           const token = localStorage.getItem("auth-token");
+          if (!token) return <Redirect to="/login" />;
 
-          if (!token) return <Redirect to="/" />;
+          if (user && user.role === "admin") return <Redirect to="/" />;
 
           return (
             <div className="row m-0">
@@ -131,12 +132,12 @@ export default class otherRequest extends Component {
               <div className="col rightPart container">
                 <div className="row">
                   {/* loan col */}
-                  <div className="col ml-3">
+                  <div className="col ml-5">
                     <form
                       className="addEmpForm"
                       onSubmit={this.onLoanSubmit.bind(this, user)}
                     >
-                      <h1>Request for Loan</h1>
+                      <h2>Request for Loan</h2>
                       <hr />
 
                       <div className="row">
@@ -146,7 +147,7 @@ export default class otherRequest extends Component {
                             <label htmlFor="loanReason">Loan Reason</label>
                             <div className="dropdown">
                               <button
-                                className="btn btn-secondary dropdown-toggle"
+                                className="btn btn-primary dropdown-toggle"
                                 type="button"
                                 id="dropdownMenuButton"
                                 data-toggle="dropdown"
@@ -160,7 +161,8 @@ export default class otherRequest extends Component {
                                 aria-labelledby="dropdownMenuButton"
                               >
                                 <li
-                                  className="dropdown-item"
+                                  style={{ cursor: "pointer" }}
+                                  className="dropdown-item btn-primary"
                                   onClick={() =>
                                     this.onReasonSelect("Medical Expenditure")
                                   }
@@ -168,7 +170,8 @@ export default class otherRequest extends Component {
                                   Medical Expenditure
                                 </li>
                                 <li
-                                  className="dropdown-item"
+                                  style={{ cursor: "pointer" }}
+                                  className="dropdown-item btn-primary"
                                   onClick={() =>
                                     this.onReasonSelect("Moving Expenditure")
                                   }
@@ -176,7 +179,8 @@ export default class otherRequest extends Component {
                                   Moving Expenditure
                                 </li>
                                 <li
-                                  className="dropdown-item"
+                                  style={{ cursor: "pointer" }}
+                                  className="dropdown-item btn-primary"
                                   onClick={() =>
                                     this.onReasonSelect("Buy Assets")
                                   }
@@ -184,7 +188,8 @@ export default class otherRequest extends Component {
                                   Buy Assets
                                 </li>
                                 <li
-                                  className="dropdown-item"
+                                  style={{ cursor: "pointer" }}
+                                  className="dropdown-item btn-primary"
                                   onClick={() => this.onReasonSelect("Other")}
                                 >
                                   Other
@@ -216,7 +221,7 @@ export default class otherRequest extends Component {
                             {/* mode of payment dropdown */}
                             <div className="dropdown">
                               <button
-                                className="btn btn-secondary dropdown-toggle"
+                                className="btn btn-primary dropdown-toggle"
                                 type="button"
                                 id="dropdownMenuButton2"
                                 data-toggle="dropdown"
@@ -230,7 +235,8 @@ export default class otherRequest extends Component {
                                 aria-labelledby="dropdownMenuButton2"
                               >
                                 <li
-                                  className="dropdown-item"
+                                  style={{ cursor: "pointer" }}
+                                  className="dropdown-item btn-primary"
                                   onClick={() =>
                                     this.onModeOfRepaymentSelect(
                                       "Deduction from salary"
@@ -240,7 +246,8 @@ export default class otherRequest extends Component {
                                   Deduction from salary
                                 </li>
                                 <li
-                                  className="dropdown-item"
+                                  style={{ cursor: "pointer" }}
+                                  className="dropdown-item btn-primary"
                                   onClick={() =>
                                     this.onModeOfRepaymentSelect(
                                       "One Time Payment"
@@ -250,7 +257,8 @@ export default class otherRequest extends Component {
                                   One Time Payment
                                 </li>
                                 <li
-                                  className="dropdown-item"
+                                  style={{ cursor: "pointer" }}
+                                  className="dropdown-item btn-primary"
                                   onClick={() =>
                                     this.onModeOfRepaymentSelect("Installment")
                                   }
@@ -318,12 +326,12 @@ export default class otherRequest extends Component {
                   </div>
 
                   {/* bonus col */}
-                  <div className="col mr-3">
+                  <div className="col mr-5">
                     <form
                       className="addEmpForm"
                       onSubmit={this.onBonusSubmit.bind(this, user)}
                     >
-                      <h1>Request for Bonus</h1>
+                      <h2>Request for Bonus</h2>
                       <hr />
 
                       <div className="form-group">
@@ -333,7 +341,7 @@ export default class otherRequest extends Component {
                         <div className="form-group">
                           <div className="dropdown">
                             <button
-                              className="btn btn-secondary dropdown-toggle"
+                              className="btn btn-primary dropdown-toggle"
                               type="button"
                               id="dropdownMenuButton2"
                               data-toggle="dropdown"
@@ -347,7 +355,8 @@ export default class otherRequest extends Component {
                               aria-labelledby="dropdownMenuButton2"
                             >
                               <li
-                                className="dropdown-item"
+                                style={{ cursor: "pointer" }}
+                                className="dropdown-item btn-primary"
                                 onClick={() =>
                                   this.onBonusReasonSelect(
                                     "Employee Referral Program"
@@ -357,7 +366,8 @@ export default class otherRequest extends Component {
                                 Employee Referral Program
                               </li>
                               <li
-                                className="dropdown-item"
+                                style={{ cursor: "pointer" }}
+                                className="dropdown-item btn-primary"
                                 onClick={() =>
                                   this.onBonusReasonSelect(
                                     "Exceptional Achievement"
@@ -367,7 +377,8 @@ export default class otherRequest extends Component {
                                 Exceptional Achievement
                               </li>
                               <li
-                                className="dropdown-item"
+                                style={{ cursor: "pointer" }}
+                                className="dropdown-item btn-primary"
                                 onClick={() =>
                                   this.onBonusReasonSelect(
                                     "Exceptional Service"
@@ -377,7 +388,8 @@ export default class otherRequest extends Component {
                                 Exceptional Service
                               </li>
                               <li
-                                className="dropdown-item"
+                                style={{ cursor: "pointer" }}
+                                className="dropdown-item btn-primary"
                                 onClick={() =>
                                   this.onBonusReasonSelect("Special Project(s)")
                                 }
@@ -385,7 +397,8 @@ export default class otherRequest extends Component {
                                 Special Project(s)
                               </li>
                               <li
-                                className="dropdown-item"
+                                style={{ cursor: "pointer" }}
+                                className="dropdown-item btn-primary"
                                 onClick={() =>
                                   this.onBonusReasonSelect("Budget Savings")
                                 }
@@ -393,7 +406,8 @@ export default class otherRequest extends Component {
                                 Budget Savings
                               </li>
                               <li
-                                className="dropdown-item"
+                                style={{ cursor: "pointer" }}
+                                className="dropdown-item btn-primary"
                                 onClick={() =>
                                   this.onBonusReasonSelect("Other")
                                 }

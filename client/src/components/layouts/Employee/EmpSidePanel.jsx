@@ -48,6 +48,17 @@ export default class EmpSidePanel extends Component {
               My Salary Details
             </li>
           </Link>
+
+          {/* company info */}
+          <Link to="/companyInfo" style={{ textDecoration: "none" }}>
+            <li className="list-group-item text-dark font-weight-bold border-0 my-1 myList">
+              <i
+                className="fas fa-money-check-alt mr-4"
+                style={{ fontSize: "20px" }}
+              ></i>{" "}
+              Company Info
+            </li>
+          </Link>
         </ul>
       </div>
     );

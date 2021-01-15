@@ -1,11 +1,14 @@
 import React, { Component } from "react";
-// import "../../assets/profile-styles/Profile.css";
-import profilePic from "../../assets/profile-styles/userPic.png";
+import "../../assets/profile-styles/Profile.css";
+import maleProfilePic from "../../assets/view-emp/maleUserPic.png";
+import femaleProfilePic from "../../assets/view-emp/femaleUserPic.png";
 import Axios from "axios";
 import { Consumer } from "../../context";
 import axios from "axios";
 import toast from "toasted-notes";
 import "toasted-notes/src/styles.css";
+import { Redirect } from "react-router-dom";
+import EmpSidePanel from "./Employee/EmpSidePanel";
 
 export default class Profile extends Component {
   constructor() {
@@ -24,6 +27,7 @@ export default class Profile extends Component {
       objective: "",
       skills: "",
       doj: "",
+      gender: "",
 
       // pwd
       onShowChangePassword: false,
@@ -53,6 +57,7 @@ export default class Profile extends Component {
       phoneNo: res.data.user.phoneNo,
       objective: res.data.user.objective,
       skills: res.data.user.skills,
+      gender: res.data.user.gender,
       doj: res.data.user.doj,
     });
   }
@@ -78,6 +83,7 @@ export default class Profile extends Component {
         objective: this.state.objective,
         skills: this.state.skills,
         doj: this.state.doj,
+        gender: this.state.gender,
       };
 
       const res = await Axios.post("/api/users/updateProfile", {
@@ -110,6 +116,13 @@ export default class Profile extends Component {
           position: "top-right",
         });
 
+        this.setState({
+          onShowChangePassword: false,
+          oldPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+
         console.log("successfully changed password");
       } catch (e) {
         this.setState({
@@ -124,249 +137,302 @@ export default class Profile extends Component {
     this.setState({ [e.target.name]: e.target.value, error: "" });
 
   render() {
+    const {
+      name,
+      email,
+      phoneNo,
+      skills,
+      team,
+      role,
+      address,
+      objective,
+      gender,
+      doj,
+    } = this.state;
+
     return (
       <Consumer>
         {(value) => {
+          let { user } = value;
+          const token = localStorage.getItem("auth-token");
+          if (!token) return <Redirect to="/login" />;
+
+          if (user && user.role === "admin") return <Redirect to="/" />;
+
           return (
-            <>
-              <div className="wrapper jumbotron mt-4">
-                <div className="left">
-                  <img src={profilePic} alt="user" width="150" />
-                  <h4>
-                    <div className="form-group">
-                      <input
-                        className="mys"
-                        disabled={this.state.readOnly}
-                        name="name"
-                        type="text"
-                        id="name"
-                        size="2"
-                        style={{ color: "white" }}
-                        value={this.state.name}
-                        onChange={this.onChange}
-                      />
-                    </div>
-                  </h4>
-
-                  <h1>
-                    <div>
-                      <input
-                        disabled={this.state.readOnly}
-                        className="form-control mys"
-                        style={{ size: 200 }}
-                        placeholder="Objective"
-                        name="objective"
-                        id="objective"
-                        onChange={this.onChange}
-                        value={this.state.objective}
-                      />
-                    </div>
-                  </h1>
-
-                  <input
-                    className="btn btn-primary mys"
-                    type="button"
-                    onClick={this.updateProfile}
-                    value={this.state.readOnly ? "Edit" : "Save"}
-                  />
-                </div>
-                <div className="right">
-                  <div className="info">
-                    <h3>Basic Information</h3>
-                    <div className="info_data">
-                      <div className="container">
-                        <div className="row">
-                          <div className="col">
-                            <div className="data">
-                              <h4>Email</h4>
-                              <div className="form-group">
-                                <input
-                                  className="mys"
-                                  disabled={this.state.readOnly}
-                                  type="email"
-                                  name="email"
-                                  id="email"
-                                  aria-describedby="emailHelp"
-                                  value={this.state.email}
-                                  onChange={this.onChange}
-                                />
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col">
-                            <div className="data">
-                              <h4>Phone</h4>
-                              <div className="form-group">
-                                <input
-                                  className="mys"
-                                  disabled={this.state.readOnly}
-                                  type="phoneNo"
-                                  name="phoneNo"
-                                  id="phoneNo"
-                                  aria-describedby="phoneNo"
-                                  value={this.state.phoneNo}
-                                  onChange={this.onChange}
-                                />
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col">
-                            <div className="data">
-                              <h4>Date Of Joining</h4>
-                              <div className="form-group">
-                                <input
-                                  className="mys"
-                                  disabled={true}
-                                  type="date"
-                                  name="doj"
-                                  id="doj"
-                                  value={this.state.doj}
-                                  onChange={this.onChange}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="row">
-                          <div className="col">
-                            <div className="data">
-                              <h4>Address</h4>
-                              <div className="form-group">
-                                <input
-                                  className="mys"
-                                  disabled={this.state.readOnly}
-                                  type="text"
-                                  name="address"
-                                  id="address"
-                                  value={this.state.address}
-                                  onChange={this.onChange}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="projects">
-                    <h3>Company Profile</h3>
-                    <div className="projects_data">
-                      <div className="container">
-                        <div className="row">
-                          <div className="col">
-                            <div className="data">
-                              <h4>Team</h4>
-                              <div className="form-group">
-                                <input
-                                  className="mys"
-                                  disabled={true}
-                                  type="team"
-                                  name="team"
-                                  id="team"
-                                  aria-describedby="team"
-                                  value={this.state.team}
-                                  onChange={this.onChange}
-                                />
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col">
-                            <div className="data">
-                              <h4>Role</h4>
-                              <div className="form-group">
-                                <input
-                                  className="mys"
-                                  disabled={true}
-                                  type="text"
-                                  name="role"
-                                  id="role"
-                                  value={this.state.role}
-                                  onChange={this.onChange}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col">
-                            <div className="data">
-                              <h4>Skills</h4>
-                              <div className="form-group">
-                                <input
-                                  disabled={this.state.readOnly}
-                                  className="mys"
-                                  type="text"
-                                  name="skills"
-                                  id="skills"
-                                  value={this.state.skills}
-                                  onChange={this.onChange}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div className="row m-0">
+              {/* left part */}
+              <div className="col-2 p-0 leftPart">
+                <EmpSidePanel />
               </div>
 
-              <div className="row m-0 changePassword">
-                <input
-                  type="button"
-                  value="change password"
-                  className="btn btn-primary"
-                  onClick={() =>
-                    this.setState({
-                      onShowChangePassword: !this.state.onShowChangePassword,
-                    })
-                  }
-                />
+              {/* right part */}
+              <div className="col rightPart">
+                <div className="row  p-5 mx-5">
+                  {/* profile pic col */}
+                  <div className="col-3 profilePicCol">
+                    <div className="row">
+                      <img
+                        className="userPic"
+                        src={
+                          gender === "Male" ? maleProfilePic : femaleProfilePic
+                        }
+                        alt=""
+                        width="100px"
+                      />
+                    </div>
 
-                {this.state.onShowChangePassword ? (
-                  <>
-                    {this.state.error ? (
-                      <div className="alert alert-danger">
-                        {this.state.error}
+                    <div className="row">
+                      <div className="col m-3 objective">
+                        {!this.state.readOnly ? (
+                          <textarea
+                            disabled={this.state.readOnly}
+                            type="text"
+                            placeholder="My Objective"
+                            value={objective}
+                            onChange={this.onChange}
+                            name="objective"
+                            className="form-control"
+                          />
+                        ) : (
+                          <h6 className="text-center">
+                            <i>{objective}</i>
+                          </h6>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div
+                        className="col"
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <input
+                          type="button"
+                          value={
+                            this.state.readOnly
+                              ? "Edit Profile"
+                              : "Save Profile"
+                          }
+                          className="btn btn-secondary btn-sm"
+                          onClick={this.updateProfile}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* details col */}
+                  <div className="col detailsCol">
+                    <h4>User Details</h4>
+                    <hr />
+
+                    <div className="container">
+                      <div className="row my-4">
+                        <div className="col">
+                          <span>Name</span>
+                          {!this.state.readOnly ? (
+                            <input
+                              disabled={this.state.readOnly}
+                              type="text"
+                              name="name"
+                              value={name}
+                              onChange={this.onChange}
+                              className="form-control"
+                            />
+                          ) : (
+                            <h6>{name}</h6>
+                          )}
+                        </div>
+                        <div className="col">
+                          <span>Email</span>
+                          {!this.state.readOnly ? (
+                            <input
+                              disabled={this.state.readOnly}
+                              type="email"
+                              name="email"
+                              value={email}
+                              onChange={this.onChange}
+                              className="form-control"
+                            />
+                          ) : (
+                            <h6>{email}</h6>
+                          )}
+                        </div>
+                        <div className="col">
+                          <span>Phone No.</span>
+                          {!this.state.readOnly ? (
+                            <input
+                              disabled={this.state.readOnly}
+                              type="number"
+                              name="phoneNo"
+                              value={phoneNo}
+                              onChange={this.onChange}
+                              className="form-control"
+                            />
+                          ) : (
+                            <h6>{phoneNo}</h6>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="row my-4">
+                        <div className="col">
+                          <span>Address</span>
+                          {!this.state.readOnly ? (
+                            <input
+                              disabled={this.state.readOnly}
+                              type="text"
+                              name="address"
+                              value={address}
+                              onChange={this.onChange}
+                              className="form-control"
+                            />
+                          ) : (
+                            <h6>{address}</h6>
+                          )}
+                        </div>
+                        <div className="col">
+                          <span>Skills</span>
+                          {!this.state.readOnly ? (
+                            <textarea
+                              disabled={this.state.readOnly}
+                              type="text"
+                              name="skills"
+                              value={skills}
+                              onChange={this.onChange}
+                              className="form-control"
+                            />
+                          ) : (
+                            <h6>{skills}</h6>
+                          )}
+                        </div>
+                        <div className="col"></div>
+                      </div>
+                    </div>
+
+                    <h4>Company Details</h4>
+                    <hr />
+
+                    <div className="container">
+                      <div className="row">
+                        <div className="col">
+                          <span>Date Of Joining</span>
+                          <h6>{doj}</h6>
+                        </div>
+                        <div className="col">
+                          <span>Team</span>
+                          <h6>{team}</h6>
+                        </div>
+                        <div className="col">
+                          <span>Role</span>
+                          <h6>{role}</h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* change password */}
+                <div className="row  mx-5">
+                  <div className="col-3"></div>
+                  <div className="col">
+                    {/* password form */}
+                    {this.state.onShowChangePassword ? (
+                      <div className="container changePasswordContainer p-5">
+                        <h2>Change Password</h2>
+                        <hr />
+
+                        {this.state.error ? (
+                          <div className="alert alert-danger">
+                            {this.state.error}
+                          </div>
+                        ) : null}
+
+                        <form>
+                          <div className="row">
+                            <div className="col">
+                              <div className="form-group">
+                                <label htmlFor="prevPassword">
+                                  Enter old password
+                                </label>
+                                <input
+                                  required
+                                  className="form-control"
+                                  type="password"
+                                  name="oldPassword"
+                                  value={this.state.oldPassword}
+                                  onChange={this.onChange}
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="row mb-4">
+                            <div className="col">
+                              <div className="form-group">
+                                <label htmlFor="newPassword">
+                                  Enter new password
+                                </label>
+                                <input
+                                  required
+                                  className="form-control"
+                                  type="password"
+                                  name="newPassword"
+                                  value={this.state.newPassword}
+                                  onChange={this.onChange}
+                                />
+                              </div>
+                            </div>
+                            <div className="col">
+                              <div className="form-group">
+                                <label htmlFor="confirmPassword">
+                                  Confirm new password
+                                </label>
+                                <input
+                                  required={true}
+                                  className="form-control"
+                                  type="password"
+                                  id="confirmPassword"
+                                  name="confirmPassword"
+                                  value={this.state.confirmPassword}
+                                  onChange={this.onChange}
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="row">
+                            <div className="col">
+                              <input
+                                className="btn btn-primary"
+                                type="button"
+                                value="submit"
+                                onClick={this.onChangePassword}
+                              />
+                            </div>
+                          </div>
+                        </form>
                       </div>
                     ) : null}
 
-                    <label htmlFor="prevPassword">enter old pass</label>
-                    <input
-                      type="text"
-                      name="oldPassword"
-                      value={this.state.oldPassword}
-                      onChange={this.onChange}
-                    />
-
-                    <label htmlFor="newPassword">enter new pass</label>
-                    <input
-                      type="text"
-                      name="newPassword"
-                      value={this.state.newPassword}
-                      onChange={this.onChange}
-                    />
-
-                    <label htmlFor="confirmPassword">confirm new pass</label>
-                    <input
-                      type="text"
-                      name="confirmPassword"
-                      value={this.state.confirmPassword}
-                      onChange={this.onChange}
-                    />
-
-                    <input
-                      type="button"
-                      value="submit"
-                      onClick={this.onChangePassword}
-                    />
-                  </>
-                ) : null}
+                    {/* toggle button */}
+                    <div className="container text-center px-5 my-3">
+                      <input
+                        type="button"
+                        value="Change Password"
+                        className="btn btn-secondary"
+                        onClick={() =>
+                          this.setState({
+                            onShowChangePassword: !this.state
+                              .onShowChangePassword,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
-            </>
+            </div>
           );
         }}
       </Consumer>

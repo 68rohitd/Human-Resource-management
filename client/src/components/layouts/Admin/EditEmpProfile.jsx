@@ -19,6 +19,7 @@ export default class EditEmpProfile extends Component {
       role: "",
       team: "",
       doj: "",
+      skills: "",
 
       // teams and roels
       teamList: [],
@@ -61,7 +62,9 @@ export default class EditEmpProfile extends Component {
       phoneNo: userData.data.phoneNo,
       objective: userData.data.objective,
       doj: userData.data.doj,
+      skills: userData.data.skills,
 
+      // team & role
       teamList: teamAndRoleList.data[0].teamNames,
       roleList: teamAndRoleList.data[0].roleNames,
 
@@ -114,6 +117,7 @@ export default class EditEmpProfile extends Component {
       team: this.state.team,
       objective: this.state.objective,
       doj: this.state.doj,
+      skills: this.state.skills,
     };
 
     try {
@@ -411,11 +415,25 @@ export default class EditEmpProfile extends Component {
                       </div>
                     </div>
                   </div>
+
+                  <div className="row">
+                    <div className="col">
+                      <label htmlFor="skills">Skills</label>
+                      <textarea
+                        disabled={true}
+                        type="text"
+                        name="skills"
+                        value={this.state.skills}
+                        className="form-control mb-3 "
+                        required
+                      />
+                    </div>
+                  </div>
                   <input
                     disabled={this.state.disabled}
                     type="submit"
                     value="Submit"
-                    className="btn btn-success btn-block "
+                    className="btn btn-primary btn-block "
                   />
                 </form>
               </div>
@@ -514,7 +532,7 @@ export default class EditEmpProfile extends Component {
                 />
                 <div className="input-group-append">
                   <button
-                    className="btn btn-outline-secondary"
+                    className="btn btn-primary"
                     type="button"
                     id="button-addon2"
                     onClick={this.onCalSal}
@@ -526,7 +544,7 @@ export default class EditEmpProfile extends Component {
 
               <input
                 type="button"
-                className="btn btn-success btn-block"
+                className="btn btn-primary btn-block"
                 onClick={this.updateSalDetails}
                 value="Update Salary Details"
               />
@@ -544,7 +562,7 @@ export default class EditEmpProfile extends Component {
 
             <Link to="/statistics">
               <input
-                className="btn btn-success mt-3"
+                className="btn btn-primary mt-3"
                 type="button"
                 value="Go to Dashboard"
               />

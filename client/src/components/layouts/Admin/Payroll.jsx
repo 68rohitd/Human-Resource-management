@@ -134,7 +134,7 @@ export default class Payroll extends Component {
                     {/* select month */}
                     <div className="dropdown">
                       <button
-                        className="btn btn-secondary dropdown-toggle"
+                        className="btn btn-primary dropdown-toggle"
                         type="button"
                         id="dropdownMenuButton"
                         data-toggle="dropdown"
@@ -150,8 +150,9 @@ export default class Payroll extends Component {
                         {this.month.map((m) => {
                           return (
                             <li
+                              style={{ cursor: "pointer" }}
                               key={m}
-                              className="dropdown-item"
+                              className="dropdown-item btn-primary"
                               onClick={() => this.onMonthClick(m)}
                             >
                               {m}
@@ -209,7 +210,7 @@ export default class Payroll extends Component {
                                       <td>
                                         <div className="dropdown">
                                           <button
-                                            className="btn btn-secondary dropdown-toggle"
+                                            className="btn btn-primary dropdown-toggle"
                                             type="button"
                                             id="dropdownMenuButton"
                                             data-toggle="dropdown"
@@ -223,7 +224,8 @@ export default class Payroll extends Component {
                                             aria-labelledby="dropdownMenuButton"
                                           >
                                             <li
-                                              className="dropdown-item"
+                                              style={{ cursor: "pointer" }}
+                                              className="dropdown-item btn-primary"
                                               onClick={() =>
                                                 this.onGenerateSalReceipt(emp)
                                               }

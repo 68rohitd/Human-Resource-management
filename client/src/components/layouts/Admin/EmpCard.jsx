@@ -41,7 +41,7 @@ export default class EmpCard extends Component {
                 <i className="fas fa-calendar-alt"> {data.doj}</i>
               </span>
               <br />
-              {data.skills ? <h5>Skills: {data.skills}</h5> : null}
+              {/* {data.skills ? <small>Skills: {data.skills}</small> : null} */}
             </div>
             <hr />
             <Link
@@ -55,7 +55,7 @@ export default class EmpCard extends Component {
               <input
                 type="button"
                 value="Full Details"
-                className="btn btn-secondary"
+                className="btn btn-primary"
               />
             </Link>
           </div>

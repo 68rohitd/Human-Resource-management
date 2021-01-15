@@ -13,6 +13,13 @@ const Loan = require("../models/loan.model");
 // @desc: register a user
 router.post("/register", async (req, res) => {
   try {
+    // check if already one admin is present or not
+    const admin = Admin.find({});
+    if (admin)
+      return res
+        .status(400)
+        .json({ msg: "There can be only one admin at max" });
+
     let { email, password, passwordCheck, name } = req.body;
 
     // validation

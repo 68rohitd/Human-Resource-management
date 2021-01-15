@@ -102,9 +102,12 @@ export default class MyRequests extends Component {
     return (
       <Consumer>
         {(value) => {
+          let { user } = value;
           const token = localStorage.getItem("auth-token");
+          if (!token) return <Redirect to="/login" />;
 
-          if (!token) return <Redirect to="/" />;
+          if (user && user.role === "admin") return <Redirect to="/" />;
+
           return (
             <div className="row m-0">
               {/* left part */}
@@ -117,7 +120,7 @@ export default class MyRequests extends Component {
                 <div className="container pl-5 pt-3">
                   <div className="row">
                     <div className="col">
-                      <h1>My Requests</h1>
+                      <h2>My Requests</h2>
                     </div>
 
                     <div className="col">
@@ -126,7 +129,7 @@ export default class MyRequests extends Component {
                         className="btn-group btn-group-toggle"
                         data-toggle="buttons"
                       >
-                        <label className="btn btn-secondary active">
+                        <label className="btn btn-primary active">
                           <input
                             type="radio"
                             name="options"
@@ -136,7 +139,7 @@ export default class MyRequests extends Component {
                           />
                           Leave Requests
                         </label>
-                        <label className="btn btn-secondary">
+                        <label className="btn btn-primary">
                           <input
                             type="radio"
                             name="options"
@@ -145,7 +148,7 @@ export default class MyRequests extends Component {
                           />
                           Bonus Requests
                         </label>
-                        <label className="btn btn-secondary">
+                        <label className="btn btn-primary">
                           <input
                             type="radio"
                             name="options"
@@ -163,7 +166,7 @@ export default class MyRequests extends Component {
                   {this.state.selectedLabel === "Leave Requests" ? (
                     <div className="row p-0">
                       <div className="col">
-                        <h3>Leave Requests</h3>
+                        <h5>Leave Requests</h5>
 
                         {this.state.leaveRequests.length ? (
                           <table className="table table-hover ">
@@ -210,7 +213,7 @@ export default class MyRequests extends Component {
                   {this.state.selectedLabel === "Bonus Requests" ? (
                     <div className="row">
                       <div className="col">
-                        <h3>Bonus Requests</h3>
+                        <h5>Bonus Requests</h5>
 
                         {this.state.bonusRequests.length ? (
                           <table className="table table-hover">
@@ -257,7 +260,7 @@ export default class MyRequests extends Component {
                   {this.state.selectedLabel === "Loan Requests" ? (
                     <div className="row">
                       <div className="col">
-                        <h3>Loan Requests</h3>
+                        <h5>Loan Requests</h5>
 
                         {this.state.loanRequests.length ? (
                           <table className="table table-hover">

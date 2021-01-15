@@ -15,7 +15,7 @@ export default class SalaryStructure extends Component {
     return (
       <div className="row">
         <div className="col">
-          <div className="container mt-4">
+          <div className="container">
             <h1>{title}</h1>
             <hr />
 

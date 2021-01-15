@@ -59,8 +59,9 @@ export default class Attendence extends Component {
         {(value) => {
           let { user } = value;
           const token = localStorage.getItem("auth-token");
+          if (!token) return <Redirect to="/login" />;
 
-          if (!token) return <Redirect to="/" />;
+          if (user && user.role === "admin") return <Redirect to="/" />;
 
           return (
             <div className="row m-0">
@@ -82,7 +83,7 @@ export default class Attendence extends Component {
                   className="addEmpForm"
                   onSubmit={this.onSubmit.bind(this, user)}
                 >
-                  <h1>Apply for Leave</h1>
+                  <h2>Apply for Leave</h2>
                   <hr />
                   <div className="row">
                     <div className="col">

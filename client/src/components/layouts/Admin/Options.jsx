@@ -149,7 +149,7 @@ export default class Options extends Component {
                         </div>
                       ) : null}
 
-                      <h1>Add new Teams and Roles</h1>
+                      <h2>Add new Teams and Roles</h2>
                       <hr />
 
                       <label htmlFor="team">New Team</label>
@@ -166,7 +166,7 @@ export default class Options extends Component {
 
                         <div className="input-group-append">
                           <button
-                            className="btn btn-outline-secondary"
+                            className="btn btn-primary"
                             type="button"
                             id="button-addon2"
                             onClick={this.onAddTeam}
@@ -192,7 +192,7 @@ export default class Options extends Component {
 
                         <div className="input-group-append">
                           <button
-                            className="btn btn-outline-secondary"
+                            className="btn btn-primary"
                             type="button"
                             id="button-addon2"
                             onClick={this.onAddRole}

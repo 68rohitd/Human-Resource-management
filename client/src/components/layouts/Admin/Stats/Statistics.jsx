@@ -72,56 +72,58 @@ export default class Statistics extends Component {
           if (user && user.role !== "admin")
             return <Redirect to="/empDashBoard" />;
 
-          return (
-            <div className="row m-0">
-              {/* left part */}
-              <div className="col-2 p-0 leftPart">
-                <AdminSidePanel />
+          //added this condition coz it was showing admin panel till emp data was loaded
+          if (user && user.role === "admin")
+            return (
+              <div className="row m-0">
+                {/* left part */}
+                <div className="col-2 p-0 leftPart">
+                  <AdminSidePanel />
+                </div>
+
+                {/* right part */}
+                <div className="col-9 rightPart container">
+                  {/* numbers */}
+                  <div className="row mt-5">
+                    <div className="col ">
+                      <Card
+                        label="Salary Expenses"
+                        data={`₹ ${this.state.totalExpenses}`}
+                      />
+                    </div>
+                    <div className="col ">
+                      <Card
+                        label="Loan Expenses"
+                        data={`₹ ${this.state.loanExpenses}`}
+                      />
+                    </div>
+                    <div className="col">
+                      <Card
+                        label="Employee Count"
+                        data={this.state.empList.length}
+                      />
+                    </div>
+                  </div>
+
+                  {/* charts */}
+                  <div className="row mt-5">
+                    <div className="col my-4">
+                      <PieChart />
+                    </div>
+
+                    <div className="col my-4">
+                      <BarChart />
+                    </div>
+                  </div>
+
+                  <div className="row mt-4">
+                    <div className="col my-4">
+                      <LineChart />
+                    </div>
+                  </div>
+                </div>
               </div>
-
-              {/* right part */}
-              <div className="col-9 rightPart container">
-                {/* numbers */}
-                <div className="row mt-5">
-                  <div className="col ">
-                    <Card
-                      label="Salary Expenses"
-                      data={`₹ ${this.state.totalExpenses}`}
-                    />
-                  </div>
-                  <div className="col ">
-                    <Card
-                      label="Loan Expenses"
-                      data={`₹ ${this.state.loanExpenses}`}
-                    />
-                  </div>
-                  <div className="col">
-                    <Card
-                      label="Employee Count"
-                      data={this.state.empList.length}
-                    />
-                  </div>
-                </div>
-
-                {/* charts */}
-                <div className="row mt-5">
-                  <div className="col my-4">
-                    <PieChart />
-                  </div>
-
-                  <div className="col my-4">
-                    <BarChart />
-                  </div>
-                </div>
-
-                <div className="row mt-4">
-                  <div className="col my-4">
-                    <LineChart />
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
+            );
         }}
       </Consumer>
     );

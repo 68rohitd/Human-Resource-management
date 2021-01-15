@@ -125,7 +125,7 @@ export default class SearchEmp extends Component {
               }}
             >
               <div className="form-group m-0 p-0">
-                <button className="btn btn-secondary">
+                <button className="btn btn-primary">
                   <i
                     className="fas fa-search p-2"
                     style={{ cursor: "pointer", fontSize: "20px" }}
