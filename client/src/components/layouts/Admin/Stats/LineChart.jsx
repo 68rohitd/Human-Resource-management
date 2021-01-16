@@ -14,8 +14,8 @@ export default class LineChart extends Component {
           label: "Hired",
           fill: false,
           lineTension: 0.5,
-          backgroundColor: "lightgreen",
-          borderColor: "grey",
+          backgroundColor: "white",
+          borderColor: "#02C39A",
           borderWidth: 2,
           data: [], //y axis
         },
@@ -29,11 +29,6 @@ export default class LineChart extends Component {
         this.onPopulateLineChart();
       });
     });
-
-    // const empList = await axios.get("/api/admin/getEmpList");
-    // this.setState({ empList: empList.data }, () => {
-    //   this.onPopulateLineChart();
-    // });
   };
 
   onPopulateLineChart = () => {

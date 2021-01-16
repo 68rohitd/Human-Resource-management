@@ -221,6 +221,7 @@ class AddEmployee extends Component {
                                   >
                                     {this.state.teamList.map((teamName) => (
                                       <li
+                                        style={{ cursor: "pointer" }}
                                         key={teamName}
                                         className="dropdown-item"
                                         onClick={() =>
@@ -254,6 +255,7 @@ class AddEmployee extends Component {
                                   >
                                     {this.state.roleList.map((roleName) => (
                                       <li
+                                        style={{ cursor: "pointer" }}
                                         key={roleName}
                                         className="dropdown-item"
                                         onClick={() =>
@@ -301,6 +303,7 @@ class AddEmployee extends Component {
                                     aria-labelledby="dropdownMenuButton"
                                   >
                                     <li
+                                      style={{ cursor: "pointer" }}
                                       className="dropdown-item"
                                       onClick={() =>
                                         this.onSelectGender("Male")
@@ -309,6 +312,7 @@ class AddEmployee extends Component {
                                       Male
                                     </li>
                                     <li
+                                      style={{ cursor: "pointer" }}
                                       className="dropdown-item"
                                       onClick={() =>
                                         this.onSelectGender("Female")

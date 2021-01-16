@@ -129,10 +129,10 @@ export default class Payroll extends Component {
                 </div>
 
                 {/* right part */}
-                <div className="col mt-5">
+                <div className="col mt-3">
                   <div className="container">
                     {/* select month */}
-                    <div className="dropdown">
+                    <div className="dropdown" style={{ float: "left" }}>
                       <button
                         className="btn btn-primary dropdown-toggle"
                         type="button"
@@ -164,7 +164,7 @@ export default class Payroll extends Component {
 
                     {this.state.selectedMonth !== "Select Month" ? (
                       <>
-                        <h1 className="my-3 text-center">
+                        <h1 className="my-3 text-right text-secondary">
                           Payroll table for {this.state.selectedMonth},{" "}
                           {this.curYear}
                         </h1>
@@ -253,8 +253,8 @@ export default class Payroll extends Component {
                       </>
                     ) : (
                       <>
-                        <h2 className="text-center mt-3 emptyPicText">
-                          Select month to view details
+                        <h2 className="text-center mt-3 emptyPicText text-secondary">
+                          <b>Select month to view details</b>
                         </h2>
                         <div
                           style={{

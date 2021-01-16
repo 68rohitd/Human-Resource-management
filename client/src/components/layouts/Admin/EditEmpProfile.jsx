@@ -198,9 +198,12 @@ export default class EditEmpProfile extends Component {
   };
 
   onMarkAsPaid = async (loanDetails) => {
+    console.log("loan details: ", loanDetails);
     try {
       const paidLoan = await axios.put("/api/admin/loanPaid", {
         loanId: loanDetails._id,
+        empId: loanDetails.empId,
+        reqId: loanDetails.reqId,
       });
 
       toast.notify("Successfully marked loan as paid", {
@@ -208,11 +211,10 @@ export default class EditEmpProfile extends Component {
       });
 
       // update state to refresh data on this page
-      console.log("loan details: ", loanDetails);
       let empLoanHistory = this.state.empLoanHistory;
 
       empLoanHistory.forEach((loan) => {
-        if (loan.empId === loanDetails.empId) {
+        if (loan.reqId === loanDetails.reqId) {
           loan.loanRepaid = true;
         }
       });
@@ -236,10 +238,12 @@ export default class EditEmpProfile extends Component {
       <Consumer>
         {(value) => {
           let { user } = value;
-          const token = localStorage.getItem("auth-token");
-          if (!token) return <Redirect to="/login" />;
 
-          if (user && user.role === "admin") return <Redirect to="/" />;
+          const token = localStorage.getItem("auth-token");
+
+          if (!token) return <Redirect to="/login" />;
+          if (user && user.role !== "admin")
+            return <Redirect to="/empDashBoard" />;
 
           return (
             <div className="container">
@@ -455,24 +459,29 @@ export default class EditEmpProfile extends Component {
                     {/* emp loan history */}
                     <div className="col">
                       {this.state.empLoanHistory.length ? (
-                        <form className="addEmpForm">
+                        <form
+                          className="addEmpForm"
+                          style={{ height: "460px", overflowY: "scroll" }}
+                        >
                           <h3>Employee Loan History</h3>
                           <hr />
 
                           {this.state.empLoanHistory.map((loan) => (
                             <LoanDetailsCard
                               key={loan.reqId}
+                              isAdmin={
+                                user && user.role === "admin" ? true : false
+                              }
                               loanDetails={loan}
                               onGetDate={this.onGetDate}
                               onMarkAsPaid={this.onMarkAsPaid}
                             />
                           ))}
                         </form>
-                      ) : (
-                        <div className="addEmpForm">
-                          <h3>No loan history available</h3>
-                        </div>
-                      )}
+                      ) : // <div className="addEmpForm">
+                      //   <h3>No loan history available</h3>
+                      // </div>
+                      null}
                     </div>
                   </div>
                 </div>

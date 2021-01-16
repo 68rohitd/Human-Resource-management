@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Consumer } from "../../../context";
 import EmpSidePanel from "./EmpSidePanel";
+import empty from "../../../assets/images/empty.png";
 
 export default class MyRequests extends Component {
   constructor() {
@@ -207,7 +208,10 @@ export default class MyRequests extends Component {
                             </tbody>
                           </table>
                         ) : (
-                          <small>No tickets</small>
+                          <div className="text-center text-secondary">
+                            <img src={empty} alt="" width="400px" />
+                            <h1>No tickets</h1>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -232,7 +236,7 @@ export default class MyRequests extends Component {
                             <tbody>
                               {this.state.bonusRequests.map((req, index) => {
                                 return (
-                                  <tr>
+                                  <tr key={index}>
                                     <th scope="row">{index + 1}</th>
                                     <td>
                                       <Link
@@ -254,7 +258,10 @@ export default class MyRequests extends Component {
                             </tbody>
                           </table>
                         ) : (
-                          <small>No tickets</small>
+                          <div className="text-center text-secondary">
+                            <img src={empty} alt="" width="400px" />
+                            <h1>No tickets</h1>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -273,13 +280,14 @@ export default class MyRequests extends Component {
                                 <th scope="col">#</th>
                                 <th scope="col">Subject</th>
                                 <th scope="col">Created On</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Ticket Status</th>
+                                <th scope="col">Loan Status</th>
                               </tr>
                             </thead>
                             <tbody>
                               {this.state.loanRequests.map((req, index) => {
                                 return (
-                                  <tr>
+                                  <tr key={index}>
                                     <th scope="row">{index + 1}</th>
                                     <td>
                                       <Link
@@ -295,13 +303,21 @@ export default class MyRequests extends Component {
                                     ) : (
                                       <td>Pending</td>
                                     )}
+                                    {req.loanRepaid ? (
+                                      <td>Paid</td>
+                                    ) : (
+                                      <td>Pending</td>
+                                    )}
                                   </tr>
                                 );
                               })}
                             </tbody>
                           </table>
                         ) : (
-                          <small>No tickets</small>
+                          <div className="text-center text-secondary">
+                            <img src={empty} alt="" width="400px" />
+                            <h1>No tickets</h1>
+                          </div>
                         )}
                       </div>
                     </div>

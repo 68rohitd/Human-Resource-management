@@ -92,24 +92,24 @@ export default class Options extends Component {
     }
   };
 
-  onDeleteAdminAccount = async (dispatch) => {
-    const adminId = localStorage.getItem("userId");
+  // onDeleteAdminAccount = async (dispatch) => {
+  //   const adminId = localStorage.getItem("userId");
 
-    try {
-      await axios.delete(`/api/admin/deleteAdminAcc/${adminId}`);
-      console.log("deleted admin acc");
-      localStorage.setItem("auth-token", "");
-      localStorage.setItem("userId", "");
+  //   try {
+  //     await axios.delete(`/api/admin/deleteAdminAcc/${adminId}`);
+  //     console.log("deleted admin acc");
+  //     localStorage.setItem("auth-token", "");
+  //     localStorage.setItem("userId", "");
 
-      dispatch({
-        type: "LOGGED_OUT",
-      });
+  //     dispatch({
+  //       type: "LOGGED_OUT",
+  //     });
 
-      this.props.history.push("/login");
-    } catch (err) {
-      console.log(err.response.data);
-    }
-  };
+  //     this.props.history.push("/login");
+  //   } catch (err) {
+  //     console.log(err.response.data);
+  //   }
+  // };
 
   render() {
     return (
@@ -205,7 +205,7 @@ export default class Options extends Component {
                   </div>
                 </div>
 
-                <div className="row mt-3">
+                {/* <div className="row mt-3">
                   <div
                     className="col"
                     style={{ display: "flex", justifyContent: "center" }}
@@ -217,7 +217,7 @@ export default class Options extends Component {
                       onClick={() => this.onDeleteAdminAccount(dispatch)}
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           );

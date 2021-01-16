@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { Component } from "react";
 import { Bar } from "react-chartjs-2";
 
-export default class PieChart extends Component {
+export default class BarChart extends Component {
   constructor() {
     super();
 
@@ -12,8 +12,8 @@ export default class PieChart extends Component {
       datasets: [
         {
           label: "emp count",
-          backgroundColor: "lightgreen",
-          borderColor: "white",
+          backgroundColor: "#b3d1ff",
+          borderColor: "#0066ff",
           borderWidth: 2,
           data: [],
         },
@@ -27,11 +27,6 @@ export default class PieChart extends Component {
         this.onPopulateBarChart();
       });
     });
-
-    // const empList = await axios.get("/api/admin/getEmpList");
-    // this.setState({ empList: empList.data }, () => {
-    //   this.onPopulateBarChart();
-    // });
   };
 
   onPopulateBarChart = () => {

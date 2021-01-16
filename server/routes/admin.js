@@ -14,7 +14,8 @@ const Loan = require("../models/loan.model");
 router.post("/register", async (req, res) => {
   try {
     // check if already one admin is present or not
-    const admin = Admin.find({});
+    const admin = await Admin.countDocuments();
+
     if (admin)
       return res
         .status(400)
@@ -629,6 +630,20 @@ router.get("/getEmpLoanHistory/:id", async (req, res) => {
 // @desc: mark particular loan as paid
 router.put("/loanPaid", async (req, res) => {
   try {
+    // update USER.notification MODEL
+    const emp = await User.findById(req.body.empId);
+
+    let notification = emp.notification;
+    notification = notification.map((noti) => {
+      if (noti.reqId === req.body.reqId) noti.loanRepaid = true;
+      return noti;
+    });
+
+    await User.findByIdAndUpdate(req.body.empId, {
+      notification,
+    });
+
+    // update LOAN MODEL
     const loan = await Loan.findByIdAndUpdate(
       req.body.loanId,
       {

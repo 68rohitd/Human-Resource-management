@@ -21,7 +21,9 @@ export default class LoanRequestTemplate extends Component {
       loanRepaid,
       modeOfRepayment,
     } = this.props.reqDetails;
+
     console.log("loan req details: ", this.props.reqDetails);
+
     return (
       <div className="mySingleReqCard m-5">
         <div className="row">
@@ -80,7 +82,11 @@ export default class LoanRequestTemplate extends Component {
 
               <div className="col">
                 <small>Loan Repaid:</small>
-                {loanRepaid ? <h6>Yes</h6> : <h6>No</h6>}
+                {loanRepaid ? (
+                  <h6>Yes</h6>
+                ) : (
+                  <h6 className="text-danger">No</h6>
+                )}
               </div>
             </div>
 
@@ -102,7 +108,7 @@ export default class LoanRequestTemplate extends Component {
                   approved ? (
                     <h6>Approved</h6>
                   ) : (
-                    <h6>Rejected</h6>
+                    <h6 className="text-danger">Rejected</h6>
                   )
                 ) : (
                   <h6>NA</h6>

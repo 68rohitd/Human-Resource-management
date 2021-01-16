@@ -5,6 +5,7 @@ import { Consumer } from "../../../context";
 import EmpCard from "./EmpCard";
 import SearchEmp from "./SearchEmp";
 import AdminSidePanel from "./AdminSidePanel";
+import noEmp from "../../../assets/images/noEmp.png";
 
 export default class ViewEmployees extends Component {
   constructor() {
@@ -75,7 +76,10 @@ export default class ViewEmployees extends Component {
                       </div>
                     </div>
                   ) : (
-                    <h1 className="text-center">No employees found...</h1>
+                    <div className="container  text-secondary text-center mt-2">
+                      <img src={noEmp} alt="" height="200px" className="mt-5" />
+                      <h1 className="mt-4">No Employees found...</h1>
+                    </div>
                   )}
                 </div>
               </div>

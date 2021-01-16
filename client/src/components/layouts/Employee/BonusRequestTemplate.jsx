@@ -81,7 +81,7 @@ export default class BonusRequestTemplate extends Component {
                   approved ? (
                     <h6>Approved</h6>
                   ) : (
-                    <h6>Rejected</h6>
+                    <h6 className="text-danger">Rejected</h6>
                   )
                 ) : (
                   <h6>NA</h6>

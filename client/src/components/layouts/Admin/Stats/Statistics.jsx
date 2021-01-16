@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { Component } from "react";
 import PieChart from "./PieChart";
 import BarChart from "./BarChart";
+import BarChart2 from "./BarChart2";
 import LineChart from "./LineChart";
 import AdminSidePanel from "../AdminSidePanel";
 import "../../../../assets/stats-styles/stats.css";
@@ -117,6 +118,9 @@ export default class Statistics extends Component {
                   </div>
 
                   <div className="row mt-4">
+                    <div className="col my-4">
+                      <BarChart2 />
+                    </div>
                     <div className="col my-4">
                       <LineChart />
                     </div>

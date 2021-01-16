@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../../../assets/my-sal-details/mySalDetails.css";
-
+import ReactTooltip from "react-tooltip";
 export default class SalaryStructure extends Component {
   render() {
     const {
@@ -12,6 +12,7 @@ export default class SalaryStructure extends Component {
       bonus,
       salary,
     } = this.props;
+
     return (
       <div className="row">
         <div className="col">
@@ -62,11 +63,18 @@ export default class SalaryStructure extends Component {
             <hr className="myHrLine" />
 
             <div className="row">
+              <ReactTooltip place="bottom" delayShow={100} html={true} />
               <div className="col">
                 <h6 className="text-left">Total Leaves</h6>
               </div>
               <div className="col">
-                <h6 className="text-right">{totalLeaves} days</h6>
+                <h6 className="text-right">
+                  {totalLeaves} days{" "}
+                  <i
+                    className="fas fa-info-circle text-secondary"
+                    data-tip="For leaves above 3 days, salary will be deducted accordingly"
+                  ></i>
+                </h6>
               </div>
             </div>
 

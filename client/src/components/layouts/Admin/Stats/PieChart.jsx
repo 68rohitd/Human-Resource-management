@@ -14,7 +14,7 @@ export default class PieChart extends Component {
       datasets: [
         {
           label: "Gender",
-          backgroundColor: ["#993299", "lightgreen"],
+          backgroundColor: ["#cbb4ca", "#A8DCD9"],
           borderColor: "white",
           data: [],
         },

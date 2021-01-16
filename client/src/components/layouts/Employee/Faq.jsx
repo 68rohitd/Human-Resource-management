@@ -10,8 +10,8 @@ export default class Faq extends Component {
       >
         <h1 className="text-center">FAQ's</h1>
 
+        <h5>How do I apply for leave?</h5>
         <p>
-          <h5>How do I apply for leave?</h5>
           1. Please head over to{" "}
           <Link to="/attendence">
             <span>Timesheet </span>
@@ -26,8 +26,8 @@ export default class Faq extends Component {
           tab <br />
         </p>
 
+        <h5>How do I apply for loan?</h5>
         <p>
-          <h5>How do I apply for loan?</h5>
           1. Please head over to{" "}
           <Link to="/otherRequest">
             <span>Send Request </span>
@@ -53,8 +53,8 @@ export default class Faq extends Component {
           tab and heading over to loan request tab <br />
         </p>
 
+        <h5>How do I request for bonus?</h5>
         <p>
-          <h5>How do I request for bonus?</h5>
           1. Please head over to{" "}
           <Link to="/otherRequest">
             <span>Send Request </span>
@@ -77,8 +77,8 @@ export default class Faq extends Component {
           tab and heading over to loan request tab <br />
         </p>
 
+        <h5>Where can I see my salary details?</h5>
         <p>
-          <h5>Where can I see my salary details?</h5>
           1. Please head over to{" "}
           <Link to="/mySalDetails">
             <span>My Salary Details </span>
@@ -91,8 +91,8 @@ export default class Faq extends Component {
           2. Salary details of that particular month would be displayed.
         </p>
 
+        <h5>How do I update my profile?</h5>
         <p>
-          <h5>How do I update my profile?</h5>
           1. Please head over to{" "}
           <Link to="/profile">
             <span> Your Name </span>

@@ -11,6 +11,7 @@ export default class LoanDetailsCard extends Component {
       modeOfRepayment,
       timePeriod,
     } = this.props.loanDetails;
+
     console.log(this.props);
     return (
       <>
@@ -66,32 +67,64 @@ export default class LoanDetailsCard extends Component {
           </div>
         </div>
 
-        <div className="row">
-          <div className="col">
+        {this.props.isAdmin ? (
+          <>
+            <div className="row">
+              <div className="col">
+                {loanRepaid ? (
+                  <input
+                    type="button"
+                    disabled={true}
+                    value="Paid"
+                    className="btn btn-success btn-block"
+                  />
+                ) : (
+                  <input
+                    type="button"
+                    value="Mark As Paid"
+                    className="btn btn-primary btn-block"
+                    onClick={() =>
+                      this.props.onMarkAsPaid(this.props.loanDetails)
+                    }
+                  />
+                )}
+              </div>
+            </div>
+
+            <hr
+              style={{
+                border: "dashed",
+                borderWidth: "1px",
+                borderColor: "grey",
+              }}
+            />
+          </>
+        ) : (
+          <>
             {loanRepaid ? (
               <input
                 type="button"
-                disabled={true}
                 value="Paid"
                 className="btn btn-success btn-block"
+                disabled={true}
               />
             ) : (
               <input
                 type="button"
-                value="Mark As Paid"
+                value="Pending"
                 className="btn btn-primary btn-block"
-                onClick={() => this.props.onMarkAsPaid(this.props.loanDetails)}
+                disabled={true}
               />
             )}
-          </div>
-        </div>
-        <hr
-          style={{
-            border: "dashed",
-            borderWidth: "1px",
-            borderColor: "grey",
-          }}
-        />
+            <hr
+              style={{
+                border: "dashed",
+                borderWidth: "1px",
+                borderColor: "grey",
+              }}
+            />
+          </>
+        )}
       </>
     );
   }

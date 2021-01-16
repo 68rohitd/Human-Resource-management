@@ -5,6 +5,12 @@ import femaleProfilePic from "../../../assets/view-emp/femaleUserPic.png";
 import "../../../assets/search-emp/empCard.css";
 
 export default class EmpCard extends Component {
+  onGetDate = (date) => {
+    const d = new Date(date);
+    let returnDate = d.toLocaleDateString("en-GB");
+    return returnDate;
+  };
+
   render() {
     const { data } = this.props;
 
@@ -38,7 +44,10 @@ export default class EmpCard extends Component {
               <span>Team: {data.team}</span> <br />
               <span>Role: {data.role}</span> <br />
               <span>
-                <i className="fas fa-calendar-alt"> {data.doj}</i>
+                <i className="fas fa-calendar-alt">
+                  {" "}
+                  {this.onGetDate(data.doj)}
+                </i>
               </span>
               <br />
               {/* {data.skills ? <small>Skills: {data.skills}</small> : null} */}

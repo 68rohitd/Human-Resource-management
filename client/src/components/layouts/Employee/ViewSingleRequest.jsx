@@ -16,6 +16,7 @@ export default class ViewSingleRequest extends Component {
       reqDetails: {},
     };
   }
+
   componentDidMount = async () => {
     const { reqId } = this.props.match.params;
     const userId = localStorage.getItem("userId");
