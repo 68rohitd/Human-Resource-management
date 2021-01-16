@@ -79,6 +79,10 @@ export default class MyRequests extends Component {
         else openedBonusTickets.push(item);
       }
     });
+    leaveRequests = leaveRequests.reverse();
+    loanRequests = loanRequests.reverse();
+    bonusRequests = bonusRequests.reverse();
+
     this.setState({
       leaveRequests,
       loanRequests,

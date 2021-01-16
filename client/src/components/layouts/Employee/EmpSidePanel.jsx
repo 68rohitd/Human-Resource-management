@@ -53,7 +53,7 @@ export default class EmpSidePanel extends Component {
           <Link to="/companyInfo" style={{ textDecoration: "none" }}>
             <li className="list-group-item text-dark font-weight-bold border-0 my-1 myList">
               <i
-                className="fas fa-money-check-alt mr-4"
+                className="fas fa-info-circle mr-4"
                 style={{ fontSize: "20px" }}
               ></i>{" "}
               Company Info

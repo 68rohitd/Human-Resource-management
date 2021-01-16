@@ -12,6 +12,7 @@ export default class Attendence extends Component {
     super();
 
     this.state = {
+      subject: "",
       fromDate: "",
       toDate: "",
       reason: "",
@@ -31,7 +32,7 @@ export default class Attendence extends Component {
       gender: user.gender,
       empRole: user.role,
       empTeam: user.team,
-      subject: "Leave request",
+      subject: this.state.subject,
       empEmail: user.email,
       date: new Date(),
       fromDate: this.state.fromDate,
@@ -85,6 +86,23 @@ export default class Attendence extends Component {
                 >
                   <h2>Apply for Leave</h2>
                   <hr />
+
+                  <div className="row">
+                    <div className="col">
+                      <div className="form-group">
+                        <label htmlFor="subject">Subject</label>
+                        <input
+                          type="text"
+                          name="subject"
+                          className="form-control"
+                          id="subject"
+                          value={this.state.subject}
+                          onChange={this.onChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="row">
                     <div className="col">
                       <div className="form-group">

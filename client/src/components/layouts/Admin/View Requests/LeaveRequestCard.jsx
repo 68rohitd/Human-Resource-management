@@ -22,6 +22,7 @@ export default class LeaveRequestCard extends Component {
             toDate,
             empEmail,
             gender,
+            subject,
           } = this.props.req;
           console.log(this.props.req);
 
@@ -89,7 +90,11 @@ export default class LeaveRequestCard extends Component {
               <div className="row ">
                 <div className="col">
                   <h6>Reason:</h6>
-                  <div className="reasonContainer">{reason}</div>
+
+                  <div className="reasonContainer">
+                    <b>{subject}</b> <br />
+                    {reason}
+                  </div>
                 </div>
               </div>
 

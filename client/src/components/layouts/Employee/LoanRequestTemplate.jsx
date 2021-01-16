@@ -17,7 +17,11 @@ export default class LoanRequestTemplate extends Component {
       loanReason,
       ticketClosed,
       approved,
+      amount,
+      loanRepaid,
+      modeOfRepayment,
     } = this.props.reqDetails;
+    console.log("loan req details: ", this.props.reqDetails);
     return (
       <div className="mySingleReqCard m-5">
         <div className="row">
@@ -60,6 +64,23 @@ export default class LoanRequestTemplate extends Component {
               <div className="col">
                 <small>Created On:</small>
                 <h6>{this.onGetDate(date)}</h6>
+              </div>
+
+              <div className="col">
+                <small>Loan Amount:</small>
+                <h6>₹ {amount}</h6>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col">
+                <small>Mode Of Repayment:</small>
+                <h6>{modeOfRepayment}</h6>
+              </div>
+
+              <div className="col">
+                <small>Loan Repaid:</small>
+                {loanRepaid ? <h6>Yes</h6> : <h6>No</h6>}
               </div>
             </div>
 

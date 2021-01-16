@@ -214,7 +214,7 @@ export default class Profile extends Component {
                               ? "Edit Profile"
                               : "Save Profile"
                           }
-                          className="btn btn-secondary btn-sm"
+                          className="btn btn-primary btn-sm"
                           onClick={this.updateProfile}
                         />
                       </div>
@@ -420,7 +420,7 @@ export default class Profile extends Component {
                       <input
                         type="button"
                         value="Change Password"
-                        className="btn btn-secondary"
+                        className="btn btn-primary"
                         onClick={() =>
                           this.setState({
                             onShowChangePassword: !this.state
