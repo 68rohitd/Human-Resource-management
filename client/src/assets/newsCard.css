@@ -1,0 +1,31 @@
+.newsContainer {
+  background-color: white;
+  text-align: center;
+  width: 290px;
+  word-wrap: break-word;
+
+  padding: 30px 10px 10px 10px;
+  margin: 20px 0 20px 0;
+  border-radius: 10px;
+
+  transform: scale(1);
+  transition: transform 0.2s, box-shadow 0.3s !important;
+}
+
+.newsContainer:hover {
+  transform: scale(1.01);
+  z-index: 1;
+  box-shadow: 0px 0px 20px rgb(119, 119, 119) !important;
+}
+
+.titleText {
+  font-size: 24px;
+  font-family: "Times New Roman", Times, serif;
+  color: black;
+  text-decoration: none;
+}
+
+.newsImg {
+  width: 250px;
+  border-radius: 5px;
+}

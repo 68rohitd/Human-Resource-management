@@ -5,6 +5,8 @@ let auth = require("../middleware/auth");
 let User = require("../models/user.model");
 let Admin = require("../models/admin.model");
 const { json } = require("express");
+const https = require("https");
+const axios = require("axios");
 
 // @desc: login a user
 router.post("/login", async (req, res) => {
@@ -226,5 +228,20 @@ router.get("/getSingleReqDetails/:userId/:reqId", async (req, res) => {
   );
 
   res.json(reqDetails);
+});
+
+router.get("/getNews", async (req, res) => {
+  const api_key = process.env.REACT_APP_NEWS_API;
+  try {
+    await axios
+      .get(
+        `https://gnewsapi.net/api/search?q=technology&country=in&language=en&api_token=${api_key}`
+      )
+      .then((resp) => {
+        res.json(resp.data);
+      });
+  } catch (e) {
+    console.log(e);
+  }
 });
 module.exports = router;
