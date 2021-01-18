@@ -5,7 +5,7 @@ import "../../../assets/side-panel-styles/sidePanel.css";
 export default class SidePanel extends Component {
   render() {
     const currLocation = window.location.href.split("#/")[1];
-    console.log(currLocation);
+
     return (
       <div className="mt-4">
         {/* stats*/}

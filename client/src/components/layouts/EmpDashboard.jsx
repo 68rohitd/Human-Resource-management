@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { Consumer } from "../../context";
 import EmpSidePanel from "./Employee/EmpSidePanel";
 import maleProfilePic from "../../assets/view-emp/maleUserPic.png";
