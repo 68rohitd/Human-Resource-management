@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from "react";
 
 export default class BonusRequestTemplate extends Component {
@@ -5,6 +6,21 @@ export default class BonusRequestTemplate extends Component {
     const d = new Date(date);
     let returnDate = d.toLocaleDateString("en-GB");
     return returnDate;
+  };
+
+  downloadAttachment = async (attachmentName) => {
+    axios({
+      url: `/api/users/download/${attachmentName}`,
+      method: "POST",
+      responseType: "blob", // important
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", attachmentName);
+      document.body.appendChild(link);
+      link.click();
+    });
   };
 
   render() {
@@ -17,6 +33,7 @@ export default class BonusRequestTemplate extends Component {
       bonusReason,
       ticketClosed,
       approved,
+      attachmentName,
     } = this.props.reqDetails;
     return (
       <div className="mySingleReqCard m-5">
@@ -114,6 +131,23 @@ export default class BonusRequestTemplate extends Component {
                 </div>
               </div>
             </div>
+
+            {attachmentName ? (
+              <div className="row mt-4">
+                <div className="col">
+                  <h6
+                    style={{ cursor: "pointer" }}
+                    onClick={() => this.downloadAttachment(attachmentName)}
+                  >
+                    <i
+                      className="fa fa-paperclip mb-2"
+                      style={{ fontSize: "22px" }}
+                    ></i>{" "}
+                    {attachmentName.slice(13)}
+                  </h6>
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

@@ -4,8 +4,24 @@ import maleProfilePic from "../../../../assets/view-emp/maleUserPic.png";
 import femaleProfilePic from "../../../../assets/view-emp/femaleUserPic.png";
 import { Consumer } from "../../../../context";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default class LeaveRequestCard extends Component {
+  downloadAttachment = async (attachmentName) => {
+    axios({
+      url: `/api/users/download/${attachmentName}`,
+      method: "POST",
+      responseType: "blob", // important
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", attachmentName);
+      document.body.appendChild(link);
+      link.click();
+    });
+  };
+
   render() {
     return (
       <Consumer>
@@ -23,8 +39,8 @@ export default class LeaveRequestCard extends Component {
             empEmail,
             gender,
             subject,
+            attachmentName,
           } = this.props.req;
-          console.log(this.props.req);
 
           return (
             <div className="leaveReqCard">
@@ -97,6 +113,23 @@ export default class LeaveRequestCard extends Component {
                   </div>
                 </div>
               </div>
+
+              {attachmentName ? (
+                <div className="row mt-4">
+                  <div className="col">
+                    <h6
+                      style={{ cursor: "pointer" }}
+                      onClick={() => this.downloadAttachment(attachmentName)}
+                    >
+                      <i
+                        className="fa fa-paperclip mb-2"
+                        style={{ fontSize: "22px" }}
+                      ></i>{" "}
+                      {attachmentName.slice(13)}
+                    </h6>
+                  </div>
+                </div>
+              ) : null}
 
               <div className="row">
                 <div

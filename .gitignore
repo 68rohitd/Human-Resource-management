@@ -1,6 +1,8 @@
 /client/node_modules
 /server/node_modules
 /server/.env
+/server/public/*
+!/server/public/.gitkeep
 
 client/.pnp
 client/coverage

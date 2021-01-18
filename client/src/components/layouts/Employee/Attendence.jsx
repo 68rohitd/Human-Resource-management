@@ -6,6 +6,7 @@ import { Redirect } from "react-router-dom";
 import EmpSidePanel from "./EmpSidePanel";
 import toast from "toasted-notes";
 import "toasted-notes/src/styles.css";
+import classNames from "classnames";
 
 export default class Attendence extends Component {
   constructor() {
@@ -16,6 +17,11 @@ export default class Attendence extends Component {
       fromDate: "",
       toDate: "",
       reason: "",
+
+      // file
+      attachFile: false,
+      attachmentName: "",
+      file: "",
     };
   }
 
@@ -23,6 +29,32 @@ export default class Attendence extends Component {
 
   onSubmit = async (user, e) => {
     e.preventDefault();
+
+    // upload file if selected
+    if (this.state.file) {
+      const data = new FormData();
+      data.append("file", this.state.file);
+
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+
+      try {
+        const fileUploadRes = await axios.post(
+          "/api/users/uploadfile",
+          data,
+          config
+        );
+
+        console.log(fileUploadRes.data.filename);
+
+        this.setState({ attachmentName: fileUploadRes.data.filename });
+      } catch (err) {
+        console.log(err);
+      }
+    }
 
     const request = {
       title: "leave request",
@@ -38,6 +70,7 @@ export default class Attendence extends Component {
       fromDate: this.state.fromDate,
       toDate: this.state.toDate,
       reason: this.state.reason,
+      attachmentName: this.state.attachmentName,
       approved: false,
       ticketClosed: false,
     };
@@ -52,6 +85,25 @@ export default class Attendence extends Component {
     });
 
     console.log("res: ", res.data);
+  };
+
+  onFileChange = (e) => {
+    try {
+      console.log(e.target.files[0]);
+      this.setState({
+        file: e.target.files[0],
+        attachmentName: e.target.files[0].name,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  clearFile = (e) => {
+    e.preventDefault();
+    console.log("clearing...");
+    this.fileInput.value = "";
+    this.setState({ file: "", attachmentName: "" });
   };
 
   render() {
@@ -92,6 +144,7 @@ export default class Attendence extends Component {
                       <div className="form-group">
                         <label htmlFor="subject">Subject</label>
                         <input
+                          required
                           type="text"
                           name="subject"
                           className="form-control"
@@ -108,6 +161,7 @@ export default class Attendence extends Component {
                       <div className="form-group">
                         <label htmlFor="fromDate">From</label>
                         <input
+                          required
                           type="date"
                           name="fromDate"
                           className="form-control"
@@ -121,6 +175,7 @@ export default class Attendence extends Component {
                       <div className="form-group">
                         <label htmlFor="toDate">To</label>
                         <input
+                          required
                           type="date"
                           name="toDate"
                           className="form-control"
@@ -137,6 +192,7 @@ export default class Attendence extends Component {
                       <div className="form-group">
                         <label htmlFor="reason">Reason</label>
                         <textarea
+                          required
                           type="text"
                           name="reason"
                           className="form-control"
@@ -148,6 +204,63 @@ export default class Attendence extends Component {
                       </div>
                     </div>
                   </div>
+
+                  {/* attachment */}
+                  <div className="form-group">
+                    <div className="row">
+                      <div className="col-11">
+                        <p
+                          className="text-secondary"
+                          style={{ cursor: "pointer" }}
+                          onClick={() =>
+                            this.setState({
+                              attachFile: !this.state.attachFile,
+                            })
+                          }
+                        >
+                          Attachment (if any){" "}
+                          <i
+                            className={classNames("fa", {
+                              "fa-caret-down": !this.state.attachFile,
+                              "fa-caret-up": this.state.attachFile,
+                            })}
+                          ></i>
+                        </p>
+                        {this.state.attachFile ? (
+                          <div className="input-group mb-3">
+                            <div className="custom-file">
+                              <input
+                                type="file"
+                                id="file"
+                                className="custom-file-input"
+                                onChange={this.onFileChange}
+                                ref={(ref) => (this.fileInput = ref)}
+                              />
+                              <label
+                                className="custom-file-label"
+                                htmlFor="file"
+                              >
+                                {this.state.attachmentName
+                                  ? this.state.attachmentName
+                                  : "Upload file"}
+                              </label>
+                            </div>
+                            <div className="input-group-append">
+                              <span
+                                style={{ cursor: "pointer" }}
+                                onClick={this.clearFile}
+                                className="input-group-text"
+                                id="file"
+                              >
+                                Clear
+                              </span>
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+
                   <input
                     type="submit"
                     className="btn btn-primary"

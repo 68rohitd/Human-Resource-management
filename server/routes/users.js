@@ -4,9 +4,9 @@ const jwt = require("jsonwebtoken");
 let auth = require("../middleware/auth");
 let User = require("../models/user.model");
 let Admin = require("../models/admin.model");
-const { json } = require("express");
-const https = require("https");
 const axios = require("axios");
+const multer = require("multer");
+const path = require("path");
 
 // @desc: login a user
 router.post("/login", async (req, res) => {
@@ -230,6 +230,7 @@ router.get("/getSingleReqDetails/:userId/:reqId", async (req, res) => {
   res.json(reqDetails);
 });
 
+// @desc: get news from news api
 router.get("/getNews", async (req, res) => {
   const api_key = process.env.REACT_APP_NEWS_API;
   try {
@@ -243,5 +244,42 @@ router.get("/getNews", async (req, res) => {
   } catch (e) {
     console.log(e);
   }
+});
+
+// multer file
+// @desc: file upload
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.originalname);
+  },
+});
+var upload = multer({
+  storage: storage,
+});
+
+router.post("/uploadfile", upload.single("file"), (req, res, next) => {
+  const file = req.file;
+  if (!file) {
+    const error = new Error("Please uplad a file");
+    error.httpStatusCode = 400;
+    return next();
+  }
+  console.log(file);
+  res.send(file);
+});
+
+// @desc: file download (attachment)
+router.post("/download/:attachmentName", function (req, res, next) {
+  const attachmentName = req.params.attachmentName;
+  console.log(attachmentName);
+
+  var filePath = `public/${attachmentName}`; // Or format the path using the `id` rest param
+  var fileName = `attachmentName`; // The default name the browser will use
+
+  res.download(filePath, fileName);
+  // return next();
 });
 module.exports = router;

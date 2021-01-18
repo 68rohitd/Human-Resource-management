@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 import EmpSidePanel from "./EmpSidePanel";
 import toast from "toasted-notes";
 import "toasted-notes/src/styles.css";
-
+import classNames from "classnames";
 export default class otherRequest extends Component {
   constructor() {
     super();
@@ -24,13 +24,49 @@ export default class otherRequest extends Component {
       bonusReason: "Employee Referral Program",
       otherBonusReason: "",
       bonusNote: "",
+
+      // file
+      attachLoanFile: false,
+      attachBonusFile: false,
+      attachmentName: "",
+      file: "",
     };
   }
 
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
+  onUploadFile = async () => {
+    // upload file if selected
+    if (this.state.file) {
+      const data = new FormData();
+      data.append("file", this.state.file);
+
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+
+      try {
+        const fileUploadRes = await axios.post(
+          "/api/users/uploadfile",
+          data,
+          config
+        );
+
+        console.log(fileUploadRes.data.filename);
+
+        this.setState({ attachmentName: fileUploadRes.data.filename });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
   onBonusSubmit = async (user, e) => {
     e.preventDefault();
+
+    await this.onUploadFile();
 
     let bonusReason = this.state.otherBonusReason
       ? this.state.otherBonusReason
@@ -47,6 +83,7 @@ export default class otherRequest extends Component {
       empTeam: user.team,
       empEmail: user.email,
       bonusNote: this.state.bonusNote,
+      attachmentName: this.state.attachmentName,
       bonusReason,
       approved: false,
       ticketClosed: false,
@@ -67,6 +104,8 @@ export default class otherRequest extends Component {
   onLoanSubmit = async (user, e) => {
     e.preventDefault();
 
+    await this.onUploadFile();
+
     let loanReason = this.state.otherLoanReason
       ? this.state.otherLoanReason
       : this.state.loanReason;
@@ -84,6 +123,7 @@ export default class otherRequest extends Component {
       loanNote: this.state.loanNote,
       amount: this.state.amount,
       loanReason,
+      attachmentName: this.state.attachmentName,
       modeOfRepayment: this.state.ModeOfRepayment,
       timePeriod: this.state.timePeriod,
       approved: false,
@@ -110,6 +150,25 @@ export default class otherRequest extends Component {
     this.setState({ ModeOfRepayment });
 
   onBonusReasonSelect = (bonusReason) => this.setState({ bonusReason });
+
+  onFileChange = (e) => {
+    try {
+      console.log(e.target.files[0]);
+      this.setState({
+        file: e.target.files[0],
+        attachmentName: e.target.files[0].name,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  clearFile = (e) => {
+    e.preventDefault();
+    console.log("clearing...");
+    this.fileInput.value = "";
+    this.setState({ file: "", attachmentName: "" });
+  };
 
   render() {
     return (
@@ -317,6 +376,62 @@ export default class otherRequest extends Component {
                         </div>
                       </div>
 
+                      {/* attachment */}
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-11">
+                            <p
+                              className="text-secondary"
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                this.setState({
+                                  attachLoanFile: !this.state.attachLoanFile,
+                                })
+                              }
+                            >
+                              Attachment (if any){" "}
+                              <i
+                                className={classNames("fa", {
+                                  "fa-caret-down": !this.state.attachLoanFile,
+                                  "fa-caret-up": this.state.attachLoanFile,
+                                })}
+                              ></i>
+                            </p>
+                            {this.state.attachLoanFile ? (
+                              <div className="input-group mb-3">
+                                <div className="custom-file">
+                                  <input
+                                    type="file"
+                                    id="file"
+                                    className="custom-file-input"
+                                    onChange={this.onFileChange}
+                                    ref={(ref) => (this.fileInput = ref)}
+                                  />
+                                  <label
+                                    className="custom-file-label"
+                                    htmlFor="file"
+                                  >
+                                    {this.state.attachmentName
+                                      ? this.state.attachmentName
+                                      : "Upload file"}
+                                  </label>
+                                </div>
+                                <div className="input-group-append">
+                                  <span
+                                    style={{ cursor: "pointer" }}
+                                    onClick={this.clearFile}
+                                    className="input-group-text"
+                                    id="file"
+                                  >
+                                    Clear
+                                  </span>
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+
                       <input
                         type="submit"
                         className="btn btn-primary"
@@ -444,6 +559,62 @@ export default class otherRequest extends Component {
                           value={this.state.bonusNote}
                           onChange={this.onChange}
                         />
+                      </div>
+
+                      {/* attachment */}
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-11">
+                            <p
+                              className="text-secondary"
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                this.setState({
+                                  attachBonusFile: !this.state.attachBonusFile,
+                                })
+                              }
+                            >
+                              Attachment (if any){" "}
+                              <i
+                                className={classNames("fa", {
+                                  "fa-caret-down": !this.state.attachBonusFile,
+                                  "fa-caret-up": this.state.attachBonusFile,
+                                })}
+                              ></i>
+                            </p>
+                            {this.state.attachBonusFile ? (
+                              <div className="input-group mb-3">
+                                <div className="custom-file">
+                                  <input
+                                    type="file"
+                                    id="file"
+                                    className="custom-file-input"
+                                    onChange={this.onFileChange}
+                                    ref={(ref) => (this.fileInput = ref)}
+                                  />
+                                  <label
+                                    className="custom-file-label"
+                                    htmlFor="file"
+                                  >
+                                    {this.state.attachmentName
+                                      ? this.state.attachmentName
+                                      : "Upload file"}
+                                  </label>
+                                </div>
+                                <div className="input-group-append">
+                                  <span
+                                    style={{ cursor: "pointer" }}
+                                    onClick={this.clearFile}
+                                    className="input-group-text"
+                                    id="file"
+                                  >
+                                    Clear
+                                  </span>
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
                       </div>
 
                       <input
