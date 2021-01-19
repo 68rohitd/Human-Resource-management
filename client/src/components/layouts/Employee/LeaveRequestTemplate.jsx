@@ -43,7 +43,7 @@ export default class LeaveRequestTemplate extends Component {
         <div className="row">
           {/* subject */}
           <div className="col">
-            <h1>{subject}</h1>
+            <h2>{subject}</h2>
           </div>
           {/* GUI Progress */}
           <div className="col mt-3">

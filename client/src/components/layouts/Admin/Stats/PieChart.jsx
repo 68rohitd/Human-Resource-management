@@ -28,11 +28,6 @@ export default class PieChart extends Component {
         this.onFilterGender();
       });
     });
-
-    // const empList = await axios.get("/api/admin/getEmpList");
-    // this.setState({ empList: empList.data }, () => {
-    //   this.onFilterGender();
-    // });
   };
 
   onFilterGender = () => {
@@ -53,7 +48,7 @@ export default class PieChart extends Component {
     return (
       <div
         className="chartContainer"
-        style={{ width: "450px", height: "250px", padding: "10px" }}
+        style={{ height: "250px", padding: "10px" }}
       >
         <Pie
           data={this.state}

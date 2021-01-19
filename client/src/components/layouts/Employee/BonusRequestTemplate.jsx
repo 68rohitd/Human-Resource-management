@@ -40,7 +40,7 @@ export default class BonusRequestTemplate extends Component {
         <div className="row">
           {/* subject */}
           <div className="col">
-            <h1>{bonusReason}</h1>
+            <h2>{bonusReason}</h2>
           </div>
           {/* GUI Progress */}
           <div className="col mt-3">

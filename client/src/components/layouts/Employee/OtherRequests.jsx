@@ -98,6 +98,8 @@ export default class otherRequest extends Component {
       position: "top-right",
     });
 
+    this.props.history.push("/myRequests");
+
     console.log("res: ", res.data);
   };
 
@@ -140,6 +142,7 @@ export default class otherRequest extends Component {
       position: "top-right",
     });
 
+    this.props.history.push("/myRequests");
     console.log("successfully submitted req: ", res.data);
   };
 

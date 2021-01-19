@@ -46,7 +46,7 @@ export default class LoanRequestTemplate extends Component {
         <div className="row">
           {/* subject */}
           <div className="col">
-            <h1>{loanReason}</h1>
+            <h2>{loanReason}</h2>
           </div>
           {/* GUI Progress */}
           <div className="col mt-3">

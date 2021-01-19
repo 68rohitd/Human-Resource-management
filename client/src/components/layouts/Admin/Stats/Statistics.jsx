@@ -108,20 +108,20 @@ export default class Statistics extends Component {
 
                   {/* charts */}
                   <div className="row mt-5">
-                    <div className="col my-4">
+                    <div className="col-6 my-4">
                       <PieChart />
                     </div>
 
-                    <div className="col my-4">
+                    <div className="col-6 my-4">
                       <BarChart />
                     </div>
                   </div>
 
                   <div className="row mt-4">
-                    <div className="col my-4">
+                    <div className="col-6 my-4">
                       <BarChart2 />
                     </div>
-                    <div className="col my-4">
+                    <div className="col-6 my-4">
                       <LineChart />
                     </div>
                   </div>

@@ -84,6 +84,8 @@ export default class Attendence extends Component {
       position: "top-right",
     });
 
+    this.props.history.push("/myRequests");
+
     console.log("res: ", res.data);
   };
 
@@ -133,6 +135,7 @@ export default class Attendence extends Component {
                 }}
               >
                 <form
+                  style={{ minWidth: "900px" }}
                   className="addEmpForm"
                   onSubmit={this.onSubmit.bind(this, user)}
                 >
@@ -141,53 +144,56 @@ export default class Attendence extends Component {
 
                   <div className="row">
                     <div className="col">
-                      <div className="form-group">
-                        <label htmlFor="subject">Subject</label>
-                        <input
-                          required
-                          type="text"
-                          name="subject"
-                          className="form-control"
-                          id="subject"
-                          value={this.state.subject}
-                          onChange={this.onChange}
-                        />
+                      <div className="row">
+                        <div className="col">
+                          <div className="form-group">
+                            <label htmlFor="subject">Subject</label>
+                            <input
+                              required
+                              type="text"
+                              name="subject"
+                              className="form-control"
+                              id="subject"
+                              value={this.state.subject}
+                              onChange={this.onChange}
+                            />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
 
-                  <div className="row">
-                    <div className="col">
-                      <div className="form-group">
-                        <label htmlFor="fromDate">From</label>
-                        <input
-                          required
-                          type="date"
-                          name="fromDate"
-                          className="form-control"
-                          id="fromDate"
-                          value={this.state.fromDate}
-                          onChange={this.onChange}
-                        />
+                      <div className="row">
+                        <div className="col">
+                          <div className="form-group">
+                            <label htmlFor="fromDate">From</label>
+                            <input
+                              required
+                              type="date"
+                              name="fromDate"
+                              className="form-control"
+                              id="fromDate"
+                              value={this.state.fromDate}
+                              onChange={this.onChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col">
+                          <div className="form-group">
+                            <label htmlFor="toDate">To</label>
+                            <input
+                              required
+                              type="date"
+                              name="toDate"
+                              className="form-control"
+                              id="toDate"
+                              value={this.state.toDate}
+                              onChange={this.onChange}
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="col">
-                      <div className="form-group">
-                        <label htmlFor="toDate">To</label>
-                        <input
-                          required
-                          type="date"
-                          name="toDate"
-                          className="form-control"
-                          id="toDate"
-                          value={this.state.toDate}
-                          onChange={this.onChange}
-                        />
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="row">
+                    {/* 2nd col */}
                     <div className="col">
                       <div className="form-group">
                         <label htmlFor="reason">Reason</label>
@@ -202,61 +208,61 @@ export default class Attendence extends Component {
                           onChange={this.onChange}
                         />
                       </div>
-                    </div>
-                  </div>
 
-                  {/* attachment */}
-                  <div className="form-group">
-                    <div className="row">
-                      <div className="col-11">
-                        <p
-                          className="text-secondary"
-                          style={{ cursor: "pointer" }}
-                          onClick={() =>
-                            this.setState({
-                              attachFile: !this.state.attachFile,
-                            })
-                          }
-                        >
-                          Attachment (if any){" "}
-                          <i
-                            className={classNames("fa", {
-                              "fa-caret-down": !this.state.attachFile,
-                              "fa-caret-up": this.state.attachFile,
-                            })}
-                          ></i>
-                        </p>
-                        {this.state.attachFile ? (
-                          <div className="input-group mb-3">
-                            <div className="custom-file">
-                              <input
-                                type="file"
-                                id="file"
-                                className="custom-file-input"
-                                onChange={this.onFileChange}
-                                ref={(ref) => (this.fileInput = ref)}
-                              />
-                              <label
-                                className="custom-file-label"
-                                htmlFor="file"
-                              >
-                                {this.state.attachmentName
-                                  ? this.state.attachmentName
-                                  : "Upload file"}
-                              </label>
-                            </div>
-                            <div className="input-group-append">
-                              <span
-                                style={{ cursor: "pointer" }}
-                                onClick={this.clearFile}
-                                className="input-group-text"
-                                id="file"
-                              >
-                                Clear
-                              </span>
-                            </div>
+                      {/* attachment */}
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-11">
+                            <p
+                              className="text-secondary"
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                this.setState({
+                                  attachFile: !this.state.attachFile,
+                                })
+                              }
+                            >
+                              Attachment (if any){" "}
+                              <i
+                                className={classNames("fa", {
+                                  "fa-caret-down": !this.state.attachFile,
+                                  "fa-caret-up": this.state.attachFile,
+                                })}
+                              ></i>
+                            </p>
+                            {this.state.attachFile ? (
+                              <div className="input-group mb-3">
+                                <div className="custom-file">
+                                  <input
+                                    type="file"
+                                    id="file"
+                                    className="custom-file-input"
+                                    onChange={this.onFileChange}
+                                    ref={(ref) => (this.fileInput = ref)}
+                                  />
+                                  <label
+                                    className="custom-file-label"
+                                    htmlFor="file"
+                                  >
+                                    {this.state.attachmentName
+                                      ? this.state.attachmentName
+                                      : "Upload file"}
+                                  </label>
+                                </div>
+                                <div className="input-group-append">
+                                  <span
+                                    style={{ cursor: "pointer" }}
+                                    onClick={this.clearFile}
+                                    className="input-group-text"
+                                    id="file"
+                                  >
+                                    Clear
+                                  </span>
+                                </div>
+                              </div>
+                            ) : null}
                           </div>
-                        ) : null}
+                        </div>
                       </div>
                     </div>
                   </div>

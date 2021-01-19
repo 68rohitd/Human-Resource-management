@@ -50,6 +50,7 @@ class Header extends Component {
                 <Link to="/" className="navbar-brand text-light block mx-4">
                   <span
                     style={{
+                      fontStyle: "italic",
                       display: "block",
                     }}
                   >

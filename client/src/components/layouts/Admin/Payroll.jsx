@@ -7,6 +7,7 @@ import { Link, Redirect } from "react-router-dom";
 import toast from "toasted-notes";
 import "toasted-notes/src/styles.css";
 import { Consumer } from "../../../context";
+import ReactTooltip from "react-tooltip";
 
 export default class Payroll extends Component {
   constructor() {
@@ -169,6 +170,12 @@ export default class Payroll extends Component {
                           {this.curYear}
                         </h1>
 
+                        <ReactTooltip
+                          place="bottom"
+                          delayShow={100}
+                          html={true}
+                        />
+
                         <table className="table table-hover table-border text-center">
                           <thead>
                             <tr>
@@ -176,7 +183,13 @@ export default class Payroll extends Component {
                               <th scope="col">Name</th>
                               <th scope="col">Salary</th>
                               <th scope="col">Status</th>
-                              <th scope="col">Action</th>
+                              <th scope="col">
+                                Action{" "}
+                                <i
+                                  className="fas fa-info-circle text-secondary"
+                                  data-tip="Once salary slip is generated, <br /> bonus, total leaves of that employee will be cleared"
+                                ></i>{" "}
+                              </th>
                             </tr>
                           </thead>
                           <tbody>

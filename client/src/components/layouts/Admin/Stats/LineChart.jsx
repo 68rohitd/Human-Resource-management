@@ -63,7 +63,7 @@ export default class LineChart extends Component {
     return (
       <div
         className="chartContainer"
-        style={{ width: "450px", height: "250px", padding: "10px" }}
+        style={{ height: "250px", padding: "10px" }}
       >
         <Line
           data={this.state}

@@ -32,7 +32,7 @@ export default class App extends Component {
       <Provider>
         <Router>
           <div>
-            <Header branding="HR" />
+            <Header branding="HRMS" />
 
             <Switch>
               {/* general */}
