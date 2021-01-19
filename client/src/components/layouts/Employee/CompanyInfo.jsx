@@ -39,7 +39,7 @@ export default class CompanyInfo extends Component {
                 <div className="row">
                   {/* tab selection */}
                   <div className="col">
-                    <div className="text-center my-4">
+                    <div className="text-right my-4">
                       <div
                         className="btn-group btn-group-toggle"
                         data-toggle="buttons"

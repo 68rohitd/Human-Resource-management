@@ -128,7 +128,7 @@ export default class MyRequests extends Component {
                       <h2>My Requests</h2>
                     </div>
 
-                    <div className="col">
+                    <div className="col text-right">
                       {/* choose buttons */}
                       <div
                         className="btn-group btn-group-toggle"

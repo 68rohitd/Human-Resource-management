@@ -33,12 +33,10 @@ connection.once("open", () => {
   console.log("MongoDB database connection established successfully");
 });
 
-// const todosRouter = require("./routes/todos");
 const usersRouter = require("./routes/users");
 const adminRouter = require("./routes/admin");
 // const emailRouter = require("./routes/email");
 
-// app.use("/todos", todosRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/admin", adminRouter);
 // app.use("/email", emailRouter.router);
