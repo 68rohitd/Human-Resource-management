@@ -11,7 +11,7 @@ export default class CompanyPolicy extends Component {
         <i>
           <h5>Our Vision</h5>
           <p>
-            ISC is a leader in transforming information-based services enabling
+            HRMS is a leader in transforming information-based services enabling
             a world of accessible, secure and authentic information for people
             and business.
           </p>
@@ -25,10 +25,10 @@ export default class CompanyPolicy extends Component {
           <p>
             Compliance with the Code is mandatory. You are expected to be
             familiar and comply with the Code in the performance of your duties.
-            As well, you are expected to understand your obligations under ISC
+            As well, you are expected to understand your obligations under HRMS
             policies.On an annual basis all employees and members of the Board
             are required to sign an Annual Acknowledgement of Corporate Policies
-            form. Those of us who fail to abide by the Code and ISC's policies
+            form. Those of us who fail to abide by the Code and HRMS's policies
             will be subject to disciplinary action, up to and including
             dismissal or prosecution.
           </p>
@@ -36,10 +36,10 @@ export default class CompanyPolicy extends Component {
 
           <h5>Responsibilities to report</h5>
           <p>
-            It is the responsibility of everybody at ISC to report any known or
+            It is the responsibility of everybody at HRMS to report any known or
             suspected unethical conduct, which includes any violation of the
             Code, by other Employees or anyone in any way associated with the
-            corporation.. ISC is committed to protecting all Employees who
+            corporation.. HRMS is committed to protecting all Employees who
             report unethical conduct from reprisal as well as offering any
             necessary support to individuals who make reports. When an Employee
             makes a report of unethical conduct they should do so in good faith.
@@ -48,11 +48,11 @@ export default class CompanyPolicy extends Component {
 
           <h5>Use of Corporate Information and Property </h5>
           <p>
-            Do not disclose information about ISC activities or our customers’
+            Do not disclose information about HRMS activities or our customers’
             activities to non-authorized Employees within the workplace, or
-            anyone outside the workplace unless in accordance with ISC's
-            Disclosure Policy.All information held by ISC is confidential and
-            the property of ISC. This includes information relating to ISC
+            anyone outside the workplace unless in accordance with HRMS's
+            Disclosure Policy.All information held by HRMS is confidential and
+            the property of HRMS. This includes information relating to HRMS
             business, property, Employees, customers, partners, consultants, or
             others that is not generally available to the public.
           </p>
@@ -62,7 +62,7 @@ export default class CompanyPolicy extends Component {
           <p>
             Our computer systems and software form the backbone of our registry
             services and our operations infrastructure. Every effort should be
-            made to protect ISC's computer systems and associated software from
+            made to protect HRMS's computer systems and associated software from
             various threats to their security such as accidental or deliberate
             destruction of data or equipment, interruption of service,
             disclosure of confidential information, theft or corruption of data
@@ -78,18 +78,19 @@ export default class CompanyPolicy extends Component {
             internet accounts and intangible items such as the details of
             business application systems.
           </p>
+          <hr />
 
           <h5>Proper Reporting of Financial Transactions</h5>
           <p>
             You are accountable for any corporate funds over which you have
             control. Follow the set procedures for handling, recording and
-            protecting funds.When spending ISC funds, ensure that ISC receives
-            good value for the expenditure. Do not use ISC funds for personal
+            protecting funds.When spending HRMS funds, ensure that HRMS receives
+            good value for the expenditure. Do not use HRMS funds for personal
             benefit. Compliance with the International Financial Reporting
-            Standards and internal controls is expected at all times, and ISC's
+            Standards and internal controls is expected at all times, and HRMS's
             books of account, reports, records and other documents must
             accurately account for and report all assets, liabilities and
-            transactions affecting ISC
+            transactions affecting HRMS
           </p>
           <hr />
 
@@ -101,10 +102,10 @@ export default class CompanyPolicy extends Component {
             interferes with an Employee’s ability to perform his or her duties.
             The use or effects of alcohol or illegal drugs are not acceptable in
             our work environment. Responsible alcohol use may be acceptable in
-            very limited circumstances as part of ISC social or business events.
-            For more information on Employee behaviour, including the use of
-            alcohol, please consult the Human Resources Policy, Chapter 9 –
-            Employee Relations and ISC’s Respectful Workplace Policy.
+            very limited circumstances as part of HRMS social or business
+            events. For more information on Employee behaviour, including the
+            use of alcohol, please consult the Human Resources Policy, Chapter 9
+            – Employee Relations and ISC’s Respectful Workplace Policy.
           </p>
           <hr />
 
@@ -114,7 +115,7 @@ export default class CompanyPolicy extends Component {
             information. Employee personal information will not be collected,
             used or disclosed other than as authorized or as required for
             business reasons. For more information on Employee privacy, please
-            consult the Employee Privacy Policy which can be found on the ISC
+            consult the Employee Privacy Policy which can be found on the HRMS
             intranet Document Centre under Policies and Procedures.
           </p>
           <hr />
@@ -126,7 +127,7 @@ export default class CompanyPolicy extends Component {
             government providing that your involvement does not interfere with
             your work or the effectiveness of your position. Ensure that any
             political activity does not place you in a conflict of interest
-            situation with ISC.
+            situation with HRMS.
           </p>
           <hr />
 

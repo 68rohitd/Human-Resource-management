@@ -5,6 +5,7 @@ import femaleProfilePic from "../../../../assets/view-emp/femaleUserPic.png";
 import { Consumer } from "../../../../context";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import ReactTooltip from "react-tooltip";
 
 export default class LoanRequestCard extends Component {
   downloadAttachment = async (attachmentName) => {
@@ -123,12 +124,25 @@ export default class LoanRequestCard extends Component {
 
               <div className="row ">
                 <div className="col">
-                  <h6>Note:</h6>
+                  <h6>
+                    Note:{" "}
+                    <ReactTooltip place="bottom" delayShow={100} html={true} />
+                    {attachmentName ? (
+                      <i
+                        onClick={() => this.downloadAttachment(attachmentName)}
+                        data-tip={attachmentName.slice(13)}
+                        className="fa fa-paperclip mb-2"
+                        style={{ fontSize: "18px", cursor: "pointer" }}
+                      >
+                        <small> {attachmentName.slice(13)}</small>
+                      </i>
+                    ) : null}
+                  </h6>
                   <div className="reasonContainer">{loanNote}</div>
                 </div>
               </div>
 
-              {attachmentName ? (
+              {/* {attachmentName ? (
                 <div className="row mt-4">
                   <div className="col">
                     <h6
@@ -143,7 +157,7 @@ export default class LoanRequestCard extends Component {
                     </h6>
                   </div>
                 </div>
-              ) : null}
+              ) : null} */}
 
               <div className="row">
                 <div

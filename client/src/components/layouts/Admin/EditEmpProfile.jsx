@@ -455,7 +455,7 @@ export default class EditEmpProfile extends Component {
                     </div>
                   </div>
 
-                  <div className="row">
+                  <div className="row mb-5">
                     {/* emp loan history */}
                     <div className="col">
                       {this.state.empLoanHistory.length ? (
