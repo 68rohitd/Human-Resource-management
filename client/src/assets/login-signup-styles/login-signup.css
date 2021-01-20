@@ -8,10 +8,9 @@ body {
 .loginSVG {
   position: fixed;
   top: 80px;
-  left: -200px;
-  height: 80%;
-  width: 80%;
-  z-index: -100;
+  /* margin-left: 100px; */
+  width: 500px;
+
   /* animation */
   animation-name: hoverEffect;
   animation-duration: 1.4s;
@@ -34,7 +33,8 @@ body {
   /* width: 90%; */
   box-shadow: 0px 0px 40px rgb(187, 187, 187);
   padding: 20px 10px 20px 10px;
-  margin-bottom: 100px;
+  /* margin-bottom: 100px; */
+  margin-top: 130px;
   border-radius: 18px;
   transition: box-shadow 0.3s;
 }
@@ -81,9 +81,10 @@ body {
 .signUpSVG {
   position: fixed;
   top: 110px;
-  left: -200px;
-  height: 80%;
-  width: 80%;
+  margin-left: 100px;
+
+  /* left: -200px; */
+
   z-index: -100;
 
   /* animation */
@@ -107,7 +108,7 @@ body {
 }
 
 /* submit btn */
-/* .signUpForm .btn {
+.signUpForm .btn {
   background-color: #26ae60 !important;
   border-color: #26ae60;
   width: 30% !important;
@@ -121,7 +122,7 @@ body {
   width: 34% !important;
   background-color: #1d9651 !important;
   border-color: white;
-} */
+}
 
 .signUpAvatar {
   margin-top: -20%;

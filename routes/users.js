@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 let auth = require("../middleware/auth");
 let User = require("../models/user.model");
 let Admin = require("../models/admin.model");
-const axios = require("axios");
+const axios = require("axios").default;
 const multer = require("multer");
 const path = require("path");
 
@@ -245,6 +245,26 @@ router.get("/getNews", async (req, res) => {
     console.log(e);
   }
 });
+
+// 2nd news api
+// @desc: get news from news api
+// router.get("/getNews", async (req, res) => {
+//   var config = {
+//     method: "get",
+//     url:
+//       "https://newsapi.org/v2/everything?q=COVID&from=2020-03-16&sortBy=publishedAt&apiKey=&pageSize=100&page=1",
+//     headers: {},
+//   };
+
+//   axios(config)
+//     .then(function (response) {
+//       res.json(JSON.stringify(response.data));
+//       // console.log(JSON.stringify(response.data));
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//     });
+// });
 
 // multer file
 // @desc: file upload

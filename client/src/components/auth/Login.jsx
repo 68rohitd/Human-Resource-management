@@ -6,7 +6,8 @@ import { Spring } from "react-spring/renderprops";
 // import loginSVG from "../../assets/login-signup-styles/login3.svg";
 import loginAvatar from "../../assets/login-signup-styles/loginAvatar.png";
 import "../../assets/login-signup-styles/login-signup.css";
-import authentication from "../../assets/images/authentication.svg";
+// import authentication from "../../assets/images/authentication.svg";
+import authentication from "../../assets/images/login.png";
 
 class Login extends Component {
   constructor() {
@@ -91,7 +92,6 @@ class Login extends Component {
                           <form
                             className="loginForm "
                             onSubmit={this.onSubmit.bind(this, dispatch)}
-                            style={{ marginTop: "85px" }}
                           >
                             <img
                               className="loginAvatar"

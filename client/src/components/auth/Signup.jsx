@@ -5,7 +5,8 @@ import axios from "axios";
 import { Spring } from "react-spring/renderprops";
 import loginAvatar from "../../assets/login-signup-styles/loginAvatar.png";
 import "../../assets/login-signup-styles/login-signup.css";
-import notes from "../../assets/images/notes.svg";
+// import notes from "../../assets/images/notes.svg";
+import notes from "../../assets/images/authentication.png";
 
 class Signup extends Component {
   constructor() {
@@ -116,8 +117,10 @@ class Signup extends Component {
                   <div style={props}>
                     <div className="row m-0">
                       <div className="col">
+                        {/* <img className="signUpSVG" src={notes} alt="" /> */}
                         <img className="signUpSVG" src={notes} alt="" />
                       </div>
+
                       <div className="col-12 col-sm-12 col-md-4">
                         <div className="container">
                           <form

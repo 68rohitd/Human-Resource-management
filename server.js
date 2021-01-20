@@ -35,11 +35,11 @@ connection.once("open", () => {
 
 const usersRouter = require("./routes/users");
 const adminRouter = require("./routes/admin");
-// const emailRouter = require("./routes/email");
+const emailRouter = require("./routes/email");
 
 app.use("/api/users", usersRouter);
 app.use("/api/admin", adminRouter);
-// app.use("/email", emailRouter.router);
+app.use("/api/email", emailRouter.router);
 
 // serve static assets
 if (process.env.NODE_ENV === "production") {
