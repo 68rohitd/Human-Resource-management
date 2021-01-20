@@ -23,8 +23,11 @@ export default class MyRequests extends Component {
       openedBonusTickets: [],
       closedBonusTickets: [],
 
+      listToShow: [],
+
       // choose
       selectedLabel: "Leave Requests",
+      selectedFilter: "All",
     };
   }
 
@@ -83,6 +86,12 @@ export default class MyRequests extends Component {
     leaveRequests = leaveRequests.reverse();
     loanRequests = loanRequests.reverse();
     bonusRequests = bonusRequests.reverse();
+    openedLeavesTickets = openedLeavesTickets.reverse();
+    closedLeavesTickets = closedLeavesTickets.reverse();
+    openedBonusTickets = openedBonusTickets.reverse();
+    closedBonusTickets = closedBonusTickets.reverse();
+    openedLoanTickets = openedLoanTickets.reverse();
+    closedLoanTickets = closedLoanTickets.reverse();
 
     this.setState({
       leaveRequests,
@@ -94,12 +103,54 @@ export default class MyRequests extends Component {
       closedBonusTickets,
       openedLoanTickets,
       closedLoanTickets,
+      listToShow: leaveRequests,
     });
   };
 
   onSelectLabel = (selectedLabel) => {
+    this.setState(
+      {
+        selectedLabel,
+      },
+      () => {
+        this.onSelectFilter(this.state.selectedFilter);
+      }
+    );
+  };
+
+  onSelectFilter = (selectedFilter) => {
+    const { selectedLabel } = this.state;
+    let listToShow = [];
+
+    if (selectedLabel === "Leave Requests") {
+      if (selectedFilter === "All") {
+        listToShow = this.state.leaveRequests;
+      } else if (selectedFilter === "Pending") {
+        listToShow = this.state.openedLeavesTickets;
+      } else {
+        listToShow = this.state.closedLeavesTickets;
+      }
+    } else if (selectedLabel === "Bonus Requests") {
+      if (selectedFilter === "All") {
+        listToShow = this.state.bonusRequests;
+      } else if (selectedFilter === "Pending") {
+        listToShow = this.state.openedBonusTickets;
+      } else {
+        listToShow = this.state.closedBonusTickets;
+      }
+    } else {
+      if (selectedFilter === "All") {
+        listToShow = this.state.loanRequests;
+      } else if (selectedFilter === "Pending") {
+        listToShow = this.state.openedLoanTickets;
+      } else {
+        listToShow = this.state.closedLoanTickets;
+      }
+    }
+
     this.setState({
-      selectedLabel,
+      selectedFilter,
+      listToShow,
     });
   };
 
@@ -130,38 +181,87 @@ export default class MyRequests extends Component {
 
                     <div className="col text-right">
                       {/* choose buttons */}
-                      <div
-                        className="btn-group btn-group-toggle"
-                        data-toggle="buttons"
-                      >
-                        <label className="btn btn-primary active">
-                          <input
-                            type="radio"
-                            name="options"
-                            id="option1"
-                            defaultChecked={true}
-                            onClick={() => this.onSelectLabel("Leave Requests")}
-                          />
-                          Leave Requests
-                        </label>
-                        <label className="btn btn-primary">
-                          <input
-                            type="radio"
-                            name="options"
-                            id="option2"
-                            onClick={() => this.onSelectLabel("Bonus Requests")}
-                          />
-                          Bonus Requests
-                        </label>
-                        <label className="btn btn-primary">
-                          <input
-                            type="radio"
-                            name="options"
-                            id="option3"
-                            onClick={() => this.onSelectLabel("Loan Requests")}
-                          />
-                          Loan Requests
-                        </label>
+                      <div className="row">
+                        <div className="col">
+                          <div
+                            className="btn-group btn-group-toggle"
+                            data-toggle="buttons"
+                          >
+                            <label className="btn btn-primary active">
+                              <input
+                                type="radio"
+                                name="options"
+                                id="option1"
+                                defaultChecked={true}
+                                onClick={() =>
+                                  this.onSelectLabel("Leave Requests")
+                                }
+                              />
+                              Leave Requests
+                            </label>
+                            <label className="btn btn-primary">
+                              <input
+                                type="radio"
+                                name="options"
+                                id="option2"
+                                onClick={() =>
+                                  this.onSelectLabel("Bonus Requests")
+                                }
+                              />
+                              Bonus Requests
+                            </label>
+                            <label className="btn btn-primary">
+                              <input
+                                type="radio"
+                                name="options"
+                                id="option3"
+                                onClick={() =>
+                                  this.onSelectLabel("Loan Requests")
+                                }
+                              />
+                              Loan Requests
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* choose filter */}
+                      <div className="row mt-3">
+                        <div className="col">
+                          <div
+                            className="btn-group btn-group-toggle"
+                            data-toggle="buttons"
+                          >
+                            <label className="btn btn-primary active">
+                              <input
+                                type="radio"
+                                name="options"
+                                id="option1"
+                                defaultChecked={true}
+                                onClick={() => this.onSelectFilter("All")}
+                              />
+                              All
+                            </label>
+                            <label className="btn btn-primary">
+                              <input
+                                type="radio"
+                                name="options"
+                                id="option2"
+                                onClick={() => this.onSelectFilter("Pending")}
+                              />
+                              Pending
+                            </label>
+                            <label className="btn btn-primary">
+                              <input
+                                type="radio"
+                                name="options"
+                                id="option3"
+                                onClick={() => this.onSelectFilter("Closed")}
+                              />
+                              Closed
+                            </label>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -173,7 +273,7 @@ export default class MyRequests extends Component {
                       <div className="col">
                         <h5>Leave Requests</h5>
 
-                        {this.state.leaveRequests.length ? (
+                        {this.state.listToShow.length ? (
                           <table className="table table-hover ">
                             <thead className="thead-light">
                               <tr>
@@ -184,7 +284,7 @@ export default class MyRequests extends Component {
                               </tr>
                             </thead>
                             <tbody>
-                              {this.state.leaveRequests.map((req, index) => {
+                              {this.state.listToShow.map((req, index) => {
                                 return (
                                   <tr key={index}>
                                     <th scope="row">{index + 1}</th>
@@ -223,7 +323,7 @@ export default class MyRequests extends Component {
                       <div className="col">
                         <h5>Bonus Requests</h5>
 
-                        {this.state.bonusRequests.length ? (
+                        {this.state.listToShow.length ? (
                           <table className="table table-hover">
                             <thead className="thead-light">
                               <tr>
@@ -234,7 +334,7 @@ export default class MyRequests extends Component {
                               </tr>
                             </thead>
                             <tbody>
-                              {this.state.bonusRequests.map((req, index) => {
+                              {this.state.listToShow.map((req, index) => {
                                 return (
                                   <tr key={index}>
                                     <th scope="row">{index + 1}</th>
@@ -273,7 +373,7 @@ export default class MyRequests extends Component {
                       <div className="col">
                         <h5>Loan Requests</h5>
 
-                        {this.state.loanRequests.length ? (
+                        {this.state.listToShow.length ? (
                           <table className="table table-hover">
                             <thead className="thead-light">
                               <tr>
@@ -285,7 +385,7 @@ export default class MyRequests extends Component {
                               </tr>
                             </thead>
                             <tbody>
-                              {this.state.loanRequests.map((req, index) => {
+                              {this.state.listToShow.map((req, index) => {
                                 return (
                                   <tr key={index}>
                                     <th scope="row">{index + 1}</th>
