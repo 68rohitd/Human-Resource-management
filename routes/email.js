@@ -4,6 +4,9 @@ require("dotenv").config();
 
 function createdNewAccount(email, displayName) {
   const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
     service: "gmail",
     auth: {
       user: "68rohitd@gmail.com",

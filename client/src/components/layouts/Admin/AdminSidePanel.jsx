@@ -1,11 +1,41 @@
+import axios from "axios";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "../../../assets/side-panel-styles/sidePanel.css";
 
 export default class SidePanel extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      admin: undefined,
+    };
+  }
+
+  componentDidMount = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const tokenRes = await axios.post("/api/admin/tokenIsValid", null, {
+        headers: { "x-auth-token": token },
+      });
+
+      if (tokenRes.data) {
+        //logged in
+        const adminRes = await axios.get("/api/admin", {
+          headers: { "x-auth-token": token },
+        });
+        console.log("admin profile: ", adminRes.data.user);
+        this.setState({
+          admin: adminRes.data.user,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   render() {
     const currLocation = window.location.href.split("#/")[1];
-
     return (
       <div className="mt-4">
         {/* stats*/}
@@ -62,6 +92,18 @@ export default class SidePanel extends Component {
               ) : (
                 "View Requests"
               )}
+              {this.state.admin &&
+              (this.state.admin.leaveRequests.length ||
+                this.state.admin.bonusRequests.length ||
+                this.state.admin.loanRequests.length) ? (
+                <div
+                  className="fas fa-circle ml-2"
+                  style={{
+                    color: "#FF1D15",
+                    fontSize: "10px",
+                  }}
+                ></div>
+              ) : null}
             </li>
           </Link>
 

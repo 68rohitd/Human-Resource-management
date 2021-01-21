@@ -6,6 +6,7 @@ import AdminSidePanel from "../AdminSidePanel";
 import BonusRequestCard from "./BonusRequestCard";
 import LeaveRequestCard from "./LeaveRequestCard";
 import LoanRequestCard from "./LoanRequestCard";
+import classNames from "classnames";
 
 export default class ViewRequests extends Component {
   constructor() {
@@ -13,6 +14,10 @@ export default class ViewRequests extends Component {
 
     this.state = {
       admin: undefined,
+
+      expandLeaveReq: true,
+      expandBonusReq: false,
+      expandLoanReq: false,
     };
   }
 
@@ -161,108 +166,183 @@ export default class ViewRequests extends Component {
 
                 {/* right part */}
                 <div className="col">
-                  <div className="container">
-                    <h1>Leave Requests</h1>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <div className="row">
-                        {admin ? (
-                          admin.leaveRequests.length ? (
-                            admin.leaveRequests.map((req, index) => {
-                              return (
-                                <LeaveRequestCard
-                                  key={index}
-                                  req={req}
-                                  onApprove={this.onApprove}
-                                  onReject={this.onReject}
-                                />
-                              );
-                            })
+                  <div className="container py-3">
+                    <h3>
+                      Leave Requests{" "}
+                      <span
+                        className="badge badge-pill badge-dark"
+                        style={{
+                          fontSize: "15px",
+                        }}
+                      >
+                        {admin && admin.leaveRequests.length}
+                      </span>{" "}
+                      <i
+                        style={{ cursor: "pointer" }}
+                        onClick={() =>
+                          this.setState({
+                            expandLeaveReq: !this.state.expandLeaveReq,
+                          })
+                        }
+                        className={classNames("fa", {
+                          "fa-caret-down": !this.state.expandLeaveReq,
+                          "fa-caret-up": this.state.expandLeaveReq,
+                        })}
+                      ></i>
+                    </h3>
+
+                    {this.state.expandLeaveReq ? (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                        }}
+                      >
+                        <div className="row">
+                          {admin ? (
+                            admin.leaveRequests.length ? (
+                              admin.leaveRequests.map((req, index) => {
+                                return (
+                                  <LeaveRequestCard
+                                    key={index}
+                                    req={req}
+                                    onApprove={this.onApprove}
+                                    onReject={this.onReject}
+                                  />
+                                );
+                              })
+                            ) : (
+                              <small className="ml-4">
+                                No leave requests pending...
+                              </small>
+                            )
                           ) : (
                             <small className="ml-4">
-                              No leave requests pending...
+                              Loading leave requests...
                             </small>
-                          )
-                        ) : (
-                          <small className="ml-4">
-                            Loading leave requests...
-                          </small>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    ) : null}
                     <hr />
 
-                    <h1>Bonus Requests</h1>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <div className="row">
-                        {admin ? (
-                          admin.bonusRequests.length ? (
-                            admin.bonusRequests.map((req, index) => {
-                              return (
-                                <BonusRequestCard
-                                  key={index}
-                                  req={req}
-                                  onApprove={this.onApprove}
-                                  onReject={this.onReject}
-                                />
-                              );
-                            })
+                    <h3>
+                      Bonus Requests{" "}
+                      <span
+                        className="badge badge-pill badge-dark"
+                        style={{
+                          fontSize: "15px",
+                        }}
+                      >
+                        {admin && admin.bonusRequests.length}
+                      </span>{" "}
+                      <i
+                        style={{ cursor: "pointer" }}
+                        onClick={() =>
+                          this.setState({
+                            expandBonusReq: !this.state.expandBonusReq,
+                          })
+                        }
+                        className={classNames("fa", {
+                          "fa-caret-down": !this.state.expandBonusReq,
+                          "fa-caret-up": this.state.expandBonusReq,
+                        })}
+                      ></i>
+                    </h3>
+
+                    {this.state.expandBonusReq ? (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                        }}
+                      >
+                        <div className="row">
+                          {admin ? (
+                            admin.bonusRequests.length ? (
+                              admin.bonusRequests.map((req, index) => {
+                                return (
+                                  <BonusRequestCard
+                                    key={index}
+                                    req={req}
+                                    onApprove={this.onApprove}
+                                    onReject={this.onReject}
+                                  />
+                                );
+                              })
+                            ) : (
+                              <small className="ml-4">
+                                No bonus requests pending...
+                              </small>
+                            )
                           ) : (
                             <small className="ml-4">
-                              No bonus requests pending...
+                              Loading bonus requests...
                             </small>
-                          )
-                        ) : (
-                          <small className="ml-4">
-                            Loading bonus requests...
-                          </small>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    ) : null}
 
                     <hr />
 
-                    <h1>Loan Requests</h1>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <div className="row">
-                        {admin ? (
-                          admin.loanRequests.length ? (
-                            admin.loanRequests.map((req, index) => {
-                              return (
-                                <LoanRequestCard
-                                  key={index}
-                                  req={req}
-                                  onApprove={this.onApprove}
-                                  onReject={this.onReject}
-                                />
-                              );
-                            })
+                    <h3>
+                      Loan Requests{" "}
+                      <div
+                        className="badge badge-pill badge-dark"
+                        style={{
+                          fontSize: "15px",
+                        }}
+                      >
+                        {admin && admin.loanRequests.length}
+                      </div>{" "}
+                      <i
+                        style={{ cursor: "pointer" }}
+                        onClick={() =>
+                          this.setState({
+                            expandLoanReq: !this.state.expandLoanReq,
+                          })
+                        }
+                        className={classNames("fa", {
+                          "fa-caret-down": !this.state.expandLoanReq,
+                          "fa-caret-up": this.state.expandLoanReq,
+                        })}
+                      ></i>
+                    </h3>
+
+                    {this.state.expandLoanReq ? (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                        }}
+                      >
+                        <div className="row">
+                          {admin ? (
+                            admin.loanRequests.length ? (
+                              admin.loanRequests.map((req, index) => {
+                                return (
+                                  <LoanRequestCard
+                                    key={index}
+                                    req={req}
+                                    onApprove={this.onApprove}
+                                    onReject={this.onReject}
+                                  />
+                                );
+                              })
+                            ) : (
+                              <small className="ml-4">
+                                No loan requests pending...
+                              </small>
+                            )
                           ) : (
                             <small className="ml-4">
-                              No loan requests pending...
+                              Loaing loan requests...
                             </small>
-                          )
-                        ) : (
-                          <small className="ml-4">
-                            Loaing loan requests...
-                          </small>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    ) : null}
                   </div>
                 </div>
               </div>
