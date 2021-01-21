@@ -246,25 +246,36 @@ router.get("/getNews", async (req, res) => {
   }
 });
 
-// 2nd news api
-// @desc: get news from news api
-// router.get("/getNews", async (req, res) => {
-//   var config = {
-//     method: "get",
-//     url:
-//       "https://newsapi.org/v2/everything?q=COVID&from=2020-03-16&sortBy=publishedAt&apiKey=&pageSize=100&page=1",
-//     headers: {},
-//   };
+// @desc: get alerts if any
+router.get("/getAlerts/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.json(user.alert);
+  } catch (e) {
+    res.status(400).json("Error: ", e);
+  }
+});
 
-//   axios(config)
-//     .then(function (response) {
-//       res.json(JSON.stringify(response.data));
-//       // console.log(JSON.stringify(response.data));
-//     })
-//     .catch(function (error) {
-//       console.log(error);
-//     });
-// });
+// @desc: delete a particular alert
+router.put("/deleteAlert", async (req, res) => {
+  try {
+    const user = await User.findById(req.body.id);
+    let alert = user.alert;
+    alert = alert.filter((item) => item.reqId !== req.body.reqId);
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.body.id,
+      {
+        alert,
+      },
+      { new: true }
+    );
+
+    res.json(updatedUser);
+  } catch (e) {
+    res.status(400).json("Error: ", e);
+  }
+});
 
 // multer file
 // @desc: file upload

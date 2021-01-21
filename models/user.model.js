@@ -15,6 +15,7 @@ const userSchema = new Schema({
   skills: { type: String },
   doj: { type: String },
   notification: { type: Array },
+  alert: { type: Array },
 });
 
 const User = mongoose.model("User", userSchema);

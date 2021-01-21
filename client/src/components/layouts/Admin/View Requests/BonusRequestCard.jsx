@@ -96,16 +96,24 @@ export default class BonusRequestCard extends Component {
                 <div className="col">
                   <h6>
                     Note:{" "}
-                    <ReactTooltip place="bottom" delayShow={100} html={true} />
                     {attachmentName ? (
-                      <i
-                        onClick={() => this.downloadAttachment(attachmentName)}
-                        data-tip={attachmentName.slice(13)}
-                        className="fa fa-paperclip mb-2"
-                        style={{ fontSize: "18px", cursor: "pointer" }}
-                      >
-                        <small> {attachmentName.slice(13)}</small>
-                      </i>
+                      <>
+                        <ReactTooltip
+                          place="bottom"
+                          delayShow={100}
+                          html={true}
+                        />
+                        <i
+                          onClick={() =>
+                            this.downloadAttachment(attachmentName)
+                          }
+                          data-tip={attachmentName.slice(13)}
+                          className="fa fa-paperclip mb-2"
+                          style={{ fontSize: "18px", cursor: "pointer" }}
+                        >
+                          <small> {attachmentName.slice(13)}</small>
+                        </i>
+                      </>
                     ) : null}
                   </h6>
                   <div className="reasonContainer">{bonusNote}</div>

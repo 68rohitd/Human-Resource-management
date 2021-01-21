@@ -1,8 +1,37 @@
+import axios from "axios";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "../../../assets/side-panel-styles/sidePanel.css";
+import AlertCard from "./AlertCard";
 
 export default class EmpSidePanel extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      alerts: [],
+    };
+  }
+
+  componentDidMount = async () => {
+    const id = localStorage.getItem("userId");
+    const alerts = await axios.get(`/api/users/getAlerts/${id}`);
+
+    // console.log(alerts.data);
+
+    this.setState({ alerts: alerts.data });
+  };
+
+  onDeleteAlert = async (reqId) => {
+    console.log("deleting...: ", reqId);
+    const id = localStorage.getItem("userId");
+    const deletedAlert = await axios.put("/api/users/deleteAlert", {
+      reqId,
+      id,
+    });
+    console.log("deleted alert: ", deletedAlert.data);
+  };
+
   render() {
     const currLocation = window.location.href.split("#/")[1];
 
@@ -74,6 +103,16 @@ export default class EmpSidePanel extends Component {
             </li>
           </Link>
         </ul>
+
+        {this.state.alerts.length
+          ? this.state.alerts.map((msg, index) => (
+              <AlertCard
+                key={index}
+                data={msg}
+                onDeleteAlert={this.onDeleteAlert}
+              />
+            ))
+          : null}
       </div>
     );
   }

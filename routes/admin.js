@@ -166,6 +166,7 @@ router.post("/addEmployee", async (req, res) => {
       role,
       doj,
       notification: [],
+      alert: [],
     });
 
     const savedUser = await newUser.save();
@@ -204,7 +205,9 @@ router.post("/addEmployee", async (req, res) => {
 router.put("/takeAction", async (req, res) => {
   const user = await User.findOne({ _id: req.body.userReq.empId });
   if (!user) return res.status(400).json({ msg: "user not found" });
+
   // console.log("req: ", req.body.userReq);
+
   let isApproved = false;
 
   // update emp's notification list: status from PENDING --> Approved/Rejected
@@ -227,9 +230,26 @@ router.put("/takeAction", async (req, res) => {
     }
   });
 
+  // since approved/rejected send a notification to user in ALERT's ARRAY
+  let alert = user.alert;
+  let newAlert = {
+    reqId: req.body.userReq.reqId,
+    subject:
+      req.body.userReq.subject ||
+      req.body.userReq.loanReason ||
+      req.body.userReq.bonusReason,
+    reason:
+      req.body.userReq.reason ||
+      req.body.userReq.loanNote ||
+      req.body.userReq.bonusNote,
+    createdOn: req.body.userReq.date,
+    approved: req.body.userReq.approved,
+  };
+  alert.push(newAlert);
+
   User.findOneAndUpdate(
     { _id: req.body.userReq.empId },
-    { notification: updatedNotificationList },
+    { notification: updatedNotificationList, alert: alert },
     { new: true },
     function (err, result) {
       if (err) res.status(400).json("Error: ", err);
