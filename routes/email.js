@@ -30,6 +30,9 @@ function createdNewAccount(email, displayName) {
 router.post("/contactUs", async (req, res) => {
   const { name, email, message } = req.body;
   const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
     service: "gmail",
     auth: {
       user: "68rohitd@gmail.com",
