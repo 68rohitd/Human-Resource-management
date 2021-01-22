@@ -25,6 +25,7 @@ import Statistics from "./components/layouts/Admin/Stats/Statistics";
 import Options from "./components/layouts/Admin/Options";
 import ViewSingleRequest from "./components/layouts/Employee/ViewSingleRequest";
 import CompanyInfo from "./components/layouts/Employee/CompanyInfo";
+import ActiveLoans from "./components/layouts/Admin/ActiveLoans";
 
 export default class App extends Component {
   render() {
@@ -63,6 +64,7 @@ export default class App extends Component {
               <Route exact path="/options" component={Options} />
               <Route exact path="/payroll" component={Payroll} />
               <Route exact path="/viewEmployees" component={ViewEmployees} />
+              <Route exact path="/activeLoans" component={ActiveLoans} />
               <Route
                 exact
                 path="/editEmpProfile/:id"

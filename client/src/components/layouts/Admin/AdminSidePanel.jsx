@@ -60,7 +60,7 @@ export default class SidePanel extends Component {
               <i
                 className="fas fa-user-plus mr-4"
                 style={{ fontSize: "20px" }}
-              ></i>{" "}
+              ></i>
               {currLocation === "add" ? <b>Add Employee</b> : "Add Employee"}
             </li>
           </Link>
@@ -71,7 +71,7 @@ export default class SidePanel extends Component {
               <i
                 className="fas fa-search mr-4"
                 style={{ fontSize: "20px" }}
-              ></i>{" "}
+              ></i>
               {currLocation === "viewEmployees" ? (
                 <b>View Employee</b>
               ) : (
@@ -86,7 +86,7 @@ export default class SidePanel extends Component {
               <i
                 className="fas fa-comments mr-4"
                 style={{ fontSize: "20px" }}
-              ></i>{" "}
+              ></i>
               {currLocation === "viewRequests" ? (
                 <b>View Requests</b>
               ) : (
@@ -118,13 +118,28 @@ export default class SidePanel extends Component {
             </li>
           </Link>
 
+          {/* Active loans */}
+          <Link to="/activeLoans" style={{ textDecoration: "none" }}>
+            <li className="list-group-item text-dark border-0 my-1 myList">
+              <i
+                className="fas fa-hand-holding-usd mr-4"
+                style={{ fontSize: "20px" }}
+              ></i>
+              {currLocation === "activeLoans" ? (
+                <b>Active Loans</b>
+              ) : (
+                "Active Loans"
+              )}
+            </li>
+          </Link>
+
           {/* options */}
           <Link to="/options" style={{ textDecoration: "none" }}>
             <li className="list-group-item text-dark border-0 my-1 myList">
               <i
                 className="fas fa-sliders-h mr-4"
                 style={{ fontSize: "20px" }}
-              ></i>{" "}
+              ></i>
               {currLocation === "options" ? <b>Options</b> : "Options"}
             </li>
           </Link>
