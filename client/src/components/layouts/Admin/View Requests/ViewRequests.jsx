@@ -7,6 +7,7 @@ import BonusRequestCard from "./BonusRequestCard";
 import LeaveRequestCard from "./LeaveRequestCard";
 import LoanRequestCard from "./LoanRequestCard";
 import classNames from "classnames";
+import { Spring } from "react-spring/renderprops";
 
 export default class ViewRequests extends Component {
   constructor() {
@@ -157,196 +158,204 @@ export default class ViewRequests extends Component {
             return <Redirect to="/empDashBoard" />;
 
           return (
-            <>
-              <div className="row m-0">
-                {/* left part */}
-                <div className="col-2 p-0 leftPart">
-                  <AdminSidePanel />
-                </div>
+            <Spring
+              from={{ opacity: 0 }}
+              to={{ opacity: 1 }}
+              config={{ duration: 300 }}
+            >
+              {(props) => (
+                <>
+                  <div className="row m-0">
+                    {/* left part */}
+                    <div className="col-2 p-0 leftPart">
+                      <AdminSidePanel />
+                    </div>
 
-                {/* right part */}
-                <div className="col">
-                  <div className="container py-3">
-                    <h3>
-                      Leave Requests{" "}
-                      <span
-                        className="badge badge-pill badge-dark"
-                        style={{
-                          fontSize: "15px",
-                        }}
-                      >
-                        {admin && admin.leaveRequests.length}
-                      </span>{" "}
-                      <i
-                        style={{ cursor: "pointer" }}
-                        onClick={() =>
-                          this.setState({
-                            expandLeaveReq: !this.state.expandLeaveReq,
-                          })
-                        }
-                        className={classNames("fa", {
-                          "fa-caret-down": !this.state.expandLeaveReq,
-                          "fa-caret-up": this.state.expandLeaveReq,
-                        })}
-                      ></i>
-                    </h3>
-
-                    {this.state.expandLeaveReq ? (
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                      >
-                        <div className="row">
-                          {admin ? (
-                            admin.leaveRequests.length ? (
-                              admin.leaveRequests.map((req, index) => {
-                                return (
-                                  <LeaveRequestCard
-                                    key={index}
-                                    req={req}
-                                    onApprove={this.onApprove}
-                                    onReject={this.onReject}
-                                  />
-                                );
+                    {/* right part */}
+                    <div className="col" style={props}>
+                      <div className="container py-3">
+                        <h3>
+                          Leave Requests{" "}
+                          <span
+                            className="badge badge-pill badge-dark"
+                            style={{
+                              fontSize: "15px",
+                            }}
+                          >
+                            {admin && admin.leaveRequests.length}
+                          </span>{" "}
+                          <i
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              this.setState({
+                                expandLeaveReq: !this.state.expandLeaveReq,
                               })
-                            ) : (
-                              <small className="ml-4">
-                                No leave requests pending...
-                              </small>
-                            )
-                          ) : (
-                            <small className="ml-4">
-                              Loading leave requests...
-                            </small>
-                          )}
-                        </div>
-                      </div>
-                    ) : null}
-                    <hr />
+                            }
+                            className={classNames("fa", {
+                              "fa-caret-down": !this.state.expandLeaveReq,
+                              "fa-caret-up": this.state.expandLeaveReq,
+                            })}
+                          ></i>
+                        </h3>
 
-                    <h3>
-                      Bonus Requests{" "}
-                      <span
-                        className="badge badge-pill badge-dark"
-                        style={{
-                          fontSize: "15px",
-                        }}
-                      >
-                        {admin && admin.bonusRequests.length}
-                      </span>{" "}
-                      <i
-                        style={{ cursor: "pointer" }}
-                        onClick={() =>
-                          this.setState({
-                            expandBonusReq: !this.state.expandBonusReq,
-                          })
-                        }
-                        className={classNames("fa", {
-                          "fa-caret-down": !this.state.expandBonusReq,
-                          "fa-caret-up": this.state.expandBonusReq,
-                        })}
-                      ></i>
-                    </h3>
+                        {this.state.expandLeaveReq ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                            }}
+                          >
+                            <div className="row">
+                              {admin ? (
+                                admin.leaveRequests.length ? (
+                                  admin.leaveRequests.map((req, index) => {
+                                    return (
+                                      <LeaveRequestCard
+                                        key={index}
+                                        req={req}
+                                        onApprove={this.onApprove}
+                                        onReject={this.onReject}
+                                      />
+                                    );
+                                  })
+                                ) : (
+                                  <small className="ml-4">
+                                    No leave requests pending...
+                                  </small>
+                                )
+                              ) : (
+                                <small className="ml-4">
+                                  Loading leave requests...
+                                </small>
+                              )}
+                            </div>
+                          </div>
+                        ) : null}
+                        <hr />
 
-                    {this.state.expandBonusReq ? (
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                      >
-                        <div className="row">
-                          {admin ? (
-                            admin.bonusRequests.length ? (
-                              admin.bonusRequests.map((req, index) => {
-                                return (
-                                  <BonusRequestCard
-                                    key={index}
-                                    req={req}
-                                    onApprove={this.onApprove}
-                                    onReject={this.onReject}
-                                  />
-                                );
+                        <h3>
+                          Bonus Requests{" "}
+                          <span
+                            className="badge badge-pill badge-dark"
+                            style={{
+                              fontSize: "15px",
+                            }}
+                          >
+                            {admin && admin.bonusRequests.length}
+                          </span>{" "}
+                          <i
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              this.setState({
+                                expandBonusReq: !this.state.expandBonusReq,
                               })
-                            ) : (
-                              <small className="ml-4">
-                                No bonus requests pending...
-                              </small>
-                            )
-                          ) : (
-                            <small className="ml-4">
-                              Loading bonus requests...
-                            </small>
-                          )}
-                        </div>
-                      </div>
-                    ) : null}
+                            }
+                            className={classNames("fa", {
+                              "fa-caret-down": !this.state.expandBonusReq,
+                              "fa-caret-up": this.state.expandBonusReq,
+                            })}
+                          ></i>
+                        </h3>
 
-                    <hr />
+                        {this.state.expandBonusReq ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                            }}
+                          >
+                            <div className="row">
+                              {admin ? (
+                                admin.bonusRequests.length ? (
+                                  admin.bonusRequests.map((req, index) => {
+                                    return (
+                                      <BonusRequestCard
+                                        key={index}
+                                        req={req}
+                                        onApprove={this.onApprove}
+                                        onReject={this.onReject}
+                                      />
+                                    );
+                                  })
+                                ) : (
+                                  <small className="ml-4">
+                                    No bonus requests pending...
+                                  </small>
+                                )
+                              ) : (
+                                <small className="ml-4">
+                                  Loading bonus requests...
+                                </small>
+                              )}
+                            </div>
+                          </div>
+                        ) : null}
 
-                    <h3>
-                      Loan Requests{" "}
-                      <div
-                        className="badge badge-pill badge-dark"
-                        style={{
-                          fontSize: "15px",
-                        }}
-                      >
-                        {admin && admin.loanRequests.length}
-                      </div>{" "}
-                      <i
-                        style={{ cursor: "pointer" }}
-                        onClick={() =>
-                          this.setState({
-                            expandLoanReq: !this.state.expandLoanReq,
-                          })
-                        }
-                        className={classNames("fa", {
-                          "fa-caret-down": !this.state.expandLoanReq,
-                          "fa-caret-up": this.state.expandLoanReq,
-                        })}
-                      ></i>
-                    </h3>
+                        <hr />
 
-                    {this.state.expandLoanReq ? (
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                      >
-                        <div className="row">
-                          {admin ? (
-                            admin.loanRequests.length ? (
-                              admin.loanRequests.map((req, index) => {
-                                return (
-                                  <LoanRequestCard
-                                    key={index}
-                                    req={req}
-                                    onApprove={this.onApprove}
-                                    onReject={this.onReject}
-                                  />
-                                );
+                        <h3>
+                          Loan Requests{" "}
+                          <div
+                            className="badge badge-pill badge-dark"
+                            style={{
+                              fontSize: "15px",
+                            }}
+                          >
+                            {admin && admin.loanRequests.length}
+                          </div>{" "}
+                          <i
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              this.setState({
+                                expandLoanReq: !this.state.expandLoanReq,
                               })
-                            ) : (
-                              <small className="ml-4">
-                                No loan requests pending...
-                              </small>
-                            )
-                          ) : (
-                            <small className="ml-4">
-                              Loaing loan requests...
-                            </small>
-                          )}
-                        </div>
+                            }
+                            className={classNames("fa", {
+                              "fa-caret-down": !this.state.expandLoanReq,
+                              "fa-caret-up": this.state.expandLoanReq,
+                            })}
+                          ></i>
+                        </h3>
+
+                        {this.state.expandLoanReq ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                            }}
+                          >
+                            <div className="row">
+                              {admin ? (
+                                admin.loanRequests.length ? (
+                                  admin.loanRequests.map((req, index) => {
+                                    return (
+                                      <LoanRequestCard
+                                        key={index}
+                                        req={req}
+                                        onApprove={this.onApprove}
+                                        onReject={this.onReject}
+                                      />
+                                    );
+                                  })
+                                ) : (
+                                  <small className="ml-4">
+                                    No loan requests pending...
+                                  </small>
+                                )
+                              ) : (
+                                <small className="ml-4">
+                                  Loaing loan requests...
+                                </small>
+                              )}
+                            </div>
+                          </div>
+                        ) : null}
                       </div>
-                    ) : null}
+                    </div>
                   </div>
-                </div>
-              </div>
-            </>
+                </>
+              )}
+            </Spring>
           );
         }}
       </Consumer>

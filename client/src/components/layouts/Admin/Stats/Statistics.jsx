@@ -9,6 +9,7 @@ import "../../../../assets/stats-styles/stats.css";
 import Card from "./Card";
 import { Consumer } from "../../../../context";
 import { Redirect } from "react-router-dom";
+import { Spring } from "react-spring/renderprops";
 export default class Statistics extends Component {
   constructor() {
     super();
@@ -76,57 +77,65 @@ export default class Statistics extends Component {
           //added this condition coz it was showing admin panel till emp data was loaded
           if (user && user.role === "admin")
             return (
-              <div className="row m-0">
-                {/* left part */}
-                <div className="col-2 p-0 leftPart">
-                  <AdminSidePanel />
-                </div>
+              <Spring
+                from={{ opacity: 0 }}
+                to={{ opacity: 1 }}
+                config={{ duration: 300 }}
+              >
+                {(props) => (
+                  <div className="row m-0">
+                    {/* left part */}
+                    <div className="col-2 p-0 leftPart">
+                      <AdminSidePanel />
+                    </div>
 
-                {/* right part */}
-                <div className="col-9 rightPart container">
-                  {/* numbers */}
-                  <div className="row mt-5">
-                    <div className="col ">
-                      <Card
-                        label="Salary Expenses"
-                        data={`₹ ${this.state.totalExpenses}`}
-                      />
-                    </div>
-                    <div className="col ">
-                      <Card
-                        label="Loan Expenses"
-                        data={`₹ ${this.state.loanExpenses}`}
-                      />
-                    </div>
-                    <div className="col">
-                      <Card
-                        label="Employee Count"
-                        data={this.state.empList.length}
-                      />
+                    {/* right part */}
+                    <div className="col-9 rightPart container" style={props}>
+                      {/* numbers */}
+                      <div className="row mt-5">
+                        <div className="col ">
+                          <Card
+                            label="Salary Expenses"
+                            data={`₹ ${this.state.totalExpenses}`}
+                          />
+                        </div>
+                        <div className="col ">
+                          <Card
+                            label="Loan Expenses"
+                            data={`₹ ${this.state.loanExpenses}`}
+                          />
+                        </div>
+                        <div className="col">
+                          <Card
+                            label="Employee Count"
+                            data={this.state.empList.length}
+                          />
+                        </div>
+                      </div>
+
+                      {/* charts */}
+                      <div className="row mt-5">
+                        <div className="col-6 my-4">
+                          <PieChart />
+                        </div>
+
+                        <div className="col-6 my-4">
+                          <BarChart />
+                        </div>
+                      </div>
+
+                      <div className="row mt-4">
+                        <div className="col-6 my-4">
+                          <BarChart2 />
+                        </div>
+                        <div className="col-6 my-4">
+                          <LineChart />
+                        </div>
+                      </div>
                     </div>
                   </div>
-
-                  {/* charts */}
-                  <div className="row mt-5">
-                    <div className="col-6 my-4">
-                      <PieChart />
-                    </div>
-
-                    <div className="col-6 my-4">
-                      <BarChart />
-                    </div>
-                  </div>
-
-                  <div className="row mt-4">
-                    <div className="col-6 my-4">
-                      <BarChart2 />
-                    </div>
-                    <div className="col-6 my-4">
-                      <LineChart />
-                    </div>
-                  </div>
-                </div>
-              </div>
+                )}
+              </Spring>
             );
         }}
       </Consumer>

@@ -5,6 +5,7 @@ import toast from "toasted-notes";
 import "toasted-notes/src/styles.css";
 import { Consumer } from "../../../context";
 import { Redirect } from "react-router-dom";
+import { Spring } from "react-spring/renderprops";
 
 export default class Options extends Component {
   constructor() {
@@ -203,194 +204,205 @@ export default class Options extends Component {
             return <Redirect to="/empDashBoard" />;
 
           return (
-            <div className="row m-0">
-              {/* left part */}
-              <div className="col-2 p-0 leftPart">
-                <AdminSidePanel />
-              </div>
+            <Spring
+              from={{ opacity: 0 }}
+              to={{ opacity: 1 }}
+              config={{ duration: 300 }}
+            >
+              {(props) => (
+                <div className="row m-0">
+                  {/* left part */}
+                  <div className="col-2 p-0 leftPart">
+                    <AdminSidePanel />
+                  </div>
 
-              {/* right part */}
+                  {/* right part */}
 
-              <div className="col rightPart container ">
-                <div className="row">
-                  {/* add roles, teams */}
-                  <div className="col">
+                  <div className="col rightPart container" style={props}>
                     <div className="row">
+                      {/* add roles, teams */}
                       <div className="col">
-                        <form className="addEmpForm">
-                          {this.state.error ? (
-                            <div className="alert alert-danger">
-                              {this.state.error}
-                            </div>
-                          ) : null}
+                        <div className="row">
+                          <div className="col">
+                            <form className="addEmpForm">
+                              {this.state.error ? (
+                                <div className="alert alert-danger">
+                                  {this.state.error}
+                                </div>
+                              ) : null}
 
-                          <h3>Add new Teams and Roles</h3>
-                          <hr />
-                          {/* add new team */}
+                              <h3>Add new Teams and Roles</h3>
+                              <hr />
+                              {/* add new team */}
 
-                          <label htmlFor="team">New Team</label>
-                          <div className="input-group mb-3">
+                              <label htmlFor="team">New Team</label>
+                              <div className="input-group mb-3">
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={this.state.teamName}
+                                  name="teamName"
+                                  aria-label="Recipient's username"
+                                  aria-describedby="button-addon2"
+                                  onChange={this.onChange}
+                                />
+
+                                <div className="input-group-append">
+                                  <button
+                                    className="btn btn-primary"
+                                    type="button"
+                                    id="button-addon2"
+                                    onClick={this.onAddTeam}
+                                  >
+                                    Add
+                                  </button>
+                                </div>
+                              </div>
+
+                              {/* add new role */}
+                              <label htmlFor="team">New Role</label>
+                              <div className="input-group mb-3">
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={this.state.roleName}
+                                  name="roleName"
+                                  aria-label="Recipient's username"
+                                  aria-describedby="button-addon2"
+                                  onChange={this.onChange}
+                                />
+
+                                <div className="input-group-append">
+                                  <button
+                                    className="btn btn-primary"
+                                    type="button"
+                                    id="button-addon2"
+                                    onClick={this.onAddRole}
+                                  >
+                                    Add
+                                  </button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+
+                        <div className="row mt-5 ml-3">
+                          <div className="col">
                             <input
-                              type="text"
-                              className="form-control"
-                              value={this.state.teamName}
-                              name="teamName"
-                              aria-label="Recipient's username"
-                              aria-describedby="button-addon2"
-                              onChange={this.onChange}
+                              type="button"
+                              className="btn btn-danger"
+                              value="Delete Admin Account"
+                              onClick={() =>
+                                this.onDeleteAdminAccount(dispatch)
+                              }
                             />
 
-                            <div className="input-group-append">
-                              <button
-                                className="btn btn-primary"
-                                type="button"
-                                id="button-addon2"
-                                onClick={this.onAddTeam}
-                              >
-                                Add
-                              </button>
+                            <div className="alert alert-danger mt-3">
+                              <small>
+                                <b>Note: </b> By deleting admin account, you
+                                will loose all your current pending requests,
+                                which might lead to adverse effects. Therefore
+                                it is recommended you delete the account once
+                                clearing all the requests
+                              </small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* google calender  */}
+                      <div className="col">
+                        <form
+                          onSubmit={this.addToGoogleCalender.bind(this)}
+                          className="addEmpForm"
+                        >
+                          <h3>
+                            Add Reminder{" "}
+                            <i className="fab fa-google text-dark"></i>{" "}
+                          </h3>
+                          <hr />
+
+                          <div className="row">
+                            <div className="col">
+                              <div className="form-group">
+                                <label htmlFor="title">Title</label>
+                                <input
+                                  required
+                                  type="text"
+                                  className="form-control"
+                                  id="title"
+                                  name="title"
+                                  onChange={this.onChange}
+                                />
+                              </div>
                             </div>
                           </div>
 
-                          {/* add new role */}
-                          <label htmlFor="team">New Role</label>
-                          <div className="input-group mb-3">
-                            <input
-                              type="text"
-                              className="form-control"
-                              value={this.state.roleName}
-                              name="roleName"
-                              aria-label="Recipient's username"
-                              aria-describedby="button-addon2"
-                              onChange={this.onChange}
-                            />
+                          <div className="row">
+                            <div className="col">
+                              <div className="form-group">
+                                <label htmlFor="description">Description</label>
+                                <textarea
+                                  required
+                                  type="text"
+                                  className="form-control"
+                                  id="description"
+                                  name="description"
+                                  onChange={this.onChange}
+                                />
+                              </div>
+                            </div>
+                          </div>
 
-                            <div className="input-group-append">
-                              <button
-                                className="btn btn-primary"
-                                type="button"
-                                id="button-addon2"
-                                onClick={this.onAddRole}
-                              >
-                                Add
-                              </button>
+                          <div className="row">
+                            <div className="col">
+                              <div className="form-group">
+                                <label htmlFor="dueDate">Due Date</label>
+                                <input
+                                  required
+                                  type="date"
+                                  className="form-control"
+                                  id="dueDate"
+                                  name="dueDate"
+                                  onChange={this.onChange}
+                                />
+                              </div>
+                            </div>
+
+                            <div className="col">
+                              <div className="form-group">
+                                <label htmlFor="time">Time</label>
+                                <input
+                                  required
+                                  type="time"
+                                  className="form-control"
+                                  id="time"
+                                  name="time"
+                                  onChange={this.onChange}
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="row">
+                            <div className="col">
+                              <div className="form-group">
+                                <input
+                                  type="submit"
+                                  value="Submit"
+                                  className="btn btn-primary btn-block "
+                                />
+                              </div>
                             </div>
                           </div>
                         </form>
                       </div>
                     </div>
-
-                    <div className="row mt-5 ml-3">
-                      <div className="col">
-                        <input
-                          type="button"
-                          className="btn btn-danger"
-                          value="Delete Admin Account"
-                          onClick={() => this.onDeleteAdminAccount(dispatch)}
-                        />
-
-                        <div className="alert alert-danger mt-3">
-                          <small>
-                            <b>Note: </b> By deleting admin account, you will
-                            loose all your current pending requests, which might
-                            lead to adverse effects. Therefore it is recommended
-                            you delete the account once clearing all the
-                            requests
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* google calender  */}
-                  <div className="col">
-                    <form
-                      onSubmit={this.addToGoogleCalender.bind(this)}
-                      className="addEmpForm"
-                    >
-                      <h3>
-                        Add Reminder <i className="fab fa-google text-dark"></i>{" "}
-                      </h3>
-                      <hr />
-
-                      <div className="row">
-                        <div className="col">
-                          <div className="form-group">
-                            <label htmlFor="title">Title</label>
-                            <input
-                              required
-                              type="text"
-                              className="form-control"
-                              id="title"
-                              name="title"
-                              onChange={this.onChange}
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col">
-                          <div className="form-group">
-                            <label htmlFor="description">Description</label>
-                            <textarea
-                              required
-                              type="text"
-                              className="form-control"
-                              id="description"
-                              name="description"
-                              onChange={this.onChange}
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col">
-                          <div className="form-group">
-                            <label htmlFor="dueDate">Due Date</label>
-                            <input
-                              required
-                              type="date"
-                              className="form-control"
-                              id="dueDate"
-                              name="dueDate"
-                              onChange={this.onChange}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="col">
-                          <div className="form-group">
-                            <label htmlFor="time">Time</label>
-                            <input
-                              required
-                              type="time"
-                              className="form-control"
-                              id="time"
-                              name="time"
-                              onChange={this.onChange}
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col">
-                          <div className="form-group">
-                            <input
-                              type="submit"
-                              value="Submit"
-                              className="btn btn-primary btn-block "
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </form>
                   </div>
                 </div>
-              </div>
-            </div>
+              )}
+            </Spring>
           );
         }}
       </Consumer>

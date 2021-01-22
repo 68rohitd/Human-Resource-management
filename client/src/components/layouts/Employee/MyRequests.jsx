@@ -4,6 +4,7 @@ import { Link, Redirect } from "react-router-dom";
 import { Consumer } from "../../../context";
 import EmpSidePanel from "./EmpSidePanel";
 import empty from "../../../assets/images/empty.png";
+import { Spring } from "react-spring/renderprops";
 
 export default class MyRequests extends Component {
   constructor() {
@@ -165,266 +166,278 @@ export default class MyRequests extends Component {
           if (user && user.role === "admin") return <Redirect to="/" />;
 
           return (
-            <div className="row m-0">
-              {/* left part */}
-              <div className="col-2 p-0 leftPart">
-                <EmpSidePanel />
-              </div>
+            <Spring
+              from={{ opacity: 0 }}
+              to={{ opacity: 1 }}
+              config={{ duration: 300 }}
+            >
+              {(props) => (
+                <div className="row m-0">
+                  {/* left part */}
+                  <div className="col-2 p-0 leftPart">
+                    <EmpSidePanel />
+                  </div>
 
-              {/* right part */}
-              <div className="col rightPart">
-                <div className="container pl-5 pt-3">
-                  <div className="row">
-                    <div className="col">
-                      <h2>My Requests</h2>
-                    </div>
-
-                    <div className="col text-right">
-                      {/* choose buttons */}
+                  {/* right part */}
+                  <div className="col rightPart" style={props}>
+                    <div className="container pl-5 pt-3">
                       <div className="row">
                         <div className="col">
-                          <div
-                            className="btn-group btn-group-toggle"
-                            data-toggle="buttons"
-                          >
-                            <label className="btn btn-primary active">
-                              <input
-                                type="radio"
-                                name="options"
-                                id="option1"
-                                defaultChecked={true}
-                                onClick={() =>
-                                  this.onSelectLabel("Leave Requests")
-                                }
-                              />
-                              Leave Requests
-                            </label>
-                            <label className="btn btn-primary">
-                              <input
-                                type="radio"
-                                name="options"
-                                id="option2"
-                                onClick={() =>
-                                  this.onSelectLabel("Bonus Requests")
-                                }
-                              />
-                              Bonus Requests
-                            </label>
-                            <label className="btn btn-primary">
-                              <input
-                                type="radio"
-                                name="options"
-                                id="option3"
-                                onClick={() =>
-                                  this.onSelectLabel("Loan Requests")
-                                }
-                              />
-                              Loan Requests
-                            </label>
-                          </div>
+                          <h2>My Requests</h2>
                         </div>
-                      </div>
 
-                      {/* choose filter */}
-                      <div className="row mt-3">
-                        <div className="col">
-                          <div
-                            className="btn-group btn-group-toggle"
-                            data-toggle="buttons"
-                          >
-                            <label className="btn btn-primary active">
-                              <input
-                                type="radio"
-                                name="options"
-                                id="option1"
-                                defaultChecked={true}
-                                onClick={() => this.onSelectFilter("All")}
-                              />
-                              All
-                            </label>
-                            <label className="btn btn-primary">
-                              <input
-                                type="radio"
-                                name="options"
-                                id="option2"
-                                onClick={() => this.onSelectFilter("Pending")}
-                              />
-                              Pending
-                            </label>
-                            <label className="btn btn-primary">
-                              <input
-                                type="radio"
-                                name="options"
-                                id="option3"
-                                onClick={() => this.onSelectFilter("Closed")}
-                              />
-                              Closed
-                            </label>
+                        <div className="col text-right">
+                          {/* choose buttons */}
+                          <div className="row">
+                            <div className="col">
+                              <div
+                                className="btn-group btn-group-toggle"
+                                data-toggle="buttons"
+                              >
+                                <label className="btn btn-primary active">
+                                  <input
+                                    type="radio"
+                                    name="options"
+                                    id="option1"
+                                    defaultChecked={true}
+                                    onClick={() =>
+                                      this.onSelectLabel("Leave Requests")
+                                    }
+                                  />
+                                  Leave Requests
+                                </label>
+                                <label className="btn btn-primary">
+                                  <input
+                                    type="radio"
+                                    name="options"
+                                    id="option2"
+                                    onClick={() =>
+                                      this.onSelectLabel("Bonus Requests")
+                                    }
+                                  />
+                                  Bonus Requests
+                                </label>
+                                <label className="btn btn-primary">
+                                  <input
+                                    type="radio"
+                                    name="options"
+                                    id="option3"
+                                    onClick={() =>
+                                      this.onSelectLabel("Loan Requests")
+                                    }
+                                  />
+                                  Loan Requests
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* choose filter */}
+                          <div className="row mt-3">
+                            <div className="col">
+                              <div
+                                className="btn-group btn-group-toggle"
+                                data-toggle="buttons"
+                              >
+                                <label className="btn btn-primary active">
+                                  <input
+                                    type="radio"
+                                    name="options"
+                                    id="option1"
+                                    defaultChecked={true}
+                                    onClick={() => this.onSelectFilter("All")}
+                                  />
+                                  All
+                                </label>
+                                <label className="btn btn-primary">
+                                  <input
+                                    type="radio"
+                                    name="options"
+                                    id="option2"
+                                    onClick={() =>
+                                      this.onSelectFilter("Pending")
+                                    }
+                                  />
+                                  Pending
+                                </label>
+                                <label className="btn btn-primary">
+                                  <input
+                                    type="radio"
+                                    name="options"
+                                    id="option3"
+                                    onClick={() =>
+                                      this.onSelectFilter("Closed")
+                                    }
+                                  />
+                                  Closed
+                                </label>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
+                      <hr />
+
+                      {/* leave request */}
+                      {this.state.selectedLabel === "Leave Requests" ? (
+                        <div className="row p-0">
+                          <div className="col">
+                            <h5>Leave Requests</h5>
+
+                            {this.state.listToShow.length ? (
+                              <table className="table table-hover ">
+                                <thead className="thead-light">
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Subject</th>
+                                    <th scope="col">Created On</th>
+                                    <th scope="col">Status</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {this.state.listToShow.map((req, index) => {
+                                    return (
+                                      <tr key={index}>
+                                        <th scope="row">{index + 1}</th>
+                                        <td>
+                                          <Link
+                                            style={{ textDecoration: "none" }}
+                                            to={`/viewSingleRequest/${req.title}/${req.reqId}`}
+                                          >
+                                            {req.subject}
+                                          </Link>
+                                        </td>
+                                        <td>{this.onGetDate(req.date)}</td>
+                                        {req.ticketClosed ? (
+                                          <td>Closed</td>
+                                        ) : (
+                                          <td>Pending</td>
+                                        )}
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            ) : (
+                              <div className="text-center text-secondary">
+                                <img src={empty} alt="" width="400px" />
+                                <h1>No tickets</h1>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ) : null}
+
+                      {/* bonus request */}
+                      {this.state.selectedLabel === "Bonus Requests" ? (
+                        <div className="row">
+                          <div className="col">
+                            <h5>Bonus Requests</h5>
+
+                            {this.state.listToShow.length ? (
+                              <table className="table table-hover">
+                                <thead className="thead-light">
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Subject</th>
+                                    <th scope="col">Created On</th>
+                                    <th scope="col">Status</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {this.state.listToShow.map((req, index) => {
+                                    return (
+                                      <tr key={index}>
+                                        <th scope="row">{index + 1}</th>
+                                        <td>
+                                          <Link
+                                            style={{ textDecoration: "none" }}
+                                            to={`/viewSingleRequest/${req.title}/${req.reqId}`}
+                                          >
+                                            {req.bonusReason}
+                                          </Link>
+                                        </td>
+                                        <td>{this.onGetDate(req.date)}</td>
+                                        {req.ticketClosed ? (
+                                          <td>Closed</td>
+                                        ) : (
+                                          <td>Pending</td>
+                                        )}
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            ) : (
+                              <div className="text-center text-secondary">
+                                <img src={empty} alt="" width="400px" />
+                                <h1>No tickets</h1>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ) : null}
+
+                      {/* Loan requests */}
+                      {this.state.selectedLabel === "Loan Requests" ? (
+                        <div className="row">
+                          <div className="col">
+                            <h5>Loan Requests</h5>
+
+                            {this.state.listToShow.length ? (
+                              <table className="table table-hover">
+                                <thead className="thead-light">
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Subject</th>
+                                    <th scope="col">Created On</th>
+                                    <th scope="col">Ticket Status</th>
+                                    <th scope="col">Loan Status</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {this.state.listToShow.map((req, index) => {
+                                    return (
+                                      <tr key={index}>
+                                        <th scope="row">{index + 1}</th>
+                                        <td>
+                                          <Link
+                                            style={{ textDecoration: "none" }}
+                                            to={`/viewSingleRequest/${req.title}/${req.reqId}`}
+                                          >
+                                            {req.loanReason}
+                                          </Link>
+                                        </td>
+                                        <td>{this.onGetDate(req.date)}</td>
+                                        {req.ticketClosed ? (
+                                          <td>Closed</td>
+                                        ) : (
+                                          <td>Pending</td>
+                                        )}
+                                        {req.loanRepaid ? (
+                                          <td>Paid</td>
+                                        ) : (
+                                          <td>Pending</td>
+                                        )}
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            ) : (
+                              <div className="text-center text-secondary">
+                                <img src={empty} alt="" width="400px" />
+                                <h1>No tickets</h1>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ) : null}
                     </div>
                   </div>
-                  <hr />
-
-                  {/* leave request */}
-                  {this.state.selectedLabel === "Leave Requests" ? (
-                    <div className="row p-0">
-                      <div className="col">
-                        <h5>Leave Requests</h5>
-
-                        {this.state.listToShow.length ? (
-                          <table className="table table-hover ">
-                            <thead className="thead-light">
-                              <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Subject</th>
-                                <th scope="col">Created On</th>
-                                <th scope="col">Status</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {this.state.listToShow.map((req, index) => {
-                                return (
-                                  <tr key={index}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>
-                                      <Link
-                                        style={{ textDecoration: "none" }}
-                                        to={`/viewSingleRequest/${req.title}/${req.reqId}`}
-                                      >
-                                        {req.subject}
-                                      </Link>
-                                    </td>
-                                    <td>{this.onGetDate(req.date)}</td>
-                                    {req.ticketClosed ? (
-                                      <td>Closed</td>
-                                    ) : (
-                                      <td>Pending</td>
-                                    )}
-                                  </tr>
-                                );
-                              })}
-                            </tbody>
-                          </table>
-                        ) : (
-                          <div className="text-center text-secondary">
-                            <img src={empty} alt="" width="400px" />
-                            <h1>No tickets</h1>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ) : null}
-
-                  {/* bonus request */}
-                  {this.state.selectedLabel === "Bonus Requests" ? (
-                    <div className="row">
-                      <div className="col">
-                        <h5>Bonus Requests</h5>
-
-                        {this.state.listToShow.length ? (
-                          <table className="table table-hover">
-                            <thead className="thead-light">
-                              <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Subject</th>
-                                <th scope="col">Created On</th>
-                                <th scope="col">Status</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {this.state.listToShow.map((req, index) => {
-                                return (
-                                  <tr key={index}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>
-                                      <Link
-                                        style={{ textDecoration: "none" }}
-                                        to={`/viewSingleRequest/${req.title}/${req.reqId}`}
-                                      >
-                                        {req.bonusReason}
-                                      </Link>
-                                    </td>
-                                    <td>{this.onGetDate(req.date)}</td>
-                                    {req.ticketClosed ? (
-                                      <td>Closed</td>
-                                    ) : (
-                                      <td>Pending</td>
-                                    )}
-                                  </tr>
-                                );
-                              })}
-                            </tbody>
-                          </table>
-                        ) : (
-                          <div className="text-center text-secondary">
-                            <img src={empty} alt="" width="400px" />
-                            <h1>No tickets</h1>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ) : null}
-
-                  {/* Loan requests */}
-                  {this.state.selectedLabel === "Loan Requests" ? (
-                    <div className="row">
-                      <div className="col">
-                        <h5>Loan Requests</h5>
-
-                        {this.state.listToShow.length ? (
-                          <table className="table table-hover">
-                            <thead className="thead-light">
-                              <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Subject</th>
-                                <th scope="col">Created On</th>
-                                <th scope="col">Ticket Status</th>
-                                <th scope="col">Loan Status</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {this.state.listToShow.map((req, index) => {
-                                return (
-                                  <tr key={index}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>
-                                      <Link
-                                        style={{ textDecoration: "none" }}
-                                        to={`/viewSingleRequest/${req.title}/${req.reqId}`}
-                                      >
-                                        {req.loanReason}
-                                      </Link>
-                                    </td>
-                                    <td>{this.onGetDate(req.date)}</td>
-                                    {req.ticketClosed ? (
-                                      <td>Closed</td>
-                                    ) : (
-                                      <td>Pending</td>
-                                    )}
-                                    {req.loanRepaid ? (
-                                      <td>Paid</td>
-                                    ) : (
-                                      <td>Pending</td>
-                                    )}
-                                  </tr>
-                                );
-                              })}
-                            </tbody>
-                          </table>
-                        ) : (
-                          <div className="text-center text-secondary">
-                            <img src={empty} alt="" width="400px" />
-                            <h1>No tickets</h1>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ) : null}
                 </div>
-              </div>
-            </div>
+              )}
+            </Spring>
           );
         }}
       </Consumer>

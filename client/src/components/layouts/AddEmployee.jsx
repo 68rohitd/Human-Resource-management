@@ -109,9 +109,17 @@ class AddEmployee extends Component {
             if (user.role !== "admin") return <Redirect to="/" />;
             return (
               <Spring
-                from={{ opacity: 0 }}
-                to={{ opacity: 1 }}
-                config={{ duration: 300 }}
+                // from={{ opacity: 0 }}
+                // to={{ opacity: 1 }}
+                // config={{ duration: 300 }}
+
+                from={{
+                  transform: "translate3d(1000px,0,0) ",
+                }}
+                to={{
+                  transform: "translate3d(0px,0,0) ",
+                }}
+                config={{ friction: 20 }}
               >
                 {(props) => (
                   <>
