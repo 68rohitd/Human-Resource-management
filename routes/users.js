@@ -93,13 +93,17 @@ router.route("/updateProfile").post((req, res) => {
 
 // @desc: Apply for leave
 router.put("/applyLeave", async (req, res) => {
+  // to get admin email id
+  const admin = await Admin.find({});
+
   // 1. push to admin
-  const admin = await Admin.findOne({ email: "admin@gmail.com" });
-  let leaveRequests = admin.leaveRequests;
+  // const admin = await Admin.findOne({ email: "admin@gmail.com" });
+
+  let leaveRequests = admin[0].leaveRequests;
   leaveRequests.push(req.body.request);
 
   Admin.findOneAndUpdate(
-    { email: "admin@gmail.com" },
+    { email: admin[0].email },
     { leaveRequests: leaveRequests },
     function (err, result) {
       if (err) res.status(400).json("Error: ", err);
@@ -127,13 +131,17 @@ router.put("/applyLeave", async (req, res) => {
 
 // @desc: request for bonus
 router.put("/bonusRequest", async (req, res) => {
+  // to get admin email id
+  const admin = await Admin.find({});
+
   // 1. push to admin
-  const admin = await Admin.findOne({ email: "admin@gmail.com" });
-  let bonusRequests = admin.bonusRequests;
+  // const admin = await Admin.findOne({ email: "admin@gmail.com" });
+
+  let bonusRequests = admin[0].bonusRequests;
   bonusRequests.push(req.body.request);
 
   Admin.findOneAndUpdate(
-    { email: "admin@gmail.com" },
+    { email: admin[0].email },
     { bonusRequests: bonusRequests },
     function (err, result) {
       if (err) res.status(400).json("Error: ", err);
@@ -161,13 +169,17 @@ router.put("/bonusRequest", async (req, res) => {
 
 // @desc: request for loan
 router.put("/loanRequest", async (req, res) => {
+  // to get admin email id
+  const admin = await Admin.find({});
+
   // 1. push to admin
-  const admin = await Admin.findOne({ email: "admin@gmail.com" });
-  let loanRequests = admin.loanRequests;
+  // const admin = await Admin.findOne({ email: "admin@gmail.com" });
+
+  let loanRequests = admin[0].loanRequests;
   loanRequests.push(req.body.request);
 
   Admin.findOneAndUpdate(
-    { email: "admin@gmail.com" },
+    { email: admin[0].email },
     { loanRequests: loanRequests },
     function (err, result) {
       if (err) res.status(400).json("Error: ", err);

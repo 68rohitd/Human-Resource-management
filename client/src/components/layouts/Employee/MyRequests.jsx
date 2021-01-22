@@ -414,8 +414,21 @@ export default class MyRequests extends Component {
                                         ) : (
                                           <td>Pending</td>
                                         )}
-                                        {req.loanRepaid ? (
+                                        {/* {req.loanRepaid ? (
                                           <td>Paid</td>
+                                        ) : (
+                                          <td>Pending</td>
+                                        )} */}
+                                        {req.ticketClosed ? (
+                                          req.approved ? (
+                                            req.loanRepaid ? (
+                                              <td>Paid</td>
+                                            ) : (
+                                              <td>Pending</td>
+                                            )
+                                          ) : (
+                                            <td>Loan Rejected</td>
+                                          )
                                         ) : (
                                           <td>Pending</td>
                                         )}
