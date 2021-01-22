@@ -7,6 +7,7 @@ import maleProfilePic from "../../assets/view-emp/maleUserPic.png";
 import femaleProfilePic from "../../assets/view-emp/femaleUserPic.png";
 import "../../assets/empDashboard.css";
 import NewsCard from "./Employee/NewsCard";
+import { Spring } from "react-spring/renderprops";
 export default class EmpDashboard extends Component {
   constructor() {
     super();
@@ -75,114 +76,122 @@ export default class EmpDashboard extends Component {
           if (user && user.role === "admin") return <Redirect to="/" />;
 
           return (
-            <div className="row m-0">
-              {/* left part */}
-              <div className="col-2 p-0 leftPart">
-                <EmpSidePanel />
-              </div>
+            <Spring
+              from={{ opacity: 0 }}
+              to={{ opacity: 1 }}
+              config={{ duration: 300 }}
+            >
+              {(props) => (
+                <div className="row m-0">
+                  {/* left part */}
+                  <div className="col-2 p-0 leftPart">
+                    <EmpSidePanel />
+                  </div>
 
-              {/* right part */}
-              <div className="col rightPart">
-                <h1 className="display-4 mt-5 ml-5">Dashboard</h1>
-                {/* profile part */}
-                <div className="row">
-                  <div className="col">
-                    <div className="myProfileContainer">
-                      <div className="row">
-                        <div className="col">
-                          {user && user.gender ? (
-                            <img
-                              className=""
-                              src={
-                                user.gender === "Male"
-                                  ? maleProfilePic
-                                  : femaleProfilePic
-                              }
-                              alt=""
-                              width="300px"
-                            />
-                          ) : null}
+                  {/* right part */}
+                  <div className="col rightPart" style={props}>
+                    <h1 className="display-4 mt-5 ml-5">Dashboard</h1>
+                    {/* profile part */}
+                    <div className="row">
+                      <div className="col">
+                        <div className="myProfileContainer">
+                          <div className="row">
+                            <div className="col">
+                              {user && user.gender ? (
+                                <img
+                                  className=""
+                                  src={
+                                    user.gender === "Male"
+                                      ? maleProfilePic
+                                      : femaleProfilePic
+                                  }
+                                  alt=""
+                                  width="300px"
+                                />
+                              ) : null}
+                            </div>
+
+                            <div className="col text-right">
+                              <h1 className="display-4">
+                                Hi <br /> {user && user.name}, <br />{" "}
+                                {this.onGreet()}
+                              </h1>
+                              <p className="mt-4 " style={{ fontSize: "34px" }}>
+                                {" "}
+                                <i className="fas fa-calendar-alt"></i>{" "}
+                                {this.onGetDate()}
+                              </p>
+                            </div>
+                          </div>
                         </div>
+                      </div>
+                    </div>
 
-                        <div className="col text-right">
-                          <h1 className="display-4">
-                            Hi <br /> {user && user.name}, <br />{" "}
-                            {this.onGreet()}
-                          </h1>
-                          <p className="mt-4 " style={{ fontSize: "34px" }}>
-                            {" "}
-                            <i className="fas fa-calendar-alt"></i>{" "}
-                            {this.onGetDate()}
-                          </p>
+                    <hr />
+
+                    {/* news part */}
+                    <div className="row">
+                      <div className="col">
+                        <div className="myNewsContainer">
+                          <h1 className="display-4">NEWS</h1>
+
+                          {this.state.firstCol.length ? (
+                            <div className="row">
+                              <div className="col m-0 p-0">
+                                <div className="container">
+                                  <div
+                                    className="row"
+                                    style={{
+                                      display: "flex",
+                                    }}
+                                  >
+                                    {this.state.firstCol.map((news, index) => (
+                                      <NewsCard key={index} data={news} />
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="col m-0 p-0">
+                                <div className="container">
+                                  <div
+                                    className="row"
+                                    style={{
+                                      display: "flex",
+                                    }}
+                                  >
+                                    {this.state.secondCol.map((news, index) => (
+                                      <NewsCard key={index} data={news} />
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="col m-0 p-0">
+                                <div className="container">
+                                  <div
+                                    className="row"
+                                    style={{
+                                      display: "flex",
+                                    }}
+                                  >
+                                    {this.state.ThirdCol.map((news, index) => (
+                                      <NewsCard key={index} data={news} />
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <strong>Fetching new for you...</strong>
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
-                <hr />
-
-                {/* news part */}
-                <div className="row">
-                  <div className="col">
-                    <div className="myNewsContainer">
-                      <h1 className="display-4">NEWS</h1>
-
-                      {this.state.firstCol.length ? (
-                        <div className="row">
-                          <div className="col m-0 p-0">
-                            <div className="container">
-                              <div
-                                className="row"
-                                style={{
-                                  display: "flex",
-                                }}
-                              >
-                                {this.state.firstCol.map((news, index) => (
-                                  <NewsCard key={index} data={news} />
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col m-0 p-0">
-                            <div className="container">
-                              <div
-                                className="row"
-                                style={{
-                                  display: "flex",
-                                }}
-                              >
-                                {this.state.secondCol.map((news, index) => (
-                                  <NewsCard key={index} data={news} />
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col m-0 p-0">
-                            <div className="container">
-                              <div
-                                className="row"
-                                style={{
-                                  display: "flex",
-                                }}
-                              >
-                                {this.state.ThirdCol.map((news, index) => (
-                                  <NewsCard key={index} data={news} />
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                        <strong>Fetching new for you...</strong>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+              )}
+            </Spring>
           );
         }}
       </Consumer>

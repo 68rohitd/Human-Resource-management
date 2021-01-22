@@ -32,13 +32,28 @@ class Login extends Component {
     const { email, password } = this.state;
 
     try {
-      let role;
-      if (email === "admin@gmail.com") role = "admin";
-      else role = "users";
-      const loggedInUser = await axios.post(`/api/${role}/login`, {
-        email,
-        password,
-      });
+      // check in both MODELS since we dont know whether its admin or emp
+      let loggedInUser;
+
+      try {
+        loggedInUser = await axios.post(`/api/admin/login`, {
+          email,
+          password,
+        });
+      } catch (e) {
+        loggedInUser = await axios.post(`/api/users/login`, {
+          email,
+          password,
+        });
+      }
+
+      // let role;
+      // if (email === "admin@gmail.com") role = "admin";
+      // else role = "users";
+      // const loggedInUser = await axios.post(`/api/${role}/login`, {
+      //   email,
+      //   password,
+      // });
       console.log("logged in successfully: ", loggedInUser.data);
 
       localStorage.setItem("auth-token", loggedInUser.data.token);

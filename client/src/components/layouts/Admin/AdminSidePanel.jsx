@@ -100,7 +100,7 @@ export default class SidePanel extends Component {
                   className="fas fa-circle ml-2"
                   style={{
                     color: "#FF1D15",
-                    fontSize: "10px",
+                    fontSize: "8px",
                   }}
                 ></div>
               ) : null}

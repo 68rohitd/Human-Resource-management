@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
+import { Spring } from "react-spring/renderprops";
 
 export default class LoanRequestTemplate extends Component {
   onGetDate = (date) => {
@@ -42,142 +43,150 @@ export default class LoanRequestTemplate extends Component {
     console.log("loan req details: ", this.props.reqDetails);
 
     return (
-      <div className="mySingleReqCard m-5">
-        <div className="row">
-          {/* subject */}
-          <div className="col">
-            <h2>{loanReason}</h2>
-          </div>
-          {/* GUI Progress */}
-          <div className="col mt-3">
-            <i className="fas fa-check-circle text-success"></i>
-            <strong> Opened </strong>- - - - - -{"  "}
-            <i className="fas fa-check-circle text-success"></i>
-            <strong> Assigned </strong> - - - - - -{" "}
-            {ticketClosed ? (
-              <>
-                <i className="fas fa-check-circle text-success"></i>{" "}
-                <strong> Resolved </strong>
-              </>
-            ) : (
-              <>
-                <i className="fas fa-check-circle"></i>{" "}
-                <strong> Resolved</strong>
-              </>
-            )}
-          </div>
-        </div>
-        <hr />
-
-        <div className="row">
-          {/* first col */}
-          <div className="col">
+      <Spring
+        from={{ opacity: 0 }}
+        to={{ opacity: 1 }}
+        config={{ duration: 300 }}
+      >
+        {(props) => (
+          <div className="mySingleReqCard m-5" style={props}>
             <div className="row">
+              {/* subject */}
               <div className="col">
-                <small>Request ID:</small>
-                <h6>{reqId}</h6>
+                <h2>{loanReason}</h2>
               </div>
-            </div>
-
-            <div className="row">
-              <div className="col">
-                <small>Created On:</small>
-                <h6>{this.onGetDate(date)}</h6>
-              </div>
-
-              <div className="col">
-                <small>Loan Amount:</small>
-                <h6>₹ {amount}</h6>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col">
-                <small>Mode Of Repayment:</small>
-                <h6>{modeOfRepayment}</h6>
-              </div>
-
-              <div className="col">
-                <small>Loan Repaid:</small>
-                {loanRepaid ? (
-                  <h6>Yes</h6>
-                ) : (
-                  <h6 className="text-danger">No</h6>
-                )}
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col">
-                <small>Status</small>
+              {/* GUI Progress */}
+              <div className="col mt-3">
+                <i className="fas fa-check-circle text-success"></i>
+                <strong> Opened </strong>- - - - - -{"  "}
+                <i className="fas fa-check-circle text-success"></i>
+                <strong> Assigned </strong> - - - - - -{" "}
                 {ticketClosed ? (
                   <>
-                    <h6>Closed</h6>
+                    <i className="fas fa-check-circle text-success"></i>{" "}
+                    <strong> Resolved </strong>
                   </>
                 ) : (
-                  <h6>Pending</h6>
-                )}
-              </div>
-
-              <div className="col">
-                <small>Approved/Rejected</small>
-                {ticketClosed ? (
-                  approved ? (
-                    <h6>Approved</h6>
-                  ) : (
-                    <h6 className="text-danger">Rejected</h6>
-                  )
-                ) : (
-                  <h6>NA</h6>
+                  <>
+                    <i className="fas fa-check-circle"></i>{" "}
+                    <strong> Resolved</strong>
+                  </>
                 )}
               </div>
             </div>
-          </div>
-
-          {/* second col */}
-          <div className="col">
-            <div className="row">
-              <div className="col">
-                <small>Raised By:</small>
-                <h6>{empName}</h6>
-              </div>
-            </div>
+            <hr />
 
             <div className="row">
+              {/* first col */}
               <div className="col">
-                <small>Employee Email:</small>
-                <h6>{empEmail}</h6>
-              </div>
-            </div>
+                <div className="row">
+                  <div className="col">
+                    <small>Request ID:</small>
+                    <h6>{reqId}</h6>
+                  </div>
+                </div>
 
-            <div className="row">
-              <div className="col">
-                <small>Request:</small>
-                <div className="reasonArea">
-                  <h6>{loanNote}</h6>
+                <div className="row">
+                  <div className="col">
+                    <small>Created On:</small>
+                    <h6>{this.onGetDate(date)}</h6>
+                  </div>
+
+                  <div className="col">
+                    <small>Loan Amount:</small>
+                    <h6>₹ {amount}</h6>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col">
+                    <small>Mode Of Repayment:</small>
+                    <h6>{modeOfRepayment}</h6>
+                  </div>
+
+                  <div className="col">
+                    <small>Loan Repaid:</small>
+                    {loanRepaid ? (
+                      <h6>Yes</h6>
+                    ) : (
+                      <h6 className="text-danger">No</h6>
+                    )}
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col">
+                    <small>Status</small>
+                    {ticketClosed ? (
+                      <>
+                        <h6>Closed</h6>
+                      </>
+                    ) : (
+                      <h6>Pending</h6>
+                    )}
+                  </div>
+
+                  <div className="col">
+                    <small>Approved/Rejected</small>
+                    {ticketClosed ? (
+                      approved ? (
+                        <h6>Approved</h6>
+                      ) : (
+                        <h6 className="text-danger">Rejected</h6>
+                      )
+                    ) : (
+                      <h6>NA</h6>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {attachmentName ? (
-              <div className="row mt-4">
-                <div className="col">
-                  <h6
-                    style={{ cursor: "pointer" }}
-                    onClick={() => this.downloadAttachment(attachmentName)}
-                  >
-                    <i
-                      className="fa fa-paperclip mb-2"
-                      style={{ fontSize: "22px" }}
-                    ></i>{" "}
-                    {attachmentName.slice(13)}
-                  </h6>
+              {/* second col */}
+              <div className="col">
+                <div className="row">
+                  <div className="col">
+                    <small>Raised By:</small>
+                    <h6>{empName}</h6>
+                  </div>
                 </div>
+
+                <div className="row">
+                  <div className="col">
+                    <small>Employee Email:</small>
+                    <h6>{empEmail}</h6>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col">
+                    <small>Request:</small>
+                    <div className="reasonArea">
+                      <h6>{loanNote}</h6>
+                    </div>
+                  </div>
+                </div>
+
+                {attachmentName ? (
+                  <div className="row mt-4">
+                    <div className="col">
+                      <h6
+                        style={{ cursor: "pointer" }}
+                        onClick={() => this.downloadAttachment(attachmentName)}
+                      >
+                        <i
+                          className="fa fa-paperclip mb-2"
+                          style={{ fontSize: "22px" }}
+                        ></i>{" "}
+                        {attachmentName.slice(13)}
+                      </h6>
+                    </div>
+                  </div>
+                ) : null}
               </div>
-            ) : null}
+            </div>
           </div>
-        </div>
-      </div>
+        )}
+      </Spring>
     );
   }
 }

@@ -5,6 +5,7 @@ import { Consumer } from "../../../context";
 import EmpSidePanel from "./EmpSidePanel";
 import empty from "../../../assets/images/empty.png";
 import { Spring } from "react-spring/renderprops";
+import ReactTooltip from "react-tooltip";
 
 export default class MyRequests extends Component {
   constructor() {
@@ -387,12 +388,23 @@ export default class MyRequests extends Component {
                             {this.state.listToShow.length ? (
                               <table className="table table-hover">
                                 <thead className="thead-light">
+                                  <ReactTooltip
+                                    place="bottom"
+                                    delayShow={100}
+                                    html={true}
+                                  />
                                   <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Subject</th>
                                     <th scope="col">Created On</th>
                                     <th scope="col">Ticket Status</th>
-                                    <th scope="col">Loan Status</th>
+                                    <th scope="col">
+                                      Loan Status{" "}
+                                      <i
+                                        className="fas fa-info-circle text-secondary"
+                                        data-tip="Paid / Unpaid / Rejected"
+                                      ></i>{" "}
+                                    </th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -414,11 +426,6 @@ export default class MyRequests extends Component {
                                         ) : (
                                           <td>Pending</td>
                                         )}
-                                        {/* {req.loanRepaid ? (
-                                          <td>Paid</td>
-                                        ) : (
-                                          <td>Pending</td>
-                                        )} */}
                                         {req.ticketClosed ? (
                                           req.approved ? (
                                             req.loanRepaid ? (
