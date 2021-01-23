@@ -23,6 +23,7 @@ export default function About() {
                 </p>
 
                 <h1 className="font-italic">Features</h1>
+                <p className="mb-1 font-italic">Login/Register feature</p>
                 <p className="mb-1 font-italic">Integrated Payroll system</p>
                 <p className="mb-1 font-italic">Add, Edit, Delete employees</p>
                 <p className="mb-1 font-italic">Search and filter employees</p>
@@ -37,10 +38,6 @@ export default function About() {
                 </p>
                 <p className="mb-1 font-italic">
                   Add reminders directly to your google calender!
-                </p>
-                <p className="mb-1 font-italic">
-                  Login/Register feature, so you can access your todos anytime,
-                  anywhere!
                 </p>
 
                 <p className="text-secondary font-italic mt-5">Version 1.0.0</p>
