@@ -47,13 +47,6 @@ class Login extends Component {
         });
       }
 
-      // let role;
-      // if (email === "admin@gmail.com") role = "admin";
-      // else role = "users";
-      // const loggedInUser = await axios.post(`/api/${role}/login`, {
-      //   email,
-      //   password,
-      // });
       console.log("logged in successfully: ", loggedInUser.data);
 
       localStorage.setItem("auth-token", loggedInUser.data.token);
@@ -113,6 +106,7 @@ class Login extends Component {
                               src={loginAvatar}
                               alt=""
                             />
+
                             <h3 className="loginText text-center mt-3">
                               Login to Your Account
                             </h3>
@@ -143,6 +137,20 @@ class Login extends Component {
                               value="Login"
                               className="btn btn-success btn-block mt-3"
                             />
+
+                            <h6 className=" mt-3 alert alert-warning text-center">
+                              <div className="row">
+                                <div className="col">
+                                  Admin: admin@gmail.com <br />
+                                  User: {"<user>@gmail.com"} <br />
+                                </div>
+                              </div>
+                              <div className="row mt-2">
+                                <div className="col">
+                                  Default password for all: password
+                                </div>
+                              </div>
+                            </h6>
                           </form>
                         </div>
                       </div>
